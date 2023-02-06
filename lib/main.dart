@@ -15,18 +15,19 @@ class TickTokApp extends StatelessWidget {
       title: 'TickTok Clone',
       // 전역 테마 설정
       theme: ThemeData(
-          scaffoldBackgroundColor: Colors.white, // 스카폴드 배경
-          primaryColor: const Color(0xFFE9435A), // 주 컬러
-          // 앱바 테마 전역 설정
-          appBarTheme: const AppBarTheme(
-            foregroundColor: Colors.black, // 글씨 색
-            backgroundColor: Colors.white,
-            elevation: 0,
-            titleTextStyle: TextStyle(
-                color: Colors.black,
-                fontSize: Sizes.size16 + Sizes.size2, // Sizes.size18
-                fontWeight: FontWeight.w600),
-          )),
+        scaffoldBackgroundColor: Colors.white, // 스카폴드 배경
+        primaryColor: const Color(0xFFE9435A), // 주 컬러
+        // 앱바 테마 전역 설정
+        appBarTheme: const AppBarTheme(
+          foregroundColor: Colors.black, // 글씨 색
+          backgroundColor: Colors.white,
+          elevation: 0,
+          titleTextStyle: TextStyle(
+              color: Colors.black,
+              fontSize: Sizes.size16 + Sizes.size2, // Sizes.size18
+              fontWeight: FontWeight.w600),
+        ),
+      ),
       home: const SignUpScreen(),
     );
   }

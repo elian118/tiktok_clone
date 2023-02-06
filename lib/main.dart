@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/authentication/sign_up_screen.dart';
 
 void main() {
@@ -12,9 +13,20 @@ class TickTokApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'TickTok Clone',
+      // 전역 테마 설정
       theme: ThemeData(
-        primaryColor: const Color(0xFFE9435A),
-      ),
+          scaffoldBackgroundColor: Colors.white, // 스카폴드 배경
+          primaryColor: const Color(0xFFE9435A), // 주 컬러
+          // 앱바 테마 전역 설정
+          appBarTheme: const AppBarTheme(
+            foregroundColor: Colors.black, // 글씨 색
+            backgroundColor: Colors.white,
+            elevation: 0,
+            titleTextStyle: TextStyle(
+                color: Colors.black,
+                fontSize: Sizes.size16 + Sizes.size2, // Sizes.size18
+                fontWeight: FontWeight.w600),
+          )),
       home: const SignUpScreen(),
     );
   }

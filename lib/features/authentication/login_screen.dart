@@ -38,24 +38,27 @@ class LoginScreen extends StatelessWidget {
               ),
               Gaps.v40,
               AuthButton(
-                  // font_awesome_flutter 패키지 설치 이후 사용 가능
-                  icon: FaIcon(FontAwesomeIcons.user),
-                  text: 'Use email & password'),
+                // font_awesome_flutter 패키지 설치 이후 사용 가능
+                icon: FaIcon(FontAwesomeIcons.user),
+                text: 'Use email & password',
+              ),
               Gaps.v16,
               AuthButton(
-                  icon: FaIcon(FontAwesomeIcons.facebook, color: Colors.indigo),
-                  text: 'Continue with Facebook'),
+                icon: FaIcon(FontAwesomeIcons.facebook, color: Colors.indigo),
+                text: 'Continue with Facebook',
+              ),
               Gaps.v16,
               AuthButton(
-                  icon: FaIcon(FontAwesomeIcons.apple),
-                  text: 'Continue with Google'),
+                icon: FaIcon(FontAwesomeIcons.apple),
+                text: 'Continue with Google',
+              ),
             ],
           ),
         ),
       ),
       bottomNavigationBar: BottomAppBar(
+        color: Colors.grey.shade50,
         elevation: 1,
-        color: Colors.grey.shade100,
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: Sizes.size32),
           child: Row(

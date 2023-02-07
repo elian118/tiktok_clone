@@ -37,6 +37,7 @@ class _EmailScreenState extends State<EmailScreen> {
   // 이메일 유효성 검사
   String? _isEmailValid() {
     if (_email.isEmpty) return null;
+    // 정규식 파라미터 앞에 r을 입력 -> 다트 코드 포매팅 자동 문자열 변환 현상 방지
     final regExp = RegExp(
         r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
     if (!regExp.hasMatch(_email)) return 'Email is Not valid';

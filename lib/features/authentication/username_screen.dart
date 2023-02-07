@@ -7,10 +7,10 @@ class UsernameScreen extends StatefulWidget {
   const UsernameScreen({Key? key}) : super(key: key);
 
   @override
-  State<UsernameScreen> createState() => _EmailScreenState();
+  State<UsernameScreen> createState() => _UsernameScreenState();
 }
 
-class _EmailScreenState extends State<UsernameScreen> {
+class _UsernameScreenState extends State<UsernameScreen> {
   final TextEditingController _usernameController = TextEditingController();
 
   String _username = ''; // state 변수는 final 선언하지 않는다.

@@ -93,7 +93,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
               const Text(
                 'Password?',
                 style: TextStyle(
-                  fontSize: Sizes.size24,
+                  fontSize: Sizes.size22,
                   fontWeight: FontWeight.w700,
                 ),
               ),

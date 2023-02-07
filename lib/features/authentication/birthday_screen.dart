@@ -21,11 +21,6 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
     initDate.year - 12,
     initDate.month,
     initDate.day,
-    initDate.hour,
-    initDate.minute,
-    initDate.second,
-    initDate.millisecond,
-    initDate.microsecond,
   );
 
   @override

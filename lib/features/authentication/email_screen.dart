@@ -11,25 +11,25 @@ class EmailScreen extends StatefulWidget {
 }
 
 class _EmailScreenState extends State<EmailScreen> {
-  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
 
-  String _username = ''; // state 변수는 final 선언하지 않는다.
+  String _email = ''; // state 변수는 final 선언하지 않는다.
 
   @override
   void initState() {
     super.initState(); // 첫 행이 아니어도 상관 없지만, 로직 파악 편의 상 메모리 정리 후 맨 윗행 위치 권장
-    // 리빌드 때마다 리스너 실행 -> 추적하는 모든 TextField 정보(_usernameController)를 가져온다.
-    _usernameController.addListener(() {
+    // 리빌드 때마다 리스너 실행 -> 추적하는 모든 TextField 정보(_emailController)를 가져온다.
+    _emailController.addListener(() {
       setState(() {
-        _username = _usernameController.text; // 그 중에서 입력된 텍스트만 가져와 대입
+        _email = _emailController.text; // 그 중에서 입력된 텍스트만 가져와 대입
       });
     });
   }
 
   @override
   void dispose() {
-    // 다른 인스턴스가 빌드될 때 _usernameController 제거(메모리 관리)
-    _usernameController.dispose();
+    // 다른 인스턴스가 빌드될 때 _emailController 제거(메모리 관리)
+    _emailController.dispose();
     super.dispose(); // 첫 행으로 가도 상관 없지만, 로직 파악 편의 상 메모리 정리 후 맨 아래 행 위치 권장
   }
 
@@ -56,7 +56,7 @@ class _EmailScreenState extends State<EmailScreen> {
             Gaps.v28,
             TextField(
               // 컨트롤러
-              controller: _usernameController,
+              controller: _emailController,
               // 포커스 상태 밑줄 색상을 바꾸려면 enabledBorder, focusedBorder 두 속성을 모두 설정해야 한다.
               decoration: InputDecoration(
                 hintText: 'Email',
@@ -74,8 +74,8 @@ class _EmailScreenState extends State<EmailScreen> {
               cursorColor: Theme.of(context).primaryColor,
             ),
             Gaps.v28,
-            // FormButton(username: _username) // 위젯 추출 v.1
-            FormButton(disabled: _username.isEmpty) // 위젯 추출 v.2
+            // FormButton(email: _email) // 위젯 추출 v.1
+            FormButton(disabled: _email.isEmpty) // 위젯 추출 v.2
           ],
         ),
       ),

@@ -16,7 +16,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
   final TextEditingController _passwordController = TextEditingController();
 
   String _password = ''; // state 변수는 final 선언하지 않는다.
-  bool _obscureText = false;
+  bool _obscureText = true;
 
   @override
   void initState() {

@@ -12,7 +12,7 @@ class TickTokApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'TickTok Clone',
+      title: 'TikTok Clone',
       // 전역 테마 설정
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.white, // 스카폴드 배경

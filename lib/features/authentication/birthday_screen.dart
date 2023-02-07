@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/features/authentication/widgets/birthday_header.dart';
 import 'package:tiktok_clone/features/authentication/widgets/form_button.dart';
 import 'package:tiktok_clone/features/onboarding/interests_screen.dart';
 
@@ -65,21 +66,7 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Gaps.v40,
-            const Text(
-              "When's your birthday?",
-              style: TextStyle(
-                fontSize: Sizes.size24,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-            Gaps.v8,
-            const Text(
-              "Your birthday won't be shown publicly.",
-              style: TextStyle(
-                fontSize: Sizes.size16,
-                color: Colors.black54,
-              ),
-            ),
+            const BirthdayHeader(),
             Gaps.v28,
             TextField(
               enabled: false, // 비활성화(포커스 무시)
@@ -105,12 +92,12 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
               onTap:
                   _onNextTap, // 같은 위젯 안에만 있다면, () => _onNextTap(context)로 작성할 필요가 없다.
               child: const FormButton(disabled: false),
-            ) // 위젯 추출 v.2
+            ), // 위젯 추출 v.2
           ],
         ),
       ),
       bottomNavigationBar: BottomAppBar(
-        child: Container(
+        child: SizedBox(
           height: 300,
           child: CupertinoDatePicker(
             mode: CupertinoDatePickerMode.date,

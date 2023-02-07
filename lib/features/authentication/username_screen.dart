@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/features/authentication/email_screen.dart';
 import 'package:tiktok_clone/features/authentication/widgets/form_button.dart';
 
 class UsernameScreen extends StatefulWidget {
@@ -31,6 +32,15 @@ class _UsernameScreenState extends State<UsernameScreen> {
     // 다른 인스턴스가 빌드될 때 _usernameController 제거(메모리 관리)
     _usernameController.dispose();
     super.dispose(); // 첫 행으로 가도 상관 없지만, 로직 파악 편의 상 메모리 정리 후 맨 아래 행 위치 권장
+  }
+
+  void _onNextTap() {
+    if (_username.isEmpty) return;
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const EmailScreen(),
+      ),
+    );
   }
 
   @override
@@ -83,7 +93,11 @@ class _UsernameScreenState extends State<UsernameScreen> {
             ),
             Gaps.v28,
             // FormButton(username: _username) // 위젯 추출 v.1
-            FormButton(disabled: _username.isEmpty) // 위젯 추출 v.2
+            GestureDetector(
+              onTap:
+                  _onNextTap, // 같은 위젯 안에만 있다면, () => _onNextTap(context)로 작성할 필요가 없다.
+              child: FormButton(disabled: _username.isEmpty),
+            ) // 위젯 추출 v.2
           ],
         ),
       ),

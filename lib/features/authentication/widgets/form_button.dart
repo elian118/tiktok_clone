@@ -43,7 +43,7 @@ class FormButton extends StatelessWidget {
             fontWeight: FontWeight.w600,
           ),
           child: const Text(
-            'Sign Up',
+            'Next',
             textAlign: TextAlign.center,
           ),
         ),

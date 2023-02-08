@@ -45,6 +45,7 @@ class _TutorialScreenState extends State<TutorialScreen> {
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: Sizes.size24),
           child: SafeArea(
+            // 둘 이상의 위젯을 전환할 경우, AnimatedSwitcher 권장 => 플러터 '금주의 위젯' 동영상 참고
             child: AnimatedCrossFade(
               firstChild: const Tutorial(
                   mainText: 'Watch cool videos!',

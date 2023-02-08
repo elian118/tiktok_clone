@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/authentication/widgets/form_button.dart';
+import 'package:tiktok_clone/utils/focusout.dart';
 
 class LoginFormScreen extends StatefulWidget {
   const LoginFormScreen({Key? key}) : super(key: key);
@@ -10,41 +11,38 @@ class LoginFormScreen extends StatefulWidget {
   State<LoginFormScreen> createState() => _LoginFormScreenState();
 }
 
-// 다수의 입력 폼들을 하나의 화면에서 제어할 경우, 접근자를 활용해야 효율적이다.
+// 다수의 입력 필드들을 하나의 폼에서 제어하려면, 폼 접근자를 활용해야 효율적이다.
 class _LoginFormScreenState extends State<LoginFormScreen> {
-  // 접근자 선언 -> 리액트 useRef 접근자 역할 동일
+  // 폼 접근자 선언 -> 리액트 useRef 접근자 역할 동일
   // stateful widget instance
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  Map<String, String> formData = {};
+  Map<String, String> formData = {}; // 서버로 전송할 폼 데이터
 
-  // 콜백 실행 시점의 Form stateful 위젯 인스턴스 validate() 메서드 실행
+  // 실행 시점의 Form stateful 위젯 인스턴스 내 모든 TextFormField -> validator 콜백 실행
+  // validator 중 하나라도 반환 문자열이 있으면, validate() => false -> 유효성 위반 처리
   void _onSubmitTap() {
     // nullable currentState 사용 방식도 useRef 와 동일
     if (_formKey.currentState != null) {
       if (_formKey.currentState!.validate()) {
-        _formKey.currentState?.save(); // onSaved 콜백 실행
+        // 입력값 모두 유효하면, 폼 안에 위치한 모든 TextFormField -> onSaved 실행
+        _formKey.currentState?.save();
         // test
         // print(formData);
         // print(formData.keys);
         // print(formData.values);
       }
     }
-    ;
   }
 
   void _onSavedFn(String field, String? newValue) {
     if (newValue != null) formData[field] = newValue;
   }
 
-  void _onScaffoldTap() {
-    FocusScope.of(context).unfocus();
-  }
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: _onScaffoldTap,
+      onTap: () => focusout(context),
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Login'),

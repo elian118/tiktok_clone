@@ -3,6 +3,7 @@ import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/authentication/password_screen.dart';
 import 'package:tiktok_clone/features/authentication/widgets/form_button.dart';
+import 'package:tiktok_clone/utils/focusout.dart';
 
 class EmailScreen extends StatefulWidget {
   const EmailScreen({Key? key}) : super(key: key);
@@ -44,11 +45,6 @@ class _EmailScreenState extends State<EmailScreen> {
     return null;
   }
 
-  // 포커스 아웃 -> 자식 위젯의 GestureDetector 영역(여기서는 TextField)을 제외한 부모 위젯에서만 발동
-  void _onScaffoldTap() {
-    FocusScope.of(context).unfocus();
-  }
-
   void _onSubmit() {
     if (_email.isEmpty || _isEmailValid() != null) return;
     Navigator.of(context).push(
@@ -62,7 +58,7 @@ class _EmailScreenState extends State<EmailScreen> {
   Widget build(BuildContext context) {
     // EmailScreen 전체를 GestureDetector 로 감싸 텍스트인풋 포커스 아웃 적용
     return GestureDetector(
-      onTap: _onScaffoldTap,
+      onTap: () => focusout(context),
       child: Scaffold(
         appBar: AppBar(
           elevation: 0,

@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/rawData/interests.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/features/onboarding/screens/tutorial_screen.dart';
 import 'package:tiktok_clone/features/onboarding/widgets/interest_button.dart';
+import 'package:tiktok_clone/utils/utils.dart';
 
 class InterestsScreen extends StatefulWidget {
   const InterestsScreen({Key? key}) : super(key: key);
@@ -99,21 +101,24 @@ class _InterestsScreenState extends State<InterestsScreen> {
           ),
           // CupertinoButton 또는 TextButton 위젯 사용
           child: CupertinoButton(
-            onPressed: () {},
+            onPressed: () => Utils.scrMoveTo(context, const TutorialScreen()),
             color: Theme.of(context).primaryColor,
             child: const Text('Next'),
           ),
-          // child: Container(
-          //   padding: const EdgeInsets.symmetric(vertical: Sizes.size20),
-          //   decoration: BoxDecoration(
-          //     color: Theme.of(context).primaryColor,
-          //   ),
-          //   child: const Text(
-          //     'Next',
-          //     textAlign: TextAlign.center,
-          //     style: TextStyle(
-          //       color: Colors.white,
-          //       fontSize: Sizes.size16,
+          // child: GestureDetector(
+          //   onTap: () => Utils.scrMoveTo(context, const TutorialScreen()),
+          //   child: Container(
+          //     padding: const EdgeInsets.symmetric(vertical: Sizes.size20),
+          //     decoration: BoxDecoration(
+          //       color: Theme.of(context).primaryColor,
+          //     ),
+          //     child: const Text(
+          //       'Next',
+          //       textAlign: TextAlign.center,
+          //       style: TextStyle(
+          //         color: Colors.white,
+          //         fontSize: Sizes.size16,
+          //       ),
           //     ),
           //   ),
           // ),

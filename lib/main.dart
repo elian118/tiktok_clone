@@ -17,6 +17,8 @@ class TickTokApp extends StatelessWidget {
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.white, // 스카폴드 배경
         primaryColor: const Color(0xFFE9435A), // 주 컬러
+        focusColor: Colors.pink, // 포커스 컬러
+        disabledColor: Colors.grey.shade400, // 비활성 컬러
         // 앱바 테마 전역 설정
         appBarTheme: const AppBarTheme(
           foregroundColor: Colors.black, // 글씨 색

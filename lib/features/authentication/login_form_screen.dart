@@ -27,7 +27,7 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
       if (_formKey.currentState!.validate()) {
         // 입력값 모두 유효하면, 폼 안에 위치한 모든 TextFormField -> onSaved 실행
         _formKey.currentState?.save();
-        // test
+        // 폼 데이터 확인
         // print(formData);
         // print(formData.keys);
         // print(formData.values);
@@ -54,13 +54,37 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
             child: Column(
               children: [
                 TextFormField(
-                  decoration: const InputDecoration(hintText: 'Email'),
+                  decoration: InputDecoration(
+                    hintText: 'Email',
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Theme.of(context).disabledColor,
+                      ),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Theme.of(context).focusColor,
+                      ),
+                    ),
+                  ),
                   // validator: (value) => "i don't like your email",
                   onSaved: (newValue) => _onSavedFn('email', newValue),
                 ),
                 Gaps.v16,
                 TextFormField(
-                  decoration: const InputDecoration(hintText: 'Password'),
+                  decoration: InputDecoration(
+                    hintText: 'Password',
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Theme.of(context).disabledColor,
+                      ),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Theme.of(context).focusColor,
+                      ),
+                    ),
+                  ),
                   // validator: (value) => "wrong password",
                   onSaved: (newValue) => _onSavedFn('password', newValue),
                 ),

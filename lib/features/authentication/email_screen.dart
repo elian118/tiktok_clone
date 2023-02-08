@@ -91,12 +91,12 @@ class _EmailScreenState extends State<EmailScreen> {
                   errorText: _isEmailValid(),
                   enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(
-                      color: Colors.grey.shade400, // 활성 상태 밑줄 색상 지정
+                      color: Theme.of(context).disabledColor, // 활성 상태 밑줄 색상 지정
                     ),
                   ),
                   focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(
-                      color: Colors.grey.shade400, // 포커스 상태 => 활성 상태와 동일 색상 유지
+                      color: Theme.of(context).focusColor, // 포커스 상태
                     ),
                   ),
                 ),

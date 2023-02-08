@@ -4,6 +4,7 @@ import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/authentication/birthday_screen.dart';
 import 'package:tiktok_clone/features/authentication/widgets/form_button.dart';
+import 'package:tiktok_clone/utils/focusout.dart';
 
 class PasswordScreen extends StatefulWidget {
   const PasswordScreen({Key? key}) : super(key: key);
@@ -49,11 +50,6 @@ class _PasswordScreenState extends State<PasswordScreen> {
     return regExp.hasMatch(_password);
   }
 
-  // 포커스 아웃 -> 자식 위젯의 GestureDetector 영역(여기서는 TextField)을 제외한 부모 위젯에서만 발동
-  void _onScaffoldTap() {
-    FocusScope.of(context).unfocus();
-  }
-
   void _toggleObscureText() {
     _obscureText = !_obscureText;
     setState(() {});
@@ -78,7 +74,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
   Widget build(BuildContext context) {
     // PasswordScreen 전체를 GestureDetector 로 감싸 텍스트인풋 포커스 아웃 적용
     return GestureDetector(
-      onTap: _onScaffoldTap,
+      onTap: () => focusout(context),
       child: Scaffold(
         appBar: AppBar(
           elevation: 0,
@@ -137,12 +133,13 @@ class _PasswordScreenState extends State<PasswordScreen> {
                   hintText: 'Make it strong!',
                   enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(
-                      color: Colors.grey.shade400, // 활성 상태 밑줄 색상 지정
+                      color: Theme.of(context).disabledColor, // 활성 상태 밑줄 색상 지정
                     ),
                   ),
                   focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(
-                      color: Colors.grey.shade400, // 포커스 상태 => 활성 상태와 동일 색상 유지
+                      color: Theme.of(context)
+                          .focusColor, // 포커스 상태 => 활성 상태와 동일 색상 유지
                     ),
                   ),
                 ),
@@ -161,7 +158,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
                     size: Sizes.size20,
                     color: _isTherePassword()
                         ? Colors.green
-                        : Colors.grey.shade400,
+                        : Theme.of(context).disabledColor,
                   ),
                   Gaps.h5,
                   const Text('8 to 20 characters'),
@@ -175,7 +172,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
                     size: Sizes.size20,
                     color: _isPasswordValid()
                         ? Colors.green
-                        : Colors.grey.shade400,
+                        : Theme.of(context).disabledColor,
                   ),
                   Gaps.h5,
                   const Text('Letters, numbers, and special characters'),

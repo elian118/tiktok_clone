@@ -32,7 +32,7 @@ class FormButton extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(Sizes.size5),
           color: disabled // _username.isEmpty
-              ? Colors.grey.shade300
+              ? Theme.of(context).disabledColor
               : Theme.of(context).primaryColor,
         ),
         // 텍스트 전환 효과를 AnimatedContainer 주기에 맞춤
@@ -40,7 +40,7 @@ class FormButton extends StatelessWidget {
           duration: const Duration(milliseconds: 500), // 텍스트 스타일 전환시간
           style: TextStyle(
             color: disabled // _username.isEmpty
-                ? Colors.grey.shade400
+                ? Theme.of(context).disabledColor
                 : Colors.white,
             fontWeight: FontWeight.w600,
           ),

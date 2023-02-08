@@ -1,73 +1,90 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/rawData/interests.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/features/onboarding/widgets/interest_button.dart';
 
-class InterestsScreen extends StatelessWidget {
+class InterestsScreen extends StatefulWidget {
   const InterestsScreen({Key? key}) : super(key: key);
+
+  @override
+  State<InterestsScreen> createState() => _InterestsScreenState();
+}
+
+class _InterestsScreenState extends State<InterestsScreen> {
+  final ScrollController _scrollController = ScrollController();
+
+  bool _showTitle = false;
+
+  void _onScroll() {
+    // 과도한 setState() 호출 방지
+    if (_scrollController.offset > 100 && _showTitle) return;
+    setState(() => _showTitle = _scrollController.offset > 100);
+    // test
+    // print(_scrollController.offset); // 스크롤 시 변경된 오프셋 위치정보 실시간 표시
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Choose your interests'),
+        title: AnimatedOpacity(
+            opacity: _showTitle ? 1 : 0,
+            duration: const Duration(milliseconds: 300),
+            child: const Text('Choose your interests')),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.only(
-              left: Sizes.size24, right: Sizes.size24, bottom: Sizes.size16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Gaps.v32,
-              const Text(
-                'Choose your interests',
-                style: TextStyle(
-                  fontSize: Sizes.size40,
-                  fontWeight: FontWeight.bold,
+      // 스크롤바를 보고 싶을 때 Scrollbar 랩핑
+      // -> 단, 컨트롤러가 자식인 SingleChildScrollView 의 것과 동일해야 한다.
+      body: Scrollbar(
+        controller: _scrollController,
+        child: SingleChildScrollView(
+          controller: _scrollController,
+          child: Padding(
+            padding: const EdgeInsets.only(
+                left: Sizes.size24, right: Sizes.size24, bottom: Sizes.size16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Gaps.v32,
+                const Text(
+                  'Choose your interests',
+                  style: TextStyle(
+                    fontSize: Sizes.size40,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              Gaps.v20,
-              const Text(
-                'Get better video recommendations',
-                style: TextStyle(
-                  fontSize: Sizes.size20,
+                Gaps.v20,
+                const Text(
+                  'Get better video recommendations',
+                  style: TextStyle(
+                    fontSize: Sizes.size20,
+                  ),
                 ),
-              ),
-              Gaps.v40,
-              // Grid 유사 위젯
-              Wrap(
-                spacing: Sizes.size15,
-                runSpacing: Sizes.size15,
-                children: [
-                  for (var interest in interests)
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: Sizes.size16,
-                        horizontal: Sizes.size24,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(Sizes.size32),
-                        border:
-                            Border.all(color: Colors.black.withOpacity(0.05)),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.05),
-                            blurRadius: 5, // 둘레 번짐
-                            spreadRadius: 5, // 둘레 퍼짐
-                          )
-                        ],
-                      ),
-                      child: Text(
-                        interest,
-                        style: const TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w600),
-                      ),
-                    )
-                ],
-              ),
-            ],
+                Gaps.v40,
+                // Grid 유사 위젯
+                Wrap(
+                  spacing: Sizes.size15,
+                  runSpacing: Sizes.size15,
+                  children: [
+                    for (var interest in interests)
+                      InterestButton(interest: interest)
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -80,20 +97,26 @@ class InterestsScreen extends StatelessWidget {
             left: Sizes.size24,
             right: Sizes.size24,
           ),
-          child: Container(
-            padding: const EdgeInsets.symmetric(vertical: Sizes.size20),
-            decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor,
-            ),
-            child: const Text(
-              'Next',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: Sizes.size16,
-              ),
-            ),
+          // CupertinoButton 또는 TextButton 위젯 사용
+          child: CupertinoButton(
+            onPressed: () {},
+            color: Theme.of(context).primaryColor,
+            child: const Text('Next'),
           ),
+          // child: Container(
+          //   padding: const EdgeInsets.symmetric(vertical: Sizes.size20),
+          //   decoration: BoxDecoration(
+          //     color: Theme.of(context).primaryColor,
+          //   ),
+          //   child: const Text(
+          //     'Next',
+          //     textAlign: TextAlign.center,
+          //     style: TextStyle(
+          //       color: Colors.white,
+          //       fontSize: Sizes.size16,
+          //     ),
+          //   ),
+          // ),
         ),
       ),
     );

@@ -4,20 +4,13 @@ import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/authentication/login_form_screen.dart';
 import 'package:tiktok_clone/features/authentication/widgets/auth_button.dart';
+import 'package:tiktok_clone/utils/utils.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
   void onSignUpTab(BuildContext context) {
     Navigator.of(context).pop(); // 네비게이터 배열에서 사용자가 현재 보고 있는 화면 제거 -> '뒤로 가기'
-  }
-
-  void _onEmailLoginTap(BuildContext context) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => const LoginFormScreen(),
-      ),
-    );
   }
 
   @override
@@ -47,7 +40,7 @@ class LoginScreen extends StatelessWidget {
               ),
               Gaps.v40,
               GestureDetector(
-                onTap: () => _onEmailLoginTap(context),
+                onTap: () => Utils.scrMoveTo(context, const LoginFormScreen()),
                 child: const AuthButton(
                   // font_awesome_flutter 패키지 설치 이후 사용 가능
                   icon: FaIcon(FontAwesomeIcons.user),

@@ -3,7 +3,7 @@ import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/authentication/password_screen.dart';
 import 'package:tiktok_clone/features/authentication/widgets/form_button.dart';
-import 'package:tiktok_clone/utils/focusout.dart';
+import 'package:tiktok_clone/utils/utils.dart';
 
 class EmailScreen extends StatefulWidget {
   const EmailScreen({Key? key}) : super(key: key);
@@ -47,18 +47,14 @@ class _EmailScreenState extends State<EmailScreen> {
 
   void _onSubmit() {
     if (_email.isEmpty || _isEmailValid() != null) return;
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => const PasswordScreen(),
-      ),
-    );
+    Utils.scrMoveTo(context, const PasswordScreen());
   }
 
   @override
   Widget build(BuildContext context) {
     // EmailScreen 전체를 GestureDetector 로 감싸 텍스트인풋 포커스 아웃 적용
     return GestureDetector(
-      onTap: () => focusout(context),
+      onTap: () => Utils.focusout(context),
       child: Scaffold(
         appBar: AppBar(
           elevation: 0,
@@ -84,7 +80,9 @@ class _EmailScreenState extends State<EmailScreen> {
                 // 시뮬레이터 메뉴 > I/O > Keyboard > Toggle Software Keyboard 선택해야 확인 가능
                 keyboardType: TextInputType.emailAddress, // 이메일 형식 키보드 선택
                 autocorrect: false, // 키보드 상단 자동완성 기능 제거
-                onEditingComplete: _onSubmit, // 완료(done) 키 클릭 시, 실행할 콜백 설정
+                // 완료(done) 키 클릭 시, 실행할 콜백 설정
+                onEditingComplete: () =>
+                    Utils.scrMoveTo(context, const PasswordScreen()),
                 // 포커스 상태 밑줄 색상을 바꾸려면 enabledBorder, focusedBorder 두 속성을 모두 설정해야 한다.
                 decoration: InputDecoration(
                   hintText: 'Email',

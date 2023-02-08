@@ -4,30 +4,12 @@ import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/authentication/username_screen.dart';
 import 'package:tiktok_clone/features/authentication/widgets/auth_button.dart';
+import 'package:tiktok_clone/utils/utils.dart';
 
 import 'login_screen.dart';
 
 class SignUpScreen extends StatelessWidget {
   const SignUpScreen({Key? key}) : super(key: key);
-
-  // _ => private
-  void _onLoginTab(BuildContext context) {
-    Navigator.of(context).push(
-      // 네비게이터 배열에 화면 추가 => 사용자가 볼 화면
-      MaterialPageRoute(
-        builder: (context) => const LoginScreen(),
-      ),
-    );
-  }
-
-  void _onEmailTap(BuildContext context) {
-    Navigator.of(context).push(
-      // 네비게이터 배열에 화면 추가 => 사용자가 볼 화면
-      MaterialPageRoute(
-        builder: (context) => const UsernameScreen(),
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +40,8 @@ class SignUpScreen extends StatelessWidget {
               AuthButton(
                 icon: const FaIcon(FontAwesomeIcons.user),
                 text: 'Use email & password',
-                onTapHandler: () => _onEmailTap(context),
+                onTapHandler: () =>
+                    Utils.scrMoveTo(context, const UsernameScreen()),
               ),
               Gaps.v16,
               const AuthButton(
@@ -90,7 +73,7 @@ class SignUpScreen extends StatelessWidget {
               const Text('Already have an account?'),
               Gaps.h5,
               GestureDetector(
-                onTap: () => _onLoginTab(context),
+                onTap: () => Utils.scrMoveTo(context, const LoginScreen()),
                 child: Text(
                   'Log in',
                   style: TextStyle(

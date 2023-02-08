@@ -40,7 +40,7 @@ class FormButton extends StatelessWidget {
           duration: const Duration(milliseconds: 500), // 텍스트 스타일 전환시간
           style: TextStyle(
             color: disabled // _username.isEmpty
-                ? Theme.of(context).disabledColor
+                ? Colors.grey
                 : Colors.white,
             fontWeight: FontWeight.w600,
           ),

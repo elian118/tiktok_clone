@@ -6,6 +6,7 @@ import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/authentication/widgets/birthday_header.dart';
 import 'package:tiktok_clone/features/authentication/widgets/form_button.dart';
 import 'package:tiktok_clone/features/onboarding/interests_screen.dart';
+import 'package:tiktok_clone/utils/utils.dart';
 
 class BirthdayScreen extends StatefulWidget {
   const BirthdayScreen({Key? key}) : super(key: key);
@@ -35,14 +36,6 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
     // 다른 인스턴스가 빌드될 때 _birthdayController 제거(메모리 관리)
     _birthdayController.dispose();
     super.dispose(); // 첫 행으로 가도 상관 없지만, 로직 파악 편의 상 메모리 정리 후 맨 아래 행 위치 권장
-  }
-
-  void _onNextTap() {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => const InterestsScreen(),
-      ),
-    );
   }
 
   void _setTextFieldDate(DateTime date) {
@@ -90,8 +83,7 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
             ),
             Gaps.v28,
             GestureDetector(
-              onTap:
-                  _onNextTap, // 같은 위젯 안에만 있다면, () => _onNextTap(context)로 작성할 필요가 없다.
+              onTap: () => Utils.scrMoveTo(context, const InterestsScreen()),
               child: const FormButton(disabled: false),
             ), // 위젯 추출 v.2
           ],

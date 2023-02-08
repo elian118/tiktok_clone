@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/authentication/widgets/form_button.dart';
-import 'package:tiktok_clone/utils/focusout.dart';
+import 'package:tiktok_clone/features/onboarding/interests_screen.dart';
+import 'package:tiktok_clone/utils/utils.dart';
 
 class LoginFormScreen extends StatefulWidget {
   const LoginFormScreen({Key? key}) : super(key: key);
@@ -28,9 +29,10 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
         // 입력값 모두 유효하면, 폼 안에 위치한 모든 TextFormField -> onSaved 실행
         _formKey.currentState?.save();
         // 폼 데이터 확인
-        // print(formData);
+        print(formData);
         // print(formData.keys);
         // print(formData.values);
+        Utils.scrMoveTo(context, const InterestsScreen());
       }
     }
   }
@@ -42,7 +44,7 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => focusout(context),
+      onTap: () => Utils.focusout(context),
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Login'),
@@ -67,7 +69,12 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
                       ),
                     ),
                   ),
-                  // validator: (value) => "i don't like your email",
+                  validator: (value) {
+                    if (value != null && value.isEmpty) {
+                      return "Please write your email";
+                    }
+                    return null;
+                  },
                   onSaved: (newValue) => _onSavedFn('email', newValue),
                 ),
                 Gaps.v16,
@@ -85,7 +92,12 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
                       ),
                     ),
                   ),
-                  // validator: (value) => "wrong password",
+                  validator: (value) {
+                    if (value != null && value.isEmpty) {
+                      return 'Please write password';
+                    }
+                    return null;
+                  },
                   onSaved: (newValue) => _onSavedFn('password', newValue),
                 ),
                 Gaps.v28,

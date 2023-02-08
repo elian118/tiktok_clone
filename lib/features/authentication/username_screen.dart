@@ -3,7 +3,7 @@ import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/authentication/email_screen.dart';
 import 'package:tiktok_clone/features/authentication/widgets/form_button.dart';
-import 'package:tiktok_clone/utils/focusout.dart';
+import 'package:tiktok_clone/utils/utils.dart';
 
 class UsernameScreen extends StatefulWidget {
   const UsernameScreen({Key? key}) : super(key: key);
@@ -35,19 +35,10 @@ class _UsernameScreenState extends State<UsernameScreen> {
     super.dispose(); // 첫 행으로 가도 상관 없지만, 로직 파악 편의 상 메모리 정리 후 맨 아래 행 위치 권장
   }
 
-  void _onNextTap() {
-    if (_username.isEmpty) return;
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => const EmailScreen(),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => focusout(context),
+      onTap: () => Utils.focusout(context),
       child: Scaffold(
         appBar: AppBar(
           elevation: 0,
@@ -97,8 +88,7 @@ class _UsernameScreenState extends State<UsernameScreen> {
               Gaps.v28,
               // FormButton(username: _username) // 위젯 추출 v.1
               GestureDetector(
-                onTap:
-                    _onNextTap, // 같은 위젯 안에만 있다면, () => _onNextTap(context)로 작성할 필요가 없다.
+                onTap: () => Utils.scrMoveTo(context, const EmailScreen()),
                 child: FormButton(disabled: _username.isEmpty),
               ) // 위젯 추출 v.2
             ],

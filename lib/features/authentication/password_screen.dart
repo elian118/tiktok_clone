@@ -4,7 +4,7 @@ import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/authentication/birthday_screen.dart';
 import 'package:tiktok_clone/features/authentication/widgets/form_button.dart';
-import 'package:tiktok_clone/utils/focusout.dart';
+import 'package:tiktok_clone/utils/utils.dart';
 
 class PasswordScreen extends StatefulWidget {
   const PasswordScreen({Key? key}) : super(key: key);
@@ -55,16 +55,6 @@ class _PasswordScreenState extends State<PasswordScreen> {
     setState(() {});
   }
 
-  // 키보드 완료(done) 탭 콜백
-  void _onSubmit() {
-    if (!_isPasswordValid()) return;
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => const BirthdayScreen(),
-      ),
-    );
-  }
-
   // 비밀번호 초기화
   void _onClearTap() {
     _passwordController.clear();
@@ -74,7 +64,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
   Widget build(BuildContext context) {
     // PasswordScreen 전체를 GestureDetector 로 감싸 텍스트인풋 포커스 아웃 적용
     return GestureDetector(
-      onTap: () => focusout(context),
+      onTap: () => Utils.focusout(context),
       child: Scaffold(
         appBar: AppBar(
           elevation: 0,
@@ -101,7 +91,9 @@ class _PasswordScreenState extends State<PasswordScreen> {
                 keyboardType: TextInputType.emailAddress, // 이메일 형식 키보드 선택
                 obscureText: _obscureText, // 입력 텍스트 감춤(비밀번호)
                 autocorrect: false, // 키보드 상단 자동완성 기능 제거
-                onEditingComplete: _onSubmit, // 완료(done) 키 클릭 시, 실행할 콜백 설정
+                // 완료(done) 키 클릭 시, 실행할 콜백 설정
+                onEditingComplete: () =>
+                    Utils.scrMoveTo(context, const BirthdayScreen()),
                 // 포커스 상태 밑줄 색상을 바꾸려면 enabledBorder, focusedBorder 두 속성을 모두 설정해야 한다.
                 decoration: InputDecoration(
                   // suffixIcon => 플러터 기본 아이콘만 허용, 기본 스타일 이미 존재
@@ -182,7 +174,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
               // FormButton(password: _password) // 위젯 추출 v.1
               // 위젯 추출 v.2
               GestureDetector(
-                onTap: _onSubmit,
+                onTap: () => Utils.scrMoveTo(context, const BirthdayScreen()),
                 child: FormButton(disabled: !_isPasswordValid()),
               ),
             ],

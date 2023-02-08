@@ -14,10 +14,12 @@ class FormButton extends StatelessWidget {
   // 위젯 추출 v.2처럼 조건식으로 변수 인라인화 시, 위 코드를 아래와 같이 바꿀 수 있다.
   const FormButton({
     super.key,
-    required this.disabled, //  _username -> disabled
+    required this.disabled,
+    this.text = '', // optional field with default value
   });
 
   final bool disabled; // 런타임 상수(final)는 빌드타임 상수(const) 보다 늦게 선언돼도 상관 없다.
+  final String text;
 
   @override
   Widget build(BuildContext context) {
@@ -42,8 +44,8 @@ class FormButton extends StatelessWidget {
                 : Colors.white,
             fontWeight: FontWeight.w600,
           ),
-          child: const Text(
-            'Next',
+          child: Text(
+            text.isNotEmpty ? text : 'Next',
             textAlign: TextAlign.center,
           ),
         ),

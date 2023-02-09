@@ -1,0 +1,1 @@
+여기 패키지 내 스크린 위젯들은 main.dart -> MaterialApp -> home 속성을 바꿔가며 확인 바람

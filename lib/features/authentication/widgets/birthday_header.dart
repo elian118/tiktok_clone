@@ -36,14 +36,10 @@ class BirthdayHeader extends StatelessWidget {
         ),
         Flexible(
           flex: 1,
-          child: FittedBox(
-            alignment: Alignment.centerRight,
-            fit: BoxFit.fitHeight,
-            child: Image.asset(
-              'assets/images/cake_img.png',
-            ),
+          child: Image.asset(
+            'assets/images/cake_img.png',
           ),
-        )
+        ),
       ],
     );
   }

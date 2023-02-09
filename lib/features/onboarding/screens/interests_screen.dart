@@ -101,12 +101,12 @@ class _InterestsScreenState extends State<InterestsScreen> {
           ),
           // CupertinoButton 또는 TextButton 위젯 사용
           child: CupertinoButton(
-            onPressed: () => Utils.scrMoveTo(context, const TutorialScreen()),
+            onPressed: () => Utils.navPush(context, const TutorialScreen()),
             color: Theme.of(context).primaryColor,
             child: const Text('Next'),
           ),
           // child: GestureDetector(
-          //   onTap: () => Utils.scrMoveTo(context, const TutorialScreen()),
+          //   onTap: () => Utils.navPush(context, const TutorialScreen()),
           //   child: Container(
           //     padding: const EdgeInsets.symmetric(vertical: Sizes.size20),
           //     decoration: BoxDecoration(

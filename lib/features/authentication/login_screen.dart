@@ -9,10 +9,6 @@ import 'package:tiktok_clone/utils/utils.dart';
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
-  void onSignUpTab(BuildContext context) {
-    Navigator.of(context).pop(); // 네비게이터 배열에서 사용자가 현재 보고 있는 화면 제거 -> '뒤로 가기'
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,7 +36,7 @@ class LoginScreen extends StatelessWidget {
               ),
               Gaps.v40,
               GestureDetector(
-                onTap: () => Utils.scrMoveTo(context, const LoginFormScreen()),
+                onTap: () => Utils.navPush(context, const LoginFormScreen()),
                 child: const AuthButton(
                   // font_awesome_flutter 패키지 설치 이후 사용 가능
                   icon: FaIcon(FontAwesomeIcons.user),
@@ -72,7 +68,7 @@ class LoginScreen extends StatelessWidget {
               const Text("Don't have an account?"),
               Gaps.h5,
               GestureDetector(
-                onTap: () => onSignUpTab(context),
+                onTap: () => Utils.navPop(context),
                 child: Text(
                   'Sign up',
                   style: TextStyle(

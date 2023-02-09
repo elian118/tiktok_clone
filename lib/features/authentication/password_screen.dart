@@ -93,7 +93,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
                 autocorrect: false, // 키보드 상단 자동완성 기능 제거
                 // 완료(done) 키 클릭 시, 실행할 콜백 설정
                 onEditingComplete: () =>
-                    Utils.scrMoveTo(context, const BirthdayScreen()),
+                    Utils.navPush(context, const BirthdayScreen()),
                 // 포커스 상태 밑줄 색상을 바꾸려면 enabledBorder, focusedBorder 두 속성을 모두 설정해야 한다.
                 decoration: InputDecoration(
                   // suffixIcon => 플러터 기본 아이콘만 허용, 기본 스타일 이미 존재
@@ -174,7 +174,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
               // FormButton(password: _password) // 위젯 추출 v.1
               // 위젯 추출 v.2
               GestureDetector(
-                onTap: () => Utils.scrMoveTo(context, const BirthdayScreen()),
+                onTap: () => Utils.navPush(context, const BirthdayScreen()),
                 child: FormButton(disabled: !_isPasswordValid()),
               ),
             ],

@@ -1,33 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tiktok_clone/constants/rawData/screens.dart';
 
-class MainNavigationScreen extends StatefulWidget {
-  const MainNavigationScreen({Key? key}) : super(key: key);
+// 매터리얼 디자인 2를 따르는 하단 BottomNavigationBar 위젯 적용 예제
+class M2MainNavigationScreen extends StatefulWidget {
+  const M2MainNavigationScreen({Key? key}) : super(key: key);
 
   @override
-  State<MainNavigationScreen> createState() => _MainNavigationScreenState();
+  State<M2MainNavigationScreen> createState() => _M2MainNavigationScreenState();
 }
 
-class _MainNavigationScreenState extends State<MainNavigationScreen> {
+class _M2MainNavigationScreenState extends State<M2MainNavigationScreen> {
   int _selectedIndex = 0;
-
-  final screens = [
-    const Center(
-      child: Text('Home'),
-    ),
-    const Center(
-      child: Text('Search'),
-    ),
-    const Center(
-      child: Text('Search'),
-    ),
-    const Center(
-      child: Text('Search'),
-    ),
-    const Center(
-      child: Text('Search'),
-    ),
-  ];
 
   void _onTap(int index) {
     setState(() {
@@ -50,32 +34,32 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
         items: const [
           BottomNavigationBarItem(
             icon: FaIcon(FontAwesomeIcons.house),
-            label: 'home',
+            label: 'Home',
             tooltip: 'go home',
             backgroundColor: Colors.amber,
           ),
           BottomNavigationBarItem(
             icon: FaIcon(FontAwesomeIcons.magnifyingGlass),
-            label: 'search',
+            label: 'Search',
             tooltip: 'searching for something',
             backgroundColor: Colors.blue,
           ),
           BottomNavigationBarItem(
             icon: FaIcon(FontAwesomeIcons.house),
-            label: 'home',
-            tooltip: 'go home',
+            label: 'Item1',
+            tooltip: 'what is it?',
             backgroundColor: Colors.pink,
           ),
           BottomNavigationBarItem(
             icon: FaIcon(FontAwesomeIcons.magnifyingGlass),
-            label: 'search',
-            tooltip: 'searching for something',
+            label: 'Item2',
+            tooltip: 'what is it?',
             backgroundColor: Colors.teal,
           ),
           BottomNavigationBarItem(
             icon: FaIcon(FontAwesomeIcons.magnifyingGlass),
-            label: 'search',
-            tooltip: 'searching for something',
+            label: 'Item3',
+            tooltip: 'what is it?',
             backgroundColor: Colors.cyan,
           ),
         ],

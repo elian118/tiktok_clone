@@ -32,7 +32,11 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
         print(formData);
         // print(formData.keys);
         // print(formData.values);
-        Utils.navPush(context, const InterestsScreen());
+        Utils.navPushAndRemoveUntil(
+          context,
+          const InterestsScreen(),
+          (route) => false,
+        );
       }
     }
   }

@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:tiktok_clone/constants/enums/direction.dart';
 import 'package:tiktok_clone/constants/enums/showing_page.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/features/main_navigation/main_navigation_screen.dart';
 import 'package:tiktok_clone/features/onboarding/widgets/tutorial.dart';
+import 'package:tiktok_clone/utils/utils.dart';
 
 class TutorialScreen extends StatefulWidget {
   const TutorialScreen({Key? key}) : super(key: key);
@@ -73,7 +75,8 @@ class _TutorialScreenState extends State<TutorialScreen> {
               opacity: _showingPage == ShowingPage.first ? 0 : 1,
               duration: const Duration(milliseconds: 300),
               child: CupertinoButton(
-                onPressed: () {},
+                onPressed: () => Utils.navPushAndRemoveUntil(
+                    context, const MainNavigationScreen()),
                 color: Theme.of(context).primaryColor,
                 child: const Text('Enter the app!'),
               ),

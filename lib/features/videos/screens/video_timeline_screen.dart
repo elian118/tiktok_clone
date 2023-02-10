@@ -8,6 +8,8 @@ class VideoTimelineScreen extends StatefulWidget {
 }
 
 class _VideoTimelineScreenState extends State<VideoTimelineScreen> {
+  final PageController _pageController = PageController();
+
   List<Color> colors = [
     Colors.blue,
     Colors.red,
@@ -16,6 +18,11 @@ class _VideoTimelineScreenState extends State<VideoTimelineScreen> {
   ];
 
   void _onPageChange(int page) {
+    _pageController.animateToPage(
+      page,
+      duration: const Duration(milliseconds: 100),
+      curve: Curves.linear,
+    );
     if (page == colors.length - 1) {
       colors.addAll([...colors]);
       setState(() {});
@@ -29,6 +36,7 @@ class _VideoTimelineScreenState extends State<VideoTimelineScreen> {
     // 2) PageView.builder() -> 화면에 보여질 일부 'itemBuilder: (context, index) => 요소'만 실시간 빌드
     // -> 성능 최적화
     return PageView.builder(
+      controller: _pageController,
       scrollDirection: Axis.vertical,
       onPageChanged: _onPageChange,
       itemCount: colors.length,

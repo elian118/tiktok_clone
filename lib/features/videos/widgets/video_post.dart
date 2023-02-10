@@ -24,11 +24,14 @@ class _VideoPostState extends State<VideoPost> {
     }
   }
 
-  // 비디오 컨트롤러는 기기 성능에 따라, 시간소요 편차 존재 -> 비동기로 초기화
+  // 비디오플레이어 초기설정 - 컨트롤러 초기화 포함
   void _initVideoPlayer() async {
+    // 비디오 컨트롤러는 기기 성능에 따라, 준비시간소요 편차 존재 -> 비동기로 초기화
     await _videoPlayerController.initialize();
-    _videoPlayerController.play();
-    setState(() {});
+    // 아래 코드들은 초기 설정에 불과하므로, 비디오 컨트롤러 초기화 여부와 무관하게 동기 처리 가능
+    _videoPlayerController.play(); // 화면 띄움과 동시에 동영상 자동 재생 설정
+    setState(() {}); // state 저장
+    // 동영상 컨트롤러 상황을 주시하는 콜백 실행 설정
     _videoPlayerController.addListener(_onVideoChange);
   }
 

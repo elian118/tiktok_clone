@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 
+// MainNavigationScreen > 네비게이션 선택 시, 바디에 빌드될 위젯 샘플
+// > body: Stack(children: [ ...Offstage( child: StfScreen() ] )
 class StfScreen extends StatefulWidget {
   const StfScreen({Key? key}) : super(key: key);
 

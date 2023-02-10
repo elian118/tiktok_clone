@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tiktok_clone/features/videos/widgets/video_post.dart';
 
 class VideoTimelineScreen extends StatefulWidget {
   const VideoTimelineScreen({Key? key}) : super(key: key);
@@ -10,23 +11,34 @@ class VideoTimelineScreen extends StatefulWidget {
 class _VideoTimelineScreenState extends State<VideoTimelineScreen> {
   final PageController _pageController = PageController();
 
-  List<Color> colors = [
-    Colors.blue,
-    Colors.red,
-    Colors.amber,
-    Colors.teal,
-  ];
+  final _scrollDuration = const Duration(milliseconds: 250);
+  final _scrollCurve = Curves.linear;
+  int _itemCount = 4;
 
   void _onPageChange(int page) {
     _pageController.animateToPage(
       page,
-      duration: const Duration(milliseconds: 100),
-      curve: Curves.linear,
+      duration: _scrollDuration,
+      curve: _scrollCurve,
     );
-    if (page == colors.length - 1) {
-      colors.addAll([...colors]);
+    if (page == _itemCount - 1) {
+      _itemCount = _itemCount + 4;
       setState(() {});
     }
+  }
+
+  void _onVideoFinished() {
+    _pageController.nextPage(
+      duration: _scrollDuration,
+      curve: _scrollCurve,
+    );
+  }
+
+  // 모든 stateful widget 내 컨트롤러는 작업 후 반드시 위젯에서 제거 -> 누락 시, 시뮬레이터에서 에러 발생
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
   }
 
   @override
@@ -39,16 +51,10 @@ class _VideoTimelineScreenState extends State<VideoTimelineScreen> {
       controller: _pageController,
       scrollDirection: Axis.vertical,
       onPageChanged: _onPageChange,
-      itemCount: colors.length,
+      itemCount: _itemCount,
       // pageSnapping: false, // 페이지 자동 끌어당김 효과 해제
-      itemBuilder: (context, index) => Container(
-        color: colors[index],
-        child: Center(
-          child: Text(
-            'Screen $index',
-            style: const TextStyle(fontSize: 68),
-          ),
-        ),
+      itemBuilder: (context, index) => VideoPost(
+        onVideoFinished: _onVideoFinished,
       ),
     );
   }

@@ -9,12 +9,14 @@ class NavTab extends StatelessWidget {
     required this.isSelected,
     required this.icon,
     required this.onTap,
+    this.selectedIcon,
   });
 
   final String text;
   final bool isSelected;
   final IconData icon;
   final VoidCallback onTap;
+  final IconData? selectedIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +32,7 @@ class NavTab extends StatelessWidget {
               mainAxisSize: MainAxisSize.min, // 자식위젯이 차지하는 만큼을 최대 높이로 지정
               children: [
                 FaIcon(
-                  icon,
+                  isSelected && selectedIcon != null ? selectedIcon : icon,
                   color: Colors.white,
                 ),
                 Gaps.v5,

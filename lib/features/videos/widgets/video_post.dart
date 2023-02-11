@@ -16,7 +16,15 @@ class VideoPost extends StatefulWidget {
   State<VideoPost> createState() => _VideoPostState();
 }
 
-// 애니메이션 컨트롤러 적용 시 SingleTickerProviderStateMixin 믹싱
+/*
+애니메이션 컨트롤러 적용 시 SingleTickerProviderStateMixin 믹싱 -> 티커모드 적용
+-> 단일티커상태제공자믹신은 티커모드에서 연속적으로 생성될 후보 애니메이션 프레임들을 각각의 tick 으로 변환해
+    AnimationController -> vsync: this 형태로 제공한다.
+-> 여기서 티커는 SingleTickerProviderStateMixin 안에 Ticker? _ticker 필드로 입력되는 매개변수 값이다.
+-> 티커 모드에서는 _animationController.value 와 vsync 에 제공한 티커가
+    현재 위젯 트리에서 일치할 때에만 화면에 보여주고 나머지 불일치 티커는 화면에서 감춘다.
+    -> 에니메이션은 이런 원리로 연출되며, 놀라울 정도로 성능이 최적화돼 있다.
+*/
 class _VideoPostState extends State<VideoPost>
     with SingleTickerProviderStateMixin {
   final VideoPlayerController _videoPlayerController =

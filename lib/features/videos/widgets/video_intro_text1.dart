@@ -2,8 +2,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 
-class VideoIntroductionText extends StatelessWidget {
-  const VideoIntroductionText({
+class VideoIntroText1 extends StatelessWidget {
+  const VideoIntroText1({
     super.key,
     required bool isSeeMore,
     required String descText,

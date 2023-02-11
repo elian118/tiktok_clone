@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
-import 'package:tiktok_clone/features/videos/widgets/video_instruction_text.dart';
+import 'package:tiktok_clone/features/videos/widgets/video_intro_text2.dart';
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
@@ -36,8 +36,14 @@ class _VideoPostState extends State<VideoPost>
 
   bool _isPause = false;
   bool _isSeeMore = false;
-  final String _descText =
-      'Watching wild flowers in the fields under the clouds. Where is this place?';
+  final String _descText = 'Watching wild flowers';
+  final List<String> _tags = [
+    '#googleearth',
+    '#googlemaps',
+    '#flowers',
+    '#cloudy',
+    '#garden'
+  ];
   final Duration _animationDuration = const Duration(milliseconds: 200);
 
   // 비디오플레이어 초기설정 - 컨트롤러 초기화 포함
@@ -211,10 +217,15 @@ class _VideoPostState extends State<VideoPost>
                     ),
                   ),
                   Gaps.v10,
-                  VideoIntroductionText(
-                      isSeeMore: _isSeeMore,
-                      descText: _descText,
-                      tapRecognizer: _tapRecognizer),
+                  VideoIntroText2(
+                    descText: _descText,
+                    mainTextBold: FontWeight.normal,
+                  ),
+                  Gaps.v10,
+                  VideoIntroText2(
+                    descText: _tags.join(', '),
+                    mainTextBold: FontWeight.w600,
+                  )
                 ],
               ),
             ),

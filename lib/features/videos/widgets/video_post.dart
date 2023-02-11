@@ -1,6 +1,9 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/features/videos/widgets/video_instruction_text.dart';
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
@@ -27,19 +30,24 @@ class VideoPost extends StatefulWidget {
 */
 class _VideoPostState extends State<VideoPost>
     with SingleTickerProviderStateMixin {
-  final VideoPlayerController _videoPlayerController =
-      VideoPlayerController.asset('assets/videos/flowers_149958.mp4');
+  late final VideoPlayerController _videoPlayerController;
+  late final AnimationController _animationController;
+  late TapGestureRecognizer _tapRecognizer;
 
   bool _isPause = false;
-
+  bool _isSeeMore = false;
+  final String _descText =
+      'Watching wild flowers in the fields under the clouds. Where is this place?';
   final Duration _animationDuration = const Duration(milliseconds: 200);
-
-  late final AnimationController _animationController;
 
   // 비디오플레이어 초기설정 - 컨트롤러 초기화 포함
   void _initVideoPlayer() async {
+    _videoPlayerController =
+        VideoPlayerController.asset('assets/videos/flowers_149958.mp4');
     // 비디오 컨트롤러는 기기 성능에 따라, 준비시간소요 편차 존재 -> 비동기로 초기화
-    await _videoPlayerController.initialize();
+    await _videoPlayerController.initialize(); // Future<void> -> await
+    // 반복 재생 설정 -> 영상 전환 없이 현재 영상에서 테스트할 게 있는 경우 활성화(영상 고정)
+    await _videoPlayerController.setLooping(true);
 
     // 아래 코드들은 초기 설정에 불과하므로, 비디오 컨트롤러 초기화 여부와 무관하게 동기 처리 가능
 
@@ -49,10 +57,9 @@ class _VideoPostState extends State<VideoPost>
     //    스크롤 도중 이전 영상과 다음 영상이 동시 재생되는 현상 발생
     //    (시뮬레이터 드래그로 두 영상 위젯 모두 화면에 걸쳐보면 보임)
     // -> 화면이 완전히 넘어간 이후 재생하려면 VisibilityDetector() => onVisibilityChanged(info) {...}
-
-    setState(() {}); // state 저장
     // 동영상 컨트롤러 상황을 주시하는 콜백 실행 설정
     _videoPlayerController.addListener(_onVideoChange);
+    setState(() {}); // state 저장
   }
 
   void _onVideoChange() {
@@ -99,6 +106,11 @@ class _VideoPostState extends State<VideoPost>
       value: 1.5, // 기본값(초기값)
       duration: _animationDuration,
     );
+    _tapRecognizer = TapGestureRecognizer()
+      ..onTap = () => setState(() {
+            _isSeeMore = !_isSeeMore;
+          });
+
     /*
     아래 코드는 AnimatedBuilder 위젯으로 대체할 수 있다.
 
@@ -132,6 +144,7 @@ class _VideoPostState extends State<VideoPost>
   void dispose() {
     _videoPlayerController.dispose();
     _animationController.dispose();
+    _tapRecognizer.dispose();
     super.dispose();
   }
 
@@ -178,6 +191,31 @@ class _VideoPostState extends State<VideoPost>
                     ),
                   ),
                 ),
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 20,
+            left: 10,
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width - 20,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    '@광회',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: Sizes.size20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Gaps.v10,
+                  VideoIntroductionText(
+                      isSeeMore: _isSeeMore,
+                      descText: _descText,
+                      tapRecognizer: _tapRecognizer),
+                ],
               ),
             ),
           ),

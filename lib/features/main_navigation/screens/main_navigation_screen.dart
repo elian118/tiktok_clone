@@ -46,6 +46,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: _selectedIndex == 0 ? Colors.black : Colors.white,
       // 네비게이션 선택(_selectedIndex 변경)에 따른 body 랜더링은 개발 목적에 따라, 아래 둘 중 하나 선택
       // 1) 새로 빌드하고 기존 위젯은 제거하는 방식 -> 기존 위젯 state 초기화
       //    body: screens.elementAt(_selectedIndex), // screens[_selectedIndex],

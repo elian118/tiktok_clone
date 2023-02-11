@@ -28,10 +28,15 @@ class _VideoTimelineScreenState extends State<VideoTimelineScreen> {
   }
 
   void _onVideoFinished() {
-    return;
     _pageController.nextPage(
       duration: _scrollDuration,
       curve: _scrollCurve,
+    );
+  }
+
+  Future<void> _onRefresh() {
+    return Future.delayed(
+      const Duration(seconds: 5),
     );
   }
 
@@ -48,15 +53,22 @@ class _VideoTimelineScreenState extends State<VideoTimelineScreen> {
     // 1) PageView() -> 모든 'children: [...요소]'를 한 번에 빌드 -> 시스템 부담 큼
     // 2) PageView.builder() -> 화면에 보여질 일부 'itemBuilder: (context, index) => 요소'만 실시간 빌드
     // -> 성능 최적화
-    return PageView.builder(
-      controller: _pageController,
-      scrollDirection: Axis.vertical,
-      onPageChanged: _onPageChange,
-      itemCount: _itemCount,
-      // pageSnapping: false, // 페이지 자동 끌어당김 효과 해제
-      itemBuilder: (context, index) => VideoPost(
-        onVideoFinished: _onVideoFinished,
-        index: index,
+    return RefreshIndicator(
+      edgeOffset: 20, // 최초 등장 위치(0: 맨 위)
+      displacement: 50, // 최초 등장 위치로부터 거리 -> 드래그로 넓힌 거리가 상하 50 이상이면 흰 바탕 없어짐
+      color: Theme.of(context).primaryColor,
+      // strokeWidth: 5, // 인디케이터 두께
+      onRefresh: _onRefresh,
+      child: PageView.builder(
+        controller: _pageController,
+        scrollDirection: Axis.vertical,
+        onPageChanged: _onPageChange,
+        itemCount: _itemCount,
+        // pageSnapping: false, // 페이지 자동 끌어당김 효과 해제
+        itemBuilder: (context, index) => VideoPost(
+          onVideoFinished: _onVideoFinished,
+          index: index,
+        ),
       ),
     );
   }

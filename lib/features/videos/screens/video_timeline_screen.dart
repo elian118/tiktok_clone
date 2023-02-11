@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tiktok_clone/constants/rawData/videos.dart';
 import 'package:tiktok_clone/features/videos/widgets/video_post.dart';
 
 class VideoTimelineScreen extends StatefulWidget {
@@ -13,7 +14,7 @@ class _VideoTimelineScreenState extends State<VideoTimelineScreen> {
 
   final _scrollDuration = const Duration(milliseconds: 250);
   final _scrollCurve = Curves.linear;
-  int _itemCount = 4;
+  List<String> _videos = [...videos];
 
   void _onPageChange(int page) {
     _pageController.animateToPage(
@@ -21,8 +22,8 @@ class _VideoTimelineScreenState extends State<VideoTimelineScreen> {
       duration: _scrollDuration,
       curve: _scrollCurve,
     );
-    if (page == _itemCount - 1) {
-      _itemCount = _itemCount + 4;
+    if (page == _videos.length - 1) {
+      _videos = [..._videos, ...videos];
       setState(() {});
     }
   }
@@ -63,10 +64,11 @@ class _VideoTimelineScreenState extends State<VideoTimelineScreen> {
         controller: _pageController,
         scrollDirection: Axis.vertical,
         onPageChanged: _onPageChange,
-        itemCount: _itemCount,
+        itemCount: _videos.length,
         // pageSnapping: false, // 페이지 자동 끌어당김 효과 해제
         itemBuilder: (context, index) => VideoPost(
           onVideoFinished: _onVideoFinished,
+          video: _videos[index],
           index: index,
         ),
       ),

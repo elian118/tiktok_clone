@@ -10,10 +10,14 @@ import 'package:visibility_detector/visibility_detector.dart';
 
 class VideoPost extends StatefulWidget {
   final int index;
+  final String video;
   final VoidCallback onVideoFinished;
 
   const VideoPost(
-      {Key? key, required this.onVideoFinished, required this.index})
+      {Key? key,
+      required this.onVideoFinished,
+      required this.index,
+      required this.video})
       : super(key: key);
 
   @override
@@ -48,8 +52,7 @@ class _VideoPostState extends State<VideoPost>
 
   // 비디오플레이어 초기설정 - 컨트롤러 초기화 포함
   void _initVideoPlayer() async {
-    _videoPlayerController =
-        VideoPlayerController.asset('assets/videos/flowers_149958.mp4');
+    _videoPlayerController = VideoPlayerController.asset(widget.video);
     // 비디오 컨트롤러는 기기 성능에 따라, 준비시간소요 편차 존재 -> 비동기로 초기화
     await _videoPlayerController.initialize(); // Future<void> -> await
     // 반복 재생 설정 -> 영상 전환 없이 현재 영상에서 테스트할 게 있는 경우 활성화(영상 고정)
@@ -81,7 +84,9 @@ class _VideoPostState extends State<VideoPost>
   void _onVisibilityChanged(VisibilityInfo info) {
     // VisibilityInfo.visibleFraction * 100 -> 위젯이 기기 화면에 얼마만큼 보이는 가를 백분율로 반환
     // print('Video: ${widget.index} is ${info.visibleFraction * 100}% visible.');
-    if (info.visibleFraction == 1 && !_videoPlayerController.value.isPlaying) {
+    if (info.visibleFraction == 1 &&
+        !_isPause &&
+        !_videoPlayerController.value.isPlaying) {
       _videoPlayerController.play(); // 조건식 -> 위젯이 기기 화면에 모두 보여야 재생 시작
     }
   }
@@ -100,6 +105,8 @@ class _VideoPostState extends State<VideoPost>
       _isPause = !_isPause;
     });
   }
+
+  void _onCommentsTap() {}
 
   @override
   void initState() {
@@ -230,8 +237,8 @@ class _VideoPostState extends State<VideoPost>
             bottom: 20,
             right: 10,
             child: Column(
-              children: const [
-                CircleAvatar(
+              children: [
+                const CircleAvatar(
                   radius: 25,
                   backgroundColor: Colors.black,
                   foregroundColor: Colors.white,
@@ -241,22 +248,25 @@ class _VideoPostState extends State<VideoPost>
                   child: Text('광회'),
                 ),
                 Gaps.v24,
-                VideoButton(
+                const VideoButton(
                   icon: FontAwesomeIcons.solidHeart,
                   text: '2.9M',
                 ),
                 Gaps.v24,
-                VideoButton(
-                  icon: FontAwesomeIcons.solidComment,
-                  text: '33.0K',
+                GestureDetector(
+                  onTap: _onCommentsTap,
+                  child: const VideoButton(
+                    icon: FontAwesomeIcons.solidComment,
+                    text: '33.0K',
+                  ),
                 ),
                 Gaps.v24,
-                VideoButton(
+                const VideoButton(
                   icon: FontAwesomeIcons.share,
                   text: 'Share',
                 ),
                 Gaps.v38,
-                CircleAvatar(
+                const CircleAvatar(
                   radius: 25,
                   backgroundColor: Colors.black,
                   foregroundColor: Colors.white,

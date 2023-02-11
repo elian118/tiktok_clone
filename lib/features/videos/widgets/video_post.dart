@@ -1,8 +1,8 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/features/videos/widgets/video_bgm_info.dart';
 import 'package:tiktok_clone/features/videos/widgets/video_intro_text2.dart';
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
@@ -32,10 +32,8 @@ class _VideoPostState extends State<VideoPost>
     with SingleTickerProviderStateMixin {
   late final VideoPlayerController _videoPlayerController;
   late final AnimationController _animationController;
-  late TapGestureRecognizer _tapRecognizer;
 
   bool _isPause = false;
-  bool _isSeeMore = false;
   final String _descText = 'Watching wild flowers';
   final List<String> _tags = [
     '#googleearth',
@@ -44,6 +42,7 @@ class _VideoPostState extends State<VideoPost>
     '#cloudy',
     '#garden'
   ];
+  final String _bgmInfo = 'Various Artists - (TikTokTunes) original sour';
   final Duration _animationDuration = const Duration(milliseconds: 200);
 
   // 비디오플레이어 초기설정 - 컨트롤러 초기화 포함
@@ -112,11 +111,6 @@ class _VideoPostState extends State<VideoPost>
       value: 1.5, // 기본값(초기값)
       duration: _animationDuration,
     );
-    _tapRecognizer = TapGestureRecognizer()
-      ..onTap = () => setState(() {
-            _isSeeMore = !_isSeeMore;
-          });
-
     /*
     아래 코드는 AnimatedBuilder 위젯으로 대체할 수 있다.
 
@@ -150,7 +144,6 @@ class _VideoPostState extends State<VideoPost>
   void dispose() {
     _videoPlayerController.dispose();
     _animationController.dispose();
-    _tapRecognizer.dispose();
     super.dispose();
   }
 
@@ -225,7 +218,9 @@ class _VideoPostState extends State<VideoPost>
                   VideoIntroText2(
                     descText: _tags.join(', '),
                     mainTextBold: FontWeight.w600,
-                  )
+                  ),
+                  Gaps.v10,
+                  VideoBgmInfo(bgmInfo: _bgmInfo),
                 ],
               ),
             ),

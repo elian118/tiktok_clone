@@ -20,8 +20,8 @@ class VideoIntroText2 extends StatelessWidget {
       trimLines: 1,
       trimMode: TrimMode.Line,
       colorClickableText: Colors.white,
-      trimCollapsedText: 'See More...',
-      trimExpandedText: '  Briefly..',
+      trimCollapsedText: 'See More',
+      trimExpandedText: '  Briefly',
       style: TextStyle(
         color: Colors.white,
         fontSize: Sizes.size16,
@@ -30,12 +30,12 @@ class VideoIntroText2 extends StatelessWidget {
       moreStyle: const TextStyle(
         color: Colors.white,
         fontSize: Sizes.size18,
-        fontWeight: FontWeight.bold,
+        fontWeight: FontWeight.w600,
       ),
       lessStyle: const TextStyle(
         color: Colors.white,
         fontSize: Sizes.size18,
-        fontWeight: FontWeight.bold,
+        fontWeight: FontWeight.w600,
       ),
     );
   }

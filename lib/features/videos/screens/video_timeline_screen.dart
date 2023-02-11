@@ -55,6 +55,7 @@ class _VideoTimelineScreenState extends State<VideoTimelineScreen> {
       // pageSnapping: false, // 페이지 자동 끌어당김 효과 해제
       itemBuilder: (context, index) => VideoPost(
         onVideoFinished: _onVideoFinished,
+        index: index,
       ),
     );
   }

@@ -91,11 +91,32 @@ class _VideoPostState extends State<VideoPost>
       value: 1.5, // 기본값(초기값)
       duration: _animationDuration,
     );
+    /*
+    아래 코드는 AnimatedBuilder 위젯으로 대체할 수 있다.
+
     _animationController.addListener(() {
       print(_animationController.value); // 값 변경 확인
       //_animationController.value 변경될 때마다 state 변경 -> 강제 리빌드 유도 -> 애니메이션 연출
       setState(() {});
     });
+
+    효과: AnimatedBuilder 에 animation 컨트롤러만 지정하면
+      래핑된 부분만 연속 리빌드를 유발해 애니메이션 효과 간편 적용 가능
+
+      AnimatedBuilder(
+        animation: _animationController, // .addListener(() {...})를 적용할 애니메이션 컨트롤러 주입
+        builder: (BuildContext context, Widget? child) {
+          return Transform.scale(
+            scale: _animationController.value,
+            child: child, // AnimatedOpacity(...)
+          );
+        },
+      )
+
+    참고: 접미사 Builder 붙는 모든 빌더 위젯은 대부분
+      리빌드(리랜더링)를 유도하는 initState(), dispose()가 기본로직이 설정된 스테이트풀 위젯이다.
+      빌더 위젯들은 일반적으로 builder 속성에 각 위젯 목적에 맞는 리빌드 콜백을 지정하도록 돼 있다.
+    */
   }
 
   // 모든 stateful widget 내 컨트롤러는 작업 후 반드시 위젯에서 제거 -> 누락 시, 시뮬레이터에서 에러 발생
@@ -106,7 +127,8 @@ class _VideoPostState extends State<VideoPost>
     super.dispose();
   }
 
-  // build 메서드는 state 변경(setState(() {}) 마다 재실행되며 화면을 다시 그린다.
+  // build 메서드는 state 변경(setState(() {})마다 재실행되며 화면을 다시 그린다.
+  // 즉, setState(() {})가 부드럽게 변화하는 값을 반영해 연속 실행될 경우, 애니메이션 효과 발생
   @override
   Widget build(BuildContext context) {
     return VisibilityDetector(
@@ -130,8 +152,14 @@ class _VideoPostState extends State<VideoPost>
             // 아이콘이 자체 내장한 클릭 이벤트 무시 -> 형제 위젯의 GestureDetector 만 인식
             child: IgnorePointer(
               child: Center(
-                child: Transform.scale(
-                  scale: _animationController.value,
+                child: AnimatedBuilder(
+                  animation: _animationController,
+                  builder: (BuildContext context, Widget? child) {
+                    return Transform.scale(
+                      scale: _animationController.value,
+                      child: child, // AnimatedOpacity(...)
+                    );
+                  },
                   child: AnimatedOpacity(
                     opacity: _isPause ? 1 : 0,
                     duration: _animationDuration,

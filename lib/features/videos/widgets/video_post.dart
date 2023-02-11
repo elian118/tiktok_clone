@@ -16,11 +16,17 @@ class VideoPost extends StatefulWidget {
   State<VideoPost> createState() => _VideoPostState();
 }
 
-class _VideoPostState extends State<VideoPost> {
+// 애니메이션 컨트롤러 적용 시 SingleTickerProviderStateMixin 믹싱
+class _VideoPostState extends State<VideoPost>
+    with SingleTickerProviderStateMixin {
   final VideoPlayerController _videoPlayerController =
       VideoPlayerController.asset('assets/videos/flowers_149958.mp4');
 
-  bool _isPlay = true;
+  bool _isPause = false;
+
+  final Duration _animationDuration = const Duration(milliseconds: 200);
+
+  late final AnimationController _animationController;
 
   // 비디오플레이어 초기설정 - 컨트롤러 초기화 포함
   void _initVideoPlayer() async {
@@ -55,16 +61,22 @@ class _VideoPostState extends State<VideoPost> {
     // VisibilityInfo.visibleFraction * 100 -> 위젯이 기기 화면에 얼마만큼 보이는 가를 백분율로 반환
     // print('Video: ${widget.index} is ${info.visibleFraction * 100}% visible.');
     if (info.visibleFraction == 1 && !_videoPlayerController.value.isPlaying) {
-      _videoPlayerController.play(); // 조건식 -> 모든 위젯이 기기 화면에 비쳐야 재생 시작
+      _videoPlayerController.play(); // 조건식 -> 위젯이 기기 화면에 모두 보여야 재생 시작
     }
   }
 
   void _onTogglePause() {
-    _videoPlayerController.value.isPlaying
-        ? _videoPlayerController.pause()
-        : _videoPlayerController.play();
+    if (_videoPlayerController.value.isPlaying) {
+      _videoPlayerController.pause();
+      // 애니메이션 반대로 돌림
+      _animationController.reverse(); // _animationController.value: 1.5 -> 1.0
+    } else {
+      _videoPlayerController.play();
+      // 애니메이션 앞으로 돌림
+      _animationController.forward(); // _animationController.value: 1.0 -> 1.5
+    }
     setState(() {
-      _isPlay = !_isPlay;
+      _isPause = !_isPause;
     });
   }
 
@@ -72,15 +84,29 @@ class _VideoPostState extends State<VideoPost> {
   void initState() {
     super.initState();
     _initVideoPlayer();
+    _animationController = AnimationController(
+      vsync: this, // this: SingleTickerProviderStateMixin 스테이트 인스턴스
+      lowerBound: 1.0, // 최소값
+      upperBound: 1.5, // 최대값
+      value: 1.5, // 기본값(초기값)
+      duration: _animationDuration,
+    );
+    _animationController.addListener(() {
+      print(_animationController.value); // 값 변경 확인
+      //_animationController.value 변경될 때마다 state 변경 -> 강제 리빌드 유도 -> 애니메이션 연출
+      setState(() {});
+    });
   }
 
   // 모든 stateful widget 내 컨트롤러는 작업 후 반드시 위젯에서 제거 -> 누락 시, 시뮬레이터에서 에러 발생
   @override
   void dispose() {
     _videoPlayerController.dispose();
+    _animationController.dispose();
     super.dispose();
   }
 
+  // build 메서드는 state 변경(setState(() {}) 마다 재실행되며 화면을 다시 그린다.
   @override
   Widget build(BuildContext context) {
     return VisibilityDetector(
@@ -104,10 +130,17 @@ class _VideoPostState extends State<VideoPost> {
             // 아이콘이 자체 내장한 클릭 이벤트 무시 -> 형제 위젯의 GestureDetector 만 인식
             child: IgnorePointer(
               child: Center(
-                child: FaIcon(
-                  _isPlay ? null : FontAwesomeIcons.play,
-                  color: Colors.white,
-                  size: Sizes.size52,
+                child: Transform.scale(
+                  scale: _animationController.value,
+                  child: AnimatedOpacity(
+                    opacity: _isPause ? 1 : 0,
+                    duration: _animationDuration,
+                    child: const FaIcon(
+                      FontAwesomeIcons.play,
+                      color: Colors.white,
+                      size: Sizes.size52,
+                    ),
+                  ),
                 ),
               ),
             ),

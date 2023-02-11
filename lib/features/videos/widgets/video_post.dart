@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
+import 'package:tiktok_clone/constants/rawData/video_data.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/videos/widgets/video_bgm_info.dart';
 import 'package:tiktok_clone/features/videos/widgets/video_button.dart';
@@ -39,15 +40,9 @@ class _VideoPostState extends State<VideoPost>
   late final AnimationController _animationController;
 
   bool _isPause = false;
-  final String _descText = 'Watching wild flowers';
-  final List<String> _tags = [
-    '#googleearth',
-    '#googlemaps',
-    '#flowers',
-    '#cloudy',
-    '#garden'
-  ];
-  final String _bgmInfo = 'Various Artists - (TikTokTunes) original sour';
+  final String _descText = descText;
+  final List<String> _tags = tags;
+  final String _bgmInfo = bgmInfo;
   final Duration _animationDuration = const Duration(milliseconds: 200);
 
   // 비디오플레이어 초기설정 - 컨트롤러 초기화 포함

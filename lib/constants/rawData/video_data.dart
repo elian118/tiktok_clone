@@ -1,4 +1,4 @@
-final List<String> videos = [
+const List<String> videos = [
   'assets/videos/car_149451.mp4',
   'assets/videos/car_149463.mp4',
   'assets/videos/car_149465.mp4',
@@ -14,3 +14,15 @@ final List<String> videos = [
   'assets/videos/trees_149596.mp4',
   'assets/videos/waterLily_149530.mp4',
 ];
+
+const String descText = 'Watching wild flowers';
+
+const List<String> tags = [
+  '#googleearth',
+  '#googlemaps',
+  '#flowers',
+  '#cloudy',
+  '#garden'
+];
+
+const String bgmInfo = 'Various Artists - (TikTokTunes) original sour';

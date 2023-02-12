@@ -15,6 +15,8 @@ class VideoComments extends StatefulWidget {
 class _VideoCommentsState extends State<VideoComments> {
   bool _isWriting = false;
 
+  final ScrollController _scrollController = ScrollController();
+
   void _onClosePressed() {
     Utils.navPop(context);
   }
@@ -63,60 +65,66 @@ class _VideoCommentsState extends State<VideoComments> {
           onTap: _onStopWriting,
           child: Stack(
             children: [
-              ListView.separated(
-                padding: const EdgeInsets.symmetric(
-                  vertical: Sizes.size8,
-                  horizontal: Sizes.size16,
-                ),
-                separatorBuilder: (context, index) => Gaps.v20,
-                itemCount: 10,
-                itemBuilder: (context, index) => Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const CircleAvatar(
-                      radius: 18,
-                      foregroundColor: Colors.white,
-                      foregroundImage: NetworkImage(foregroundImage),
-                      child: Text('광회'),
-                    ),
-                    Gaps.h10,
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            '광회',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: Sizes.size14,
-                              color: Colors.grey.shade500,
-                            ),
-                          ),
-                          Gaps.v3,
-                          const Text(
-                            "That's not it l've seen the same thing but also in a cave. That's not it l've seen the same thing but also in a cave. That's not it l've seen the same thing but also in a cave",
-                          ),
-                        ],
+              Scrollbar(
+                controller: _scrollController,
+                child: ListView.separated(
+                  controller: _scrollController,
+                  padding: const EdgeInsets.only(
+                    top: Sizes.size10,
+                    bottom: Sizes.size96 + Sizes.size20,
+                    left: Sizes.size16,
+                    right: Sizes.size16,
+                  ),
+                  separatorBuilder: (context, index) => Gaps.v20,
+                  itemCount: 10,
+                  itemBuilder: (context, index) => Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const CircleAvatar(
+                        radius: 18,
+                        foregroundColor: Colors.white,
+                        foregroundImage: NetworkImage(foregroundImage),
+                        child: Text('광회'),
                       ),
-                    ),
-                    Gaps.h10,
-                    Column(
-                      children: [
-                        FaIcon(
-                          FontAwesomeIcons.heart,
-                          size: Sizes.size20,
-                          color: Colors.grey.shade500,
+                      Gaps.h10,
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '광회',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: Sizes.size14,
+                                color: Colors.grey.shade500,
+                              ),
+                            ),
+                            Gaps.v3,
+                            const Text(
+                              "That's not it l've seen the same thing but also in a cave. That's not it l've seen the same thing but also in a cave. That's not it l've seen the same thing but also in a cave",
+                            ),
+                          ],
                         ),
-                        Gaps.v2,
-                        Text(
-                          '52.2K',
-                          style: TextStyle(
+                      ),
+                      Gaps.h10,
+                      Column(
+                        children: [
+                          FaIcon(
+                            FontAwesomeIcons.heart,
+                            size: Sizes.size20,
                             color: Colors.grey.shade500,
                           ),
-                        )
-                      ],
-                    )
-                  ],
+                          Gaps.v2,
+                          Text(
+                            '52.2K',
+                            style: TextStyle(
+                              color: Colors.grey.shade500,
+                            ),
+                          )
+                        ],
+                      )
+                    ],
+                  ),
                 ),
               ),
               // Positioned + ListView.separated 함께 사용하면 -> 키보드 인터페이스와 혼용 가능

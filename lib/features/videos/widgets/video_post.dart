@@ -5,6 +5,7 @@ import 'package:tiktok_clone/constants/rawData/video_data.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/videos/widgets/video_bgm_info.dart';
 import 'package:tiktok_clone/features/videos/widgets/video_button.dart';
+import 'package:tiktok_clone/features/videos/widgets/video_comments.dart';
 import 'package:tiktok_clone/features/videos/widgets/video_intro_text2.dart';
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
@@ -101,7 +102,19 @@ class _VideoPostState extends State<VideoPost>
     });
   }
 
-  void _onCommentsTap() {}
+  void _onCommentsTap(BuildContext context) async {
+    if (_videoPlayerController.value.isPlaying) {
+      _onTogglePause(); // 코멘트 아이콘 탭 -> 영상 일시 정지
+    }
+    // 초간단 바닥모달시트 생성
+    await showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (context) => const VideoComments(),
+    );
+    // 모달을 닫는 행위 => showModalBottomSheet() 종료
+    _onTogglePause(); // 모달 닫기와 동시에 영상 재생
+  }
 
   @override
   void initState() {
@@ -249,7 +262,7 @@ class _VideoPostState extends State<VideoPost>
                 ),
                 Gaps.v24,
                 GestureDetector(
-                  onTap: _onCommentsTap,
+                  onTap: () => _onCommentsTap(context),
                   child: const VideoButton(
                     icon: FontAwesomeIcons.solidComment,
                     text: '33.0K',

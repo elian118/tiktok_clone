@@ -5,11 +5,13 @@ import 'package:tiktok_clone/constants/sizes.dart';
 class PostVideoButton extends StatefulWidget {
   final bool isVideoButtonHovered;
   final VoidCallback onHover;
+  final bool inverted;
 
   const PostVideoButton({
     super.key,
     required this.isVideoButtonHovered,
     required this.onHover,
+    required this.inverted,
   });
 
   @override
@@ -81,7 +83,7 @@ class _PostVideoButtonState extends State<PostVideoButton> {
               height: heightAni(),
               padding: const EdgeInsets.symmetric(horizontal: Sizes.size12),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: !widget.inverted ? Colors.white : Colors.black,
                 borderRadius: BorderRadius.circular(sizeAni()),
               ),
               child: Center(
@@ -92,7 +94,7 @@ class _PostVideoButtonState extends State<PostVideoButton> {
                     widget.isVideoButtonHovered
                         ? FontAwesomeIcons.camera
                         : FontAwesomeIcons.plus,
-                    color: Colors.black,
+                    color: widget.inverted ? Colors.white : Colors.black,
                     size: sizeAni(Sizes.size18),
                   ),
                 ),

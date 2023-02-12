@@ -110,6 +110,7 @@ class _VideoPostState extends State<VideoPost>
     // 초간단 바닥모달시트 생성
     await showModalBottomSheet(
       context: context,
+      isScrollControlled: true, // 허용 시, 바닥모달시트 기본높이 한계치(50%)가 플림 -> 자식 높이에 좌우됨
       backgroundColor: Colors.transparent,
       builder: (context) => const VideoComments(),
     );

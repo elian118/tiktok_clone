@@ -53,7 +53,7 @@ class _VideoPostState extends State<VideoPost>
     // 비디오 컨트롤러는 기기 성능에 따라, 준비시간소요 편차 존재 -> 비동기로 초기화
     await _videoPlayerController.initialize(); // Future<void> -> await
     // 반복 재생 설정 -> 영상 전환 없이 현재 영상에서 테스트할 게 있는 경우 활성화(영상 고정)
-    await _videoPlayerController.setLooping(true);
+    // await _videoPlayerController.setLooping(true);
 
     // 아래 코드들은 초기 설정에 불과하므로, 비디오 컨트롤러 초기화 여부와 무관하게 동기 처리 가능
 

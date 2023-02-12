@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
+import 'package:tiktok_clone/constants/rawData/foreground_image.dart';
 import 'package:tiktok_clone/constants/rawData/video_data.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/videos/widgets/video_bgm_info.dart';
@@ -250,9 +251,7 @@ class _VideoPostState extends State<VideoPost>
                   radius: 25,
                   backgroundColor: Colors.black,
                   foregroundColor: Colors.white,
-                  foregroundImage: NetworkImage(
-                    "https://avatars.githubusercontent.com/u/73107356?v=4",
-                  ),
+                  foregroundImage: NetworkImage(foregroundImage),
                   child: Text('광회'),
                 ),
                 Gaps.v24,

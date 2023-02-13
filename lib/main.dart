@@ -19,6 +19,8 @@ class TickTokApp extends StatelessWidget {
         primaryColor: const Color(0xFFE9435A), // 주 컬러
         focusColor: Colors.pink, // 포커스 컬러
         disabledColor: Colors.grey.shade200, // 비활성 컬러
+        // splashColor: Colors.transparent, // 탭할 때 번짐 컬러 제거 -> 현재 버전에선 차이 없음
+        // highlightColor: Colors.transparent, // 길게 탭할 때 번짐 컬러 제거 -> 현재 버전에선 차이 없음
         textSelectionTheme: const TextSelectionThemeData(
           cursorColor: Color(0xFFE9435A),
         ),

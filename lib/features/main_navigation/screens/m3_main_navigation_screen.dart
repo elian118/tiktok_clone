@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:tiktok_clone/constants/rawData/screens.dart';
+import 'package:tiktok_clone/common/constants/rawData/screens.dart';
 
 // 매터리얼 디자인 3를 따르는 하단 NavigationBar 위젯 적용 예제
 class M3MainNavigationScreen extends StatefulWidget {

@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/common/constants/sizes.dart';
 
 class Gaps {
   // Vertical Gaps(수직 갭)

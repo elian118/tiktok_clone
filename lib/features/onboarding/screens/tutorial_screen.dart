@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:tiktok_clone/constants/enums/direction.dart';
-import 'package:tiktok_clone/constants/enums/showing_page.dart';
-import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/common/constants/enums/direction.dart';
+import 'package:tiktok_clone/common/constants/enums/showing_page.dart';
+import 'package:tiktok_clone/common/constants/sizes.dart';
 import 'package:tiktok_clone/features/onboarding/widgets/tutorial.dart';
 import 'package:tiktok_clone/utils/utils.dart';
 

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:tiktok_clone/constants/gaps.dart';
-import 'package:tiktok_clone/constants/rawData/foreground_image.dart';
-import 'package:tiktok_clone/constants/rawData/video_data.dart';
-import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/common/constants/gaps.dart';
+import 'package:tiktok_clone/common/constants/rawData/video_data.dart';
+import 'package:tiktok_clone/common/constants/sizes.dart';
+import 'package:tiktok_clone/common/constants/rawData/foreground_image.dart';
 import 'package:tiktok_clone/features/videos/widgets/video_bgm_info.dart';
 import 'package:tiktok_clone/features/videos/widgets/video_button.dart';
 import 'package:tiktok_clone/features/videos/widgets/video_comments.dart';

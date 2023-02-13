@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/common/constants/sizes.dart';
 import 'package:tiktok_clone/features/inbox/screens/chat_detail_screen.dart';
 import 'package:tiktok_clone/utils/utils.dart';
 
@@ -56,14 +56,14 @@ class _ChatScreenState extends State<ChatScreen> {
         radius: 30,
         foregroundImage: NetworkImage(
             'https://avatars.githubusercontent.com/u/11626327?v=4'),
-        child: Text('함담보이'),
+        child: Text('Hamdamboy'),
       ),
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Text(
-            'Crystal $index',
+            'xxxxmmm967 $index',
             style: const TextStyle(fontWeight: FontWeight.w500),
           ),
           Text(

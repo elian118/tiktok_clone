@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:marquee_text/marquee_text.dart';
-import 'package:tiktok_clone/constants/gaps.dart';
-import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/common/constants/gaps.dart';
+import 'package:tiktok_clone/common/constants/sizes.dart';
 
 class VideoBgmInfo extends StatelessWidget {
   const VideoBgmInfo({

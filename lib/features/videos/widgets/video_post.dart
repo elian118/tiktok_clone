@@ -33,7 +33,7 @@ class VideoPost extends StatefulWidget {
     AnimationController -> vsync: this 형태로 제공한다.
 -> 여기서 티커는 SingleTickerProviderStateMixin 안에 Ticker? _ticker 필드로 입력되는 매개변수 값이다.
 -> 티커 모드에서는 _animationController.value 와 vsync 에 제공한 티커가
-    현재 위젯 트리에서 일치할 때에만 화면에 보여주고 나머지 불일치 티커는 화면에서 감춘다.
+    현재 위젯 트리에서 싱크가 일치할 때에만 화면에 호출하고 나머지 불일치 티커는 화면에서 제거한다.
     -> 에니메이션은 이런 원리로 연출되며, 놀라울 정도로 성능이 최적화돼 있다.
 */
 class _VideoPostState extends State<VideoPost>

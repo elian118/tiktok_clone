@@ -21,7 +21,7 @@ class _ActivityScreenState extends State<ActivityScreen>
   );
 
   // Tween -> 애니메이션 컨트롤러에 이벤트리스너를 추가해 값을 수정하거나,
-  //          애니메이션 빌더를 사용할 필요 없이 간단하고 직관적인 보간값 적용
+  //          애니메이션 빌더를 사용할 필요 없이 간단하고 직관적인 보간값을 적용하는 선형(linear) 애니메이션
   //          -> 애니메이션에 적용(별도 보간 state 불필요)
   late final Animation<double> _arrowAnimation =
       Tween(begin: 0.0, end: 0.5).animate(_animationController);
@@ -46,9 +46,9 @@ class _ActivityScreenState extends State<ActivityScreen>
     // -> onDismissed 설정 없이 Dismissible 만 적용했을 때 뜬 플러터 에러가 해소된다.
   }
 
-  // 비동기 함수화 -> _showBarrier 투명도 변화 애니메이션 적용
-  // 동기 함수로 놔둘 경우, setState()가 애니메이션 처리 이후 실행(애니메이션 시간 모두 종료된 시점)되므로
-  //  배리어 등장 과정이 단순 깜빡임으로 보임
+  // 부분 비동기 함수화 -> _showBarrier 투명도 변화 애니메이션 적용
+  // 전부 동기처리로 놔둘 경우, setState()가 애니메이션 처리 이후 실행(애니메이션 시간 모두 종료된 시점)되므로
+  //  배리어 등장 과정만 단순 깜빡임으로 보임
   //  -> 애니메이션 시간을 15초로 설정해두고 테스트해볼 것
   void _toggleAnimations() async {
     _animationController.isCompleted
@@ -185,7 +185,7 @@ class _ActivityScreenState extends State<ActivityScreen>
             ],
           ),
           // ListView 보다 뒤에 위치해야 배리어 효과 적용 가능
-          if (_showBarrier)
+          if (_showBarrier) // 배리어 제거 -> ListView 포인터 인식 가능
             AnimatedModalBarrier(
               color: _barrierAnimation,
               dismissible: true, // 영역 클릭 시 사라짐 옵션 허용 -> onDismiss 와 연계해야 이벤트 작동

@@ -13,9 +13,11 @@ class ActivityScreen extends StatefulWidget {
 
 class _ActivityScreenState extends State<ActivityScreen>
     with SingleTickerProviderStateMixin {
+  bool _showBarrier = false;
+
   late final AnimationController _animationController = AnimationController(
     vsync: this,
-    duration: const Duration(milliseconds: 200),
+    duration: const Duration(milliseconds: 400),
   );
 
   // Tween -> 애니메이션 컨트롤러에 이벤트리스너를 추가해 값을 수정하거나,
@@ -33,16 +35,31 @@ class _ActivityScreenState extends State<ActivityScreen>
     end: Offset.zero, // end: const Offset(0.0, 0.0),
   ).animate(_animationController);
 
+  late final Animation<Color?> _barrierAnimation = ColorTween(
+    begin: Colors.transparent,
+    end: Colors.black.withOpacity(0.5),
+  ).animate(_animationController);
+
   void _onDismissed(String notification) {
     notifications.remove(notification);
     setState(() {}); // 위젯 트리에 dismiss 반영
     // -> onDismissed 설정 없이 Dismissible 만 적용했을 때 뜬 플러터 에러가 해소된다.
   }
 
-  void _onTitleTab() {
+  // 비동기 함수화 -> _showBarrier 투명도 변화 애니메이션 적용
+  // 동기 함수로 놔둘 경우, setState()가 애니메이션 처리 이후 실행(애니메이션 시간 모두 종료된 시점)되므로
+  //  배리어 등장 과정이 단순 깜빡임으로 보임
+  //  -> 애니메이션 시간을 15초로 설정해두고 테스트해볼 것
+  void _toggleAnimations() async {
     _animationController.isCompleted
-        ? _animationController.reverse()
-        : _animationController.forward();
+        ? await _animationController.reverse() // 0.5 -> 0.0 // 비동기
+        : _animationController.forward(); // 0.0 -> 0.5 // 동기
+
+    // 배리어 등장은 애니메이션과 동기 실행(_animationController.forward() 기다렸다 실행),
+    // 배리어 제거는 비동기 실행(_animationController.reverse() 기다리지 않고 실행)
+    setState(() {
+      _showBarrier = !_showBarrier;
+    });
   }
 
   @override
@@ -51,7 +68,7 @@ class _ActivityScreenState extends State<ActivityScreen>
     return Scaffold(
       appBar: AppBar(
         title: GestureDetector(
-          onTap: _onTitleTab,
+          onTap: _toggleAnimations,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -167,6 +184,13 @@ class _ActivityScreenState extends State<ActivityScreen>
                 ),
             ],
           ),
+          // ListView 보다 뒤에 위치해야 배리어 효과 적용 가능
+          if (_showBarrier)
+            AnimatedModalBarrier(
+              color: _barrierAnimation,
+              dismissible: true, // 영역 클릭 시 사라짐 옵션 허용 -> onDismiss 와 연계해야 이벤트 작동
+              onDismiss: _toggleAnimations, // 사라질 때 실행할 콜백
+            ),
           SlideTransition(
             position: _panelAnimation,
             child: Container(
@@ -204,7 +228,7 @@ class _ActivityScreenState extends State<ActivityScreen>
                 ],
               ),
             ),
-          )
+          ),
         ],
       ),
     );

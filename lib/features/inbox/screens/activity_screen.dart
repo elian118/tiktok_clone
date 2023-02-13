@@ -70,6 +70,7 @@ class _ActivityScreenState extends State<ActivityScreen>
         title: GestureDetector(
           onTap: _toggleAnimations,
           child: Row(
+            mainAxisSize: MainAxisSize.min, // 제목 가운데 정렬을 위해 너비를 자식 위젯에 맞춘다.
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text('All activity'),

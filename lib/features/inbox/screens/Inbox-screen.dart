@@ -2,16 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/inbox/screens/activity_screen.dart';
+import 'package:tiktok_clone/features/inbox/screens/chat_screen.dart';
 import 'package:tiktok_clone/utils/utils.dart';
 
 class InboxScreen extends StatelessWidget {
   const InboxScreen({Key? key}) : super(key: key);
-
-  void _onDmPressed() {}
-
-  // void _onActivityTap(BuildContext context) {
-  //   Utils.navPush(context, const ActivityScreen());
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +17,7 @@ class InboxScreen extends StatelessWidget {
         actions: [
           IconButton(
             icon: const FaIcon(FontAwesomeIcons.paperPlane),
-            onPressed: _onDmPressed,
+            onPressed: () => Utils.navPush(context, const ChatScreen()),
           ),
         ],
       ),

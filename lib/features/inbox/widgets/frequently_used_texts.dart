@@ -13,53 +13,55 @@ class FrequentlyUsedTexts extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: MediaQuery.of(context).size.width - 30,
-      child: Wrap(
-        spacing: Sizes.size10,
-        runSpacing: Sizes.size15,
-        children: [
-          const AutoCompleteForm(
-            content: Text(
-              '❤️❤️❤️',
-              style: TextStyle(
-                fontSize: Sizes.size20,
-              ),
-            ),
-          ),
-          const AutoCompleteForm(
-            content: Text(
-              '😂😂😂',
-              style: TextStyle(
-                fontSize: Sizes.size20,
-              ),
-            ),
-          ),
-          const AutoCompleteForm(
-            content: Text(
-              '👍👍👍',
-              style: TextStyle(
-                fontSize: Sizes.size20,
-              ),
-            ),
-          ),
-          AutoCompleteForm(
-            content: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                FaIcon(
-                  FontAwesomeIcons.googlePlay,
-                  size: Sizes.size16,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const AutoCompleteForm(
+              content: Text(
+                '❤️❤️❤️',
+                style: TextStyle(
+                  fontSize: Sizes.size20,
                 ),
-                Gaps.h5,
-                Text(
-                  'Share post',
-                  style: TextStyle(
-                    fontSize: Sizes.size14,
+              ),
+            ),
+            const AutoCompleteForm(
+              content: Text(
+                '😂😂😂',
+                style: TextStyle(
+                  fontSize: Sizes.size20,
+                ),
+              ),
+            ),
+            const AutoCompleteForm(
+              content: Text(
+                '👍👍👍',
+                style: TextStyle(
+                  fontSize: Sizes.size20,
+                ),
+              ),
+            ),
+            AutoCompleteForm(
+              content: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  FaIcon(
+                    FontAwesomeIcons.googlePlay,
+                    size: Sizes.size16,
                   ),
-                ),
-              ],
+                  Gaps.h5,
+                  Text(
+                    'Share post',
+                    style: TextStyle(
+                      fontSize: Sizes.size14,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

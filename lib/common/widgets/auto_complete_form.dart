@@ -11,21 +11,24 @@ class AutoCompleteForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FittedBox(
-      alignment: Alignment.center,
-      child: Container(
-        height: Sizes.size32,
-        padding: const EdgeInsets.symmetric(
-          horizontal: Sizes.size14,
-        ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: Sizes.size4),
+      child: FittedBox(
         alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: Colors.grey.shade300,
-          borderRadius: BorderRadius.circular(
-            Sizes.size16,
+        child: Container(
+          height: Sizes.size32,
+          padding: const EdgeInsets.symmetric(
+            horizontal: Sizes.size14,
           ),
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: Colors.grey.shade300,
+            borderRadius: BorderRadius.circular(
+              Sizes.size16,
+            ),
+          ),
+          child: content,
         ),
-        child: content,
       ),
     );
   }

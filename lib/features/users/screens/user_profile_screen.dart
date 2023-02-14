@@ -14,9 +14,10 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     return CustomScrollView(
       slivers: [
         SliverAppBar(
-          // title: const Text('Hello'),
-          floating: true, // 유동화: 스크롤 아래로 내리다 위로 다시 스크롤 하면 appBar 뜨도록 허용
-          stretch: true, // 잡아 끌어 늘리기 허용
+          // title: const Text('Hello'), // FlexibleSpaceBar > background 설정 시 미사용 권장
+          floating: true, // 유동화: 스크롤 내리는 도중 다시 스크롤 올리면 appBar 100% 다시 띄우도록 허용
+          snap: true, // floating 애니메이션이 부드럽지 않고 스냅을 때리듯 획획 재생되도록 설정
+          stretch: true, // 앱바를 본래 높이보다 일시적 잡아 끌어 늘리기 허용
           pinned: true, // SliverAppBar 사이즈가 줄어도 타이틀 위젯 남기기(고정)
           backgroundColor: Colors.teal,
           elevation: 1,
@@ -31,6 +32,17 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             background: Image.asset(discoveredImages[0], fit: BoxFit.cover),
             title: const Text('Hello'), // 제목을 여기에 위치해 두면 애니메이션 적용됨
           ),
+        ),
+        SliverFixedExtentList(
+          delegate: SliverChildBuilderDelegate(
+            childCount: 50,
+            (context, index) => Container(
+              color: Colors.amber[100 * (index % 9)],
+              child: Align(
+                  alignment: Alignment.center, child: Text('Item $index')),
+            ),
+          ),
+          itemExtent: 100, // 요소 높이
         ),
       ],
     );

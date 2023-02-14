@@ -7,6 +7,7 @@ import 'package:tiktok_clone/features/discover/screens/discover_screen.dart';
 import 'package:tiktok_clone/features/inbox/screens/Inbox-screen.dart';
 import 'package:tiktok_clone/features/main_navigation/widgets/nav_tab.dart';
 import 'package:tiktok_clone/features/main_navigation/widgets/post_video_button.dart';
+import 'package:tiktok_clone/features/users/screens/user_profile_screen.dart';
 import 'package:tiktok_clone/features/videos/screens/video_timeline_screen.dart';
 import 'package:tiktok_clone/utils/utils.dart';
 
@@ -18,7 +19,7 @@ class MainNavigationScreen extends StatefulWidget {
 }
 
 class _MainNavigationScreenState extends State<MainNavigationScreen> {
-  int _selectedIndex = 3;
+  int _selectedIndex = 4;
   bool _isVideoButtonHovered = false;
 
   void _onLongPressUp() {
@@ -74,7 +75,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
           ),
           Offstage(
             offstage: _selectedIndex != 4,
-            child: Container(),
+            child: const UserProfileScreen(),
           ),
         ],
       ),

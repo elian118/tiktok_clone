@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/common/constants/gaps.dart';
@@ -13,6 +15,9 @@ class UserProfileScreen extends StatefulWidget {
 }
 
 class _UserProfileScreenState extends State<UserProfileScreen> {
+  List<String> views = [];
+  int viewItemCounts = 20;
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -250,7 +255,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 // 스크롤 동안 키보드 감추기
                 keyboardDismissBehavior:
                     ScrollViewKeyboardDismissBehavior.onDrag,
-                itemCount: 20,
+                itemCount: viewItemCounts,
                 padding: EdgeInsets.zero,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3,
@@ -258,46 +263,52 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   mainAxisSpacing: Sizes.size2,
                   childAspectRatio: 9 / 14, // 그리드 비율
                 ),
-                itemBuilder: (context, index) => Column(
-                  children: [
-                    AspectRatio(
-                      aspectRatio: 9 / 14,
-                      child: Stack(
-                        fit: StackFit.expand,
-                        children: [
-                          FadeInImage.assetNetwork(
-                            fit: BoxFit.cover,
-                            placeholder: 'assets/images/windmill-7367963.jpg',
-                            image:
-                                "https://cdn.pixabay.com/photo/2023/01/24/13/23/viet-nam-7741017_960_720.jpg",
-                          ),
-                          Positioned(
-                            left: Sizes.size8,
-                            bottom: Sizes.size4,
-                            child: Row(
-                              children: const [
-                                FaIcon(
-                                  FontAwesomeIcons.circlePlay,
-                                  size: Sizes.size14,
-                                  color: Colors.white,
-                                ),
-                                Gaps.h5,
-                                Text(
-                                  '4.1M',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: Sizes.size14,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ],
+                itemBuilder: (context, index) {
+                  double calView = Random().nextDouble() * 1000;
+                  views.add(
+                      '${calView.toStringAsFixed(1)}${calView > 10 ? 'K' : 'M'}');
+
+                  return Column(
+                    children: [
+                      AspectRatio(
+                        aspectRatio: 9 / 14,
+                        child: Stack(
+                          fit: StackFit.expand,
+                          children: [
+                            FadeInImage.assetNetwork(
+                              fit: BoxFit.cover,
+                              placeholder: 'assets/images/windmill-7367963.jpg',
+                              image:
+                                  "https://cdn.pixabay.com/photo/2023/01/24/13/23/viet-nam-7741017_960_720.jpg",
                             ),
-                          ),
-                        ],
+                            Positioned(
+                              left: Sizes.size8,
+                              bottom: Sizes.size4,
+                              child: Row(
+                                children: [
+                                  const FaIcon(
+                                    FontAwesomeIcons.circlePlay,
+                                    size: Sizes.size14,
+                                    color: Colors.white,
+                                  ),
+                                  Gaps.h5,
+                                  Text(
+                                    views[index],
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: Sizes.size14,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
-                ),
+                    ],
+                  );
+                },
               ),
               const Center(child: Text('Page two')),
             ],

@@ -40,6 +40,7 @@ class DateTimePickerEx extends StatelessWidget {
         print(booking);
       },
       title: const Text("What is your birthday?"),
+      subtitle: const Text('I need to know!'),
     );
   }
 }

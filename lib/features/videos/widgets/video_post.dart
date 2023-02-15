@@ -79,6 +79,8 @@ class _VideoPostState extends State<VideoPost>
   }
 
   void _onVisibilityChanged(VisibilityInfo info) {
+    // State > mounted: 이(this) 스테이트가 현재 위젯 트리 안에 존재하는가?
+    if (!mounted) return; // 없으면 실행 중단
     // VisibilityInfo.visibleFraction * 100 -> 위젯이 기기 화면에 얼마만큼 보이는 가를 백분율로 반환
     // print('Video: ${widget.index} is ${info.visibleFraction * 100}% visible.');
     if (info.visibleFraction == 1 &&
@@ -92,7 +94,7 @@ class _VideoPostState extends State<VideoPost>
     }
   }
 
-  void _onTogglePause() async {
+  void _onTogglePause() {
     if (_videoPlayerController.value.isPlaying) {
       _videoPlayerController.pause();
       // 애니메이션 반대로 돌림

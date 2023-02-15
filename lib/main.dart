@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
-import 'package:tiktok_clone/features/authentication/screens/sign_up_screen.dart';
+import 'package:tiktok_clone/features/main_navigation/screens/main_navigation_screen.dart';
 
 void main() async {
   // runApp(app) 호출 전에 바인딩 초기화
@@ -53,7 +53,8 @@ class TickTokApp extends StatelessWidget {
               fontWeight: FontWeight.w600),
         ),
       ),
-      home: const SignUpScreen(),
+      home: const MainNavigationScreen(),
+      // home: const SignUpScreen(),
       // home: const ActivityScreen(),
       // home: const InterestsScreen(),
     );

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/common/constants/gaps.dart';
@@ -42,10 +43,17 @@ class _VideoPostState extends State<VideoPost>
   late final AnimationController _animationController;
 
   bool _isPause = false;
+  bool _isMute = false;
   final String _descText = descText;
   final List<String> _tags = tags;
   final String _bgmInfo = bgmInfo;
   final Duration _animationDuration = const Duration(milliseconds: 200);
+
+  void _toggleMute() async {
+    await _videoPlayerController.setVolume(_isMute ? 1 : 0);
+    _isMute = !_isMute;
+    setState(() {});
+  }
 
   // 비디오플레이어 초기설정 - 컨트롤러 초기화 포함
   void _initVideoPlayer() async {
@@ -54,6 +62,14 @@ class _VideoPostState extends State<VideoPost>
     await _videoPlayerController.initialize(); // Future<void> -> await
     // 반복 재생 설정 -> 영상 전환 없이 현재 영상에서 테스트할 게 있는 경우 활성화(영상 고정)
     // await _videoPlayerController.setLooping(true);
+
+    // 웹 브라우저에서 애플리케이션이 실행된 경우
+    if (kIsWeb) {
+      // 음소거 부수 효과: 웹에서 영상 자동재생을 차단하려는 기본 설정으로 인해 발생하는 예외를 회피할 수 있다.
+      await _videoPlayerController.setVolume(0); // 음소거 처리
+      _isMute = true;
+      setState(() {});
+    }
 
     // 아래 코드들은 초기 설정에 불과하므로, 비디오 컨트롤러 초기화 여부와 무관하게 동기 처리 가능
 
@@ -254,6 +270,16 @@ class _VideoPostState extends State<VideoPost>
             right: 10,
             child: Column(
               children: [
+                GestureDetector(
+                  onTap: _toggleMute,
+                  child: VideoButton(
+                    icon: _isMute
+                        ? FontAwesomeIcons.volumeXmark
+                        : FontAwesomeIcons.volumeHigh,
+                    text: _isMute ? 'Mute' : 'Sound',
+                  ),
+                ),
+                Gaps.v24,
                 const CircleAvatar(
                   radius: 25,
                   backgroundColor: Colors.black,

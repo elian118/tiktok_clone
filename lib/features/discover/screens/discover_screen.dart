@@ -73,12 +73,6 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
               onCloseIcon: _onCloseIcon,
             ),
           ),
-          // 쿠퍼티노텍스트필드
-          // title: CupertinoSearchTextField(
-          //   controller: _textEditingController,
-          //   onChanged: _onSearchChanged,
-          //   onSubmitted: _onSearchSubmitted,
-          // ),
           // PreferredSizeWidget bottom -> 자식의 크기를 제한하지 않는다. TabBar 가 대표적
           bottom: TabBar(
             onTap: (value) => Utils.focusout(context),

@@ -9,6 +9,7 @@ class CustomSearchButton extends StatelessWidget {
   final void Function(String)? onSearchSubmitted;
   final bool isThereSearchValue;
   final VoidCallback onCloseIcon;
+
   const CustomSearchButton({
     Key? key,
     required this.moveBack,

@@ -5,7 +5,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/common/constants/gaps.dart';
 import 'package:tiktok_clone/common/constants/rawData/foreground_image.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
+import 'package:tiktok_clone/features/settings/screens/setting_screen.dart';
 import 'package:tiktok_clone/features/users/widgets/persistent_tab_bar.dart';
+import 'package:tiktok_clone/utils/utils.dart';
 
 class UserProfileScreen extends StatefulWidget {
   const UserProfileScreen({Key? key}) : super(key: key);
@@ -31,7 +33,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               title: const Text('Profile'),
               actions: [
                 IconButton(
-                  onPressed: () => print('dd'),
+                  onPressed: () =>
+                      Utils.navPush(context, const SettingScreen()),
                   icon: const FaIcon(FontAwesomeIcons.gear),
                 ),
               ],

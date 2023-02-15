@@ -6,13 +6,13 @@ class CupertinoModalEx extends StatelessWidget {
   const CupertinoModalEx({
     super.key,
   });
-
-  // 쿠퍼티노 모달 vs 쿠퍼티노 다이얼로그
-  //  공통: 액션버튼 텍스트가 길어지면 좌우로 꽉참
-  //  차이
-  //    1. 쿠퍼티노 모달은 다른 영역을 눌렀을 때 창이 알아서 닫힘
-  //    2. 액션버튼 텍스트가 길어져 좌우로 꽉 찬 경우 -> 모달은 아래, 다이얼로그는 위로 배치됨
-
+  /*
+  쿠퍼티노 모달 vs 쿠퍼티노 다이얼로그
+   공통: 액션버튼 텍스트가 길어지면 좌우로 넓어짐
+   차이
+     1. 쿠퍼티노 모달은 다른 영역을 눌렀을 때 창이 알아서 닫힘
+     2. 액션버튼 텍스트가 길어져 좌우로 꽉 찬 경우 -> 모달은 아래, 다이얼로그는 위로 배치됨
+  */
   @override
   Widget build(BuildContext context) {
     return ListTile(

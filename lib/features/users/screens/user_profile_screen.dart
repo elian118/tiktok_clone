@@ -146,7 +146,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                     ),
                   ),
                   Gaps.v14,
-                  // 부모 대비 높이(heightFactor), 너비(widthFactor) 지정값을 갖는 박스
+                  // 부모 위젯 크기에 따른 상대적 사이즈를 지정할 수 있는 Box 위젯
+                  // 부모 대비 높이(heightFactor), 너비(widthFactor)
                   FractionallySizedBox(
                     widthFactor: 0.66,
                     child: Row(

@@ -2,13 +2,10 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/common/constants/gaps.dart';
+import 'package:tiktok_clone/common/constants/rawData/discovers.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
-import 'package:tiktok_clone/features/discover/screens/discover_screen.dart';
-import 'package:tiktok_clone/features/inbox/screens/Inbox-screen.dart';
 import 'package:tiktok_clone/features/main_navigation/widgets/nav_tab.dart';
 import 'package:tiktok_clone/features/main_navigation/widgets/post_video_button.dart';
-import 'package:tiktok_clone/features/users/screens/user_profile_screen.dart';
-import 'package:tiktok_clone/features/videos/screens/video_timeline_screen.dart';
 import 'package:tiktok_clone/utils/utils.dart';
 
 class MainNavigationScreen extends StatefulWidget {
@@ -19,7 +16,7 @@ class MainNavigationScreen extends StatefulWidget {
 }
 
 class _MainNavigationScreenState extends State<MainNavigationScreen> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 1;
   bool _isVideoButtonHovered = false;
 
   void _onLongPressUp() {
@@ -61,22 +58,11 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
       //    즉, 현재 스크롤 위치, 입력중이던 텍스트 등 유지 가능 -> 단, OffStage() 늘수록 메모리 부담 증가
       body: Stack(
         children: [
-          Offstage(
-            offstage: _selectedIndex != 0,
-            child: const VideoTimelineScreen(),
-          ),
-          Offstage(
-            offstage: _selectedIndex != 1,
-            child: const DiscoverScreen(),
-          ),
-          Offstage(
-            offstage: _selectedIndex != 3,
-            child: const InboxScreen(),
-          ),
-          Offstage(
-            offstage: _selectedIndex != 4,
-            child: const UserProfileScreen(),
-          ),
+          for (var offStage in offStages)
+            Offstage(
+              offstage: _selectedIndex != offStages.indexOf(offStage),
+              child: offStage,
+            )
         ],
       ),
       bottomNavigationBar: BottomAppBar(

@@ -128,7 +128,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
               ),
               Positioned(
                 bottom: 0,
-                width: MediaQuery.of(context).size.width,
+                width: Utils.getWinWidth(context),
                 child: BottomAppBar(
                   elevation: 0,
                   color: Colors.grey.shade100,

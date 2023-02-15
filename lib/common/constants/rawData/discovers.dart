@@ -1,3 +1,9 @@
+import 'package:flutter/material.dart';
+import 'package:tiktok_clone/features/discover/screens/discover_screen.dart';
+import 'package:tiktok_clone/features/inbox/screens/Inbox-screen.dart';
+import 'package:tiktok_clone/features/users/screens/user_profile_screen.dart';
+import 'package:tiktok_clone/features/videos/screens/video_timeline_screen.dart';
+
 final List<String> tabs = [
   'Top',
   'Users',
@@ -29,4 +35,12 @@ final List<String> discoveredImages = [
   'assets/images/white-faced-heron-7469267.jpg',
   'assets/images/windmill-7367963.jpg',
   'assets/images/winter-forest-7677111.jpg',
+];
+
+List<Widget> offStages = [
+  const VideoTimelineScreen(),
+  const DiscoverScreen(),
+  Container(),
+  const InboxScreen(),
+  const UserProfileScreen(),
 ];

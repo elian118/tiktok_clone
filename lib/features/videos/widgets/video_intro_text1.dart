@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
+import 'package:tiktok_clone/utils/utils.dart';
 
 class VideoIntroText1 extends StatelessWidget {
   const VideoIntroText1({
@@ -33,7 +34,7 @@ class VideoIntroText1 extends StatelessWidget {
               0,
               _isSeeMore
                   ? _descText.length
-                  : (MediaQuery.of(context).size.width * 0.75 / 9).ceil(),
+                  : (Utils.getWinWidth(context) * 0.75 / 9).ceil(),
             )}${_isSeeMore ? '' : '...'}',
             // 'Watching wild flowers',
           ),

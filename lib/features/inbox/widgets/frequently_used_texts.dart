@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/common/constants/gaps.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
 import 'package:tiktok_clone/common/widgets/auto_complete_form.dart';
+import 'package:tiktok_clone/utils/utils.dart';
 
 class FrequentlyUsedTexts extends StatelessWidget {
   const FrequentlyUsedTexts({
@@ -12,7 +13,7 @@ class FrequentlyUsedTexts extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: MediaQuery.of(context).size.width - 30,
+      width: Utils.getWinWidth(context) - 30,
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(

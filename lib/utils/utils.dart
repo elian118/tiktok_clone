@@ -41,4 +41,12 @@ class Utils {
   static void focusout(BuildContext context) {
     FocusScope.of(context).unfocus();
   }
+
+  // 스크린 너비값 가져오기
+  static double getWinWidth(BuildContext context) =>
+      MediaQuery.of(context).size.width;
+
+  // 스크린 높이값 가져오기
+  static double getWinHeight(BuildContext context) =>
+      MediaQuery.of(context).size.height;
 }

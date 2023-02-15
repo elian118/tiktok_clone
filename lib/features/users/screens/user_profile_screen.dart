@@ -138,24 +138,74 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                     ),
                   ),
                   Gaps.v14,
-                  // Flexible 위젯도 고려해볼 수 있다.
+                  // 부모 대비 높이(heightFactor), 너비(widthFactor) 지정값을 갖는 박스
                   FractionallySizedBox(
-                    widthFactor: 0.33, // 부모 너비 기준
-                    child: Container(
-                      padding:
-                          const EdgeInsets.symmetric(vertical: Sizes.size10),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).primaryColor,
-                        borderRadius: BorderRadius.circular(Sizes.size4),
-                      ),
-                      child: const Text(
-                        'Follow',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
+                    widthFactor: 0.66,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Flexible(
+                          fit: FlexFit.tight,
+                          flex: 4,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: Sizes.size14,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).primaryColor,
+                              borderRadius: BorderRadius.circular(Sizes.size4),
+                            ),
+                            child: const Text(
+                              'Follow',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
                         ),
-                        textAlign: TextAlign.center,
-                      ),
+                        Flexible(
+                          flex: 1,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: Sizes.size11,
+                              horizontal: Sizes.size9,
+                            ),
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Colors.grey.shade300,
+                              ),
+                              borderRadius: BorderRadius.circular(
+                                Sizes.size4,
+                              ),
+                            ),
+                            child: const FaIcon(
+                              FontAwesomeIcons.youtube,
+                              size: Sizes.size22,
+                            ),
+                          ),
+                        ),
+                        Flexible(
+                          flex: 1,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: Sizes.size16,
+                              vertical: Sizes.size14,
+                            ),
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Colors.grey.shade300,
+                              ),
+                              borderRadius: BorderRadius.circular(Sizes.size4),
+                            ),
+                            child: const FaIcon(
+                              FontAwesomeIcons.caretDown,
+                              size: Sizes.size16,
+                            ),
+                          ),
+                        )
+                      ],
                     ),
                   ),
                   Gaps.v14,
@@ -212,11 +262,38 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   children: [
                     AspectRatio(
                       aspectRatio: 9 / 14,
-                      child: FadeInImage.assetNetwork(
-                        fit: BoxFit.cover,
-                        placeholder: 'assets/images/windmill-7367963.jpg',
-                        image:
-                            "https://cdn.pixabay.com/photo/2023/01/24/13/23/viet-nam-7741017_960_720.jpg",
+                      child: Stack(
+                        fit: StackFit.expand,
+                        children: [
+                          FadeInImage.assetNetwork(
+                            fit: BoxFit.cover,
+                            placeholder: 'assets/images/windmill-7367963.jpg',
+                            image:
+                                "https://cdn.pixabay.com/photo/2023/01/24/13/23/viet-nam-7741017_960_720.jpg",
+                          ),
+                          Positioned(
+                            left: Sizes.size8,
+                            bottom: Sizes.size4,
+                            child: Row(
+                              children: const [
+                                FaIcon(
+                                  FontAwesomeIcons.circlePlay,
+                                  size: Sizes.size14,
+                                  color: Colors.white,
+                                ),
+                                Gaps.h5,
+                                Text(
+                                  '4.1M',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: Sizes.size14,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],

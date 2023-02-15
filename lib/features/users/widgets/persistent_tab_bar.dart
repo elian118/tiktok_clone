@@ -46,7 +46,7 @@ class PersistentTabBar extends SliverPersistentHeaderDelegate {
 
   SliverGeometry is not valid: The "layoutExtent" exceeds the "paintExtent".
 
-  The paintExtent is 47.0, but the layoutExtent is 200.0. // 이 부분
+  The paintExtent is 47.0, but the layoutExtent is 200.0.
   */
   @override
   double get maxExtent => 47;

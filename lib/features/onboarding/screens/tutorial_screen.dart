@@ -1,12 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tiktok_clone/common/constants/enums/breakpoints.dart';
 import 'package:tiktok_clone/common/constants/enums/direction.dart';
 import 'package:tiktok_clone/common/constants/enums/showing_page.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
+import 'package:tiktok_clone/features/main_navigation/screens/main_navigation_screen.dart';
 import 'package:tiktok_clone/features/onboarding/widgets/tutorial.dart';
 import 'package:tiktok_clone/utils/utils.dart';
-
-import '../../main_navigation/screens/m2_main_navigation_screen.dart';
 
 class TutorialScreen extends StatefulWidget {
   const TutorialScreen({Key? key}) : super(key: key);
@@ -31,16 +32,22 @@ class _TutorialScreenState extends State<TutorialScreen> {
   }
 
   void _onPanEnd(DragEndDetails details) {
-    setState(() {
-      _showingPage =
-          _direction == Direction.left ? ShowingPage.second : ShowingPage.first;
-    });
+    _showingPage =
+        _direction == Direction.left ? ShowingPage.second : ShowingPage.first;
+    setState(() {});
+  }
+
+  void _onPressArrow(Direction direction) {
+    _showingPage =
+        direction == Direction.left ? ShowingPage.second : ShowingPage.first;
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     // DefaultTabController -> TabBarView, TabPageSelector 컨트롤러 일괄 설정
     // return const TabBarEx();
+    final isWebScreen = MediaQuery.of(context).size.width > Breakpoint.lg;
     return GestureDetector(
       onPanUpdate: _onPanUpdate, // 드래그
       onPanEnd: _onPanEnd, // 드롭,
@@ -73,13 +80,44 @@ class _TutorialScreenState extends State<TutorialScreen> {
               horizontal: 24,
             ),
             child: AnimatedOpacity(
-              opacity: _showingPage == ShowingPage.first ? 0 : 1,
+              opacity:
+                  _showingPage == ShowingPage.first && !isWebScreen ? 0 : 1,
               duration: const Duration(milliseconds: 300),
-              child: CupertinoButton(
-                onPressed: () => Utils.navPushAndRemoveUntil(
-                    context, const M2MainNavigationScreen()),
-                color: Theme.of(context).primaryColor,
-                child: const Text('Enter the app!'),
+              child: Row(
+                mainAxisAlignment: isWebScreen
+                    ? MainAxisAlignment.spaceBetween
+                    : MainAxisAlignment.center,
+                children: [
+                  if (isWebScreen)
+                    AnimatedOpacity(
+                      opacity: _showingPage == ShowingPage.first ? 0 : 1,
+                      duration: const Duration(milliseconds: 300),
+                      child: IconButton(
+                        onPressed: () => _onPressArrow(Direction.right),
+                        icon: const FaIcon(FontAwesomeIcons.chevronLeft),
+                      ),
+                    ),
+                  CupertinoButton(
+                    onPressed: () =>
+                        _showingPage == ShowingPage.first && isWebScreen
+                            ? _onPressArrow(Direction.left)
+                            : Utils.navPushAndRemoveUntil(
+                                context, const MainNavigationScreen()),
+                    color: Theme.of(context).primaryColor,
+                    child: Text(_showingPage == ShowingPage.first && isWebScreen
+                        ? 'Next'
+                        : 'Enter the app!'),
+                  ),
+                  if (isWebScreen)
+                    AnimatedOpacity(
+                      opacity: _showingPage == ShowingPage.first ? 1 : 0,
+                      duration: const Duration(milliseconds: 300),
+                      child: IconButton(
+                        onPressed: () => _onPressArrow(Direction.left),
+                        icon: const FaIcon(FontAwesomeIcons.chevronRight),
+                      ),
+                    ),
+                ],
               ),
             ),
           ),

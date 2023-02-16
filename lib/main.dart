@@ -1,22 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
-import 'package:tiktok_clone/features/main_navigation/screens/main_navigation_screen.dart';
+
+import 'features/main_navigation/screens/main_navigation_screen.dart';
 
 void main() async {
-  // runApp(app) 호출 전에 바인딩 초기화
+  /*
+  runApp() 보다 앞서 실행될 아래 코드들은 애플리케이션 실행 환경을 커스더마이징할 목적에서 작성되며,
+   모두 바인딩 초기화 이후에만 설정이 가능하다.
+
+  1. runApp(app) 호출 전에 바인딩 초기화
   // WidgetsFlutterBinding.ensureInitialized();
 
-  // runApp() 이전 실행될 아래 코드들은 바인딩 초기화 이후에만 설정 가능
-  /*
-  // 선호하는 기기 해상도 설정 -> 바인딩 초기화 이후 설정 가능 가능
+  2. 선호하는 기기 해상도 설정 -> 복수 설정 가능
   await SystemChrome.setPreferredOrientations(
     [
-      // 세로 모드 -> 하나만 설정한 경우, 스마트폰을 가로로 놓아도 화면전환이 되지 않는다.
+      // 세로 모드(portraitUp) 하나만 설정하면, 폰을 가로 놓아도 화면전환이 되지 않는다.
       DeviceOrientation.portraitUp,
+      ...
     ],
   );
 
-  // SafeArea 안에 위치하는 UI를 라이트 모드로 바꾼다. -> 흰 바탕이면 글씨가 안 보이게 됨
+  3. OS UI 스타일 설정
+  // SafeArea 안에 위치하는 UI를 고정된 light 모드로 전환 -> 흰 바탕이면 글씨가 안 보이게 됨
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
   */
 
@@ -53,15 +58,16 @@ class TickTokApp extends StatelessWidget {
               fontWeight: FontWeight.w600),
         ),
       ),
-      home: const MainNavigationScreen(),
-      // home: const LayoutBuilderCodeLab(), // 메인레이아웃 역할 확인
       // home: const SignUpScreen(),
+      home: const MainNavigationScreen(),
+      // home: const LayoutBuilderCodeLab(), // 메인레이아웃 위젯 역할 확인
       // home: const ActivityScreen(),
       // home: const InterestsScreen(),
     );
   }
 }
 
+// 반응형 로직 확인을 위한 예시 위젯
 class LayoutBuilderCodeLab extends StatelessWidget {
   const LayoutBuilderCodeLab({Key? key}) : super(key: key);
 

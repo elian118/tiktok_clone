@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tiktok_clone/common/constants/enums/breakpoints.dart';
 import 'package:tiktok_clone/common/constants/gaps.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
 import 'package:tiktok_clone/features/authentication/screens/birthday_screen.dart';
@@ -71,7 +72,11 @@ class _PasswordScreenState extends State<PasswordScreen> {
           title: const Text('Sign up'),
         ),
         body: Padding(
-          padding: const EdgeInsets.all(Sizes.size36),
+          padding: EdgeInsets.symmetric(
+            vertical: Sizes.size36,
+            horizontal:
+                Utils.getWinWidth(context) > Breakpoint.md ? 600 : Sizes.size36,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

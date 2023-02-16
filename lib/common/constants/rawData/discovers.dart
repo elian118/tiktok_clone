@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/features/discover/screens/discover_screen.dart';
 import 'package:tiktok_clone/features/inbox/screens/Inbox-screen.dart';
 import 'package:tiktok_clone/features/users/screens/user_profile_screen.dart';
@@ -43,4 +44,27 @@ List<Widget> offStages = [
   Container(),
   const InboxScreen(),
   const UserProfileScreen(),
+];
+
+List<dynamic> navs = [
+  {
+    'title': 'Home',
+    'icon': FontAwesomeIcons.house,
+  },
+  {
+    'title': 'Discover',
+    'icon': FontAwesomeIcons.compass,
+  },
+  {
+    'title': null,
+    'icon': null,
+  },
+  {
+    'title': 'Inbox',
+    'icon': FontAwesomeIcons.solidMessage,
+  },
+  {
+    'title': 'Profile',
+    'icon': FontAwesomeIcons.solidUser,
+  },
 ];

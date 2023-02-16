@@ -1,11 +1,10 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:tiktok_clone/common/constants/gaps.dart';
+import 'package:tiktok_clone/common/constants/enums/breakpoints.dart';
 import 'package:tiktok_clone/common/constants/rawData/discovers.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
-import 'package:tiktok_clone/features/main_navigation/widgets/nav_tab.dart';
-import 'package:tiktok_clone/features/main_navigation/widgets/post_video_button.dart';
+import 'package:tiktok_clone/features/main_navigation/widgets/custom_navigaton.dart';
 import 'package:tiktok_clone/utils/utils.dart';
 
 class MainNavigationScreen extends StatefulWidget {
@@ -43,8 +42,19 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     });
   }
 
+  void _videoPost() => Utils.navPush(
+        context,
+        Scaffold(
+          appBar: AppBar(
+            title: const Text('Record video'),
+          ),
+        ),
+        true,
+      );
+
   @override
   Widget build(BuildContext context) {
+    final bool isWebScreen = MediaQuery.of(context).size.width > Breakpoint.md;
     return Scaffold(
       // bottomNavigationBar, bottomSheet 등장으로
       // 다른 위젯에 있던 이미지나 영상의 fit 을 그대로 유지(기본설정)하는 설정 제거
@@ -56,78 +66,81 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
       //    body: screens.elementAt(_selectedIndex), // screens[_selectedIndex],
       // 2) 새로 빌드하되, 기존 위젯은 잠시 화면에서 감추는 방식 -> 기존 위젯 state 유지
       //    즉, 현재 스크롤 위치, 입력중이던 텍스트 등 유지 가능 -> 단, OffStage() 늘수록 메모리 부담 증가
-      body: Stack(
-        children: [
-          for (var offStage in offStages)
-            Offstage(
-              offstage: _selectedIndex != offStages.indexOf(offStage),
-              child: offStage,
-            )
-        ],
-      ),
-      bottomNavigationBar: BottomAppBar(
-        color: _selectedIndex == 0 ? Colors.black : Colors.white,
-        child: Padding(
-          padding: const EdgeInsets.all(Sizes.size12),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              NavTab(
-                text: 'Home',
-                icon: FontAwesomeIcons.house,
-                isSelected: _selectedIndex == 0,
-                onTap: () => _onTap(0),
-                selectedIndex: _selectedIndex,
-              ),
-              NavTab(
-                text: 'Discover',
-                icon: FontAwesomeIcons.compass,
-                selectedIcon: FontAwesomeIcons.solidCompass,
-                isSelected: _selectedIndex == 1,
-                onTap: () => _onTap(1),
-                selectedIndex: _selectedIndex,
-              ),
-              Gaps.h24,
-              GestureDetector(
-                // onPanUpdate: _onPanUpdate,
-                onLongPressUp: _onLongPressUp,
-                onLongPressDown: _onLongPressDown,
-                onTap: () => Utils.navPush(
-                  context,
-                  Scaffold(
-                    appBar: AppBar(
-                      title: const Text('Record video'),
+      body: isWebScreen
+          ? Row(
+              children: [
+                NavigationRail(
+                  labelType: NavigationRailLabelType.selected,
+                  selectedIconTheme:
+                      IconThemeData(color: Theme.of(context).primaryColor),
+                  indicatorColor: Theme.of(context).primaryColor,
+                  selectedLabelTextStyle:
+                      TextStyle(color: Theme.of(context).primaryColor),
+                  selectedIndex: _selectedIndex,
+                  onDestinationSelected: _onTap,
+                  destinations: [
+                    for (var nav in navs)
+                      navs.indexOf(nav) != 2
+                          ? NavigationRailDestination(
+                              icon: FaIcon(nav['icon']),
+                              label: Text(nav['title']),
+                            )
+                          : const NavigationRailDestination(
+                              icon: FaIcon(FontAwesomeIcons.plus),
+                              label: Text('Add'),
+                            ),
+                  ],
+                ),
+                const VerticalDivider(
+                  thickness: 1,
+                  width: 1,
+                ),
+                Container(
+                  constraints: isWebScreen
+                      ? BoxConstraints(
+                          maxWidth: MediaQuery.of(context).size.width - 75)
+                      : null,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 200),
+                    child: Stack(
+                      children: [
+                        for (var offStage in offStages)
+                          Offstage(
+                            offstage:
+                                _selectedIndex != offStages.indexOf(offStage),
+                            child: offStage,
+                          )
+                      ],
                     ),
                   ),
-                  true,
                 ),
-                child: PostVideoButton(
-                  isVideoButtonHovered: _isVideoButtonHovered,
+              ],
+            )
+          : Stack(
+              children: [
+                for (var offStage in offStages)
+                  Offstage(
+                    offstage: _selectedIndex != offStages.indexOf(offStage),
+                    child: offStage,
+                  )
+              ],
+            ),
+      bottomNavigationBar: !isWebScreen
+          ? BottomAppBar(
+              color: _selectedIndex == 0 ? Colors.black : Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.all(Sizes.size12),
+                child: CustomNavigation(
+                  selectedIndex: _selectedIndex,
+                  onTap: _onTap,
                   onHover: _onHover,
-                  inverted: _selectedIndex != 0,
+                  isVideoButtonHovered: _isVideoButtonHovered,
+                  onLongPressUp: _onLongPressUp,
+                  onLongPressDown: _onLongPressDown,
                 ),
               ),
-              Gaps.h24,
-              NavTab(
-                text: 'Inbox',
-                icon: FontAwesomeIcons.message,
-                selectedIcon: FontAwesomeIcons.solidMessage,
-                isSelected: _selectedIndex == 3,
-                onTap: () => _onTap(3),
-                selectedIndex: _selectedIndex,
-              ),
-              NavTab(
-                text: 'Profile',
-                icon: FontAwesomeIcons.user,
-                selectedIcon: FontAwesomeIcons.solidUser,
-                isSelected: _selectedIndex == 4,
-                onTap: () => _onTap(4),
-                selectedIndex: _selectedIndex,
-              ),
-            ],
-          ),
-        ),
-      ),
+            )
+          : null,
     );
   }
 }

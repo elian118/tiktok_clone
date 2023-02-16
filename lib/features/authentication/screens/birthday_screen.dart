@@ -1,8 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:tiktok_clone/common/constants/enums/breakpoints.dart';
 import 'package:tiktok_clone/common/constants/gaps.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
+import 'package:tiktok_clone/features/authentication/widgets/birthday_date_picker.dart';
 import 'package:tiktok_clone/features/authentication/widgets/birthday_header.dart';
 import 'package:tiktok_clone/features/authentication/widgets/form_button.dart';
 import 'package:tiktok_clone/features/onboarding/screens/interests_screen.dart';
@@ -48,13 +49,18 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isWebScreen = MediaQuery.of(context).size.width > Breakpoint.lg;
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
         title: const Text('Sign up'),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(Sizes.size36),
+        padding: EdgeInsets.symmetric(
+          vertical: Sizes.size36,
+          horizontal:
+              Utils.getWinWidth(context) > Breakpoint.md ? 600 : Sizes.size36,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -87,21 +93,27 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
                   context, const InterestsScreen(), (route) => false),
               child: const FormButton(disabled: false),
             ), // 위젯 추출 v.2
+            Gaps.v96,
+            if (isWebScreen)
+              BirthdayDatePicker(
+                initialDateTime: initDate,
+                minimumDate: minDate,
+                maximumDate: initDate,
+                onDateTimeChanged: _setTextFieldDate,
+              ),
           ],
         ),
       ),
-      bottomNavigationBar: BottomAppBar(
-        child: SizedBox(
-          height: 300,
-          child: CupertinoDatePicker(
-            mode: CupertinoDatePickerMode.date,
-            initialDateTime: initDate,
-            minimumDate: minDate,
-            maximumDate: initDate,
-            onDateTimeChanged: _setTextFieldDate,
-          ),
-        ),
-      ),
+      bottomNavigationBar: !isWebScreen
+          ? BottomAppBar(
+              child: BirthdayDatePicker(
+                initialDateTime: initDate,
+                minimumDate: minDate,
+                maximumDate: initDate,
+                onDateTimeChanged: _setTextFieldDate,
+              ),
+            )
+          : null,
     );
   }
 }

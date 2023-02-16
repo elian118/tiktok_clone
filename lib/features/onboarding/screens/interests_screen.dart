@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:tiktok_clone/common/constants/enums/breakpoints.dart';
 import 'package:tiktok_clone/common/constants/gaps.dart';
 import 'package:tiktok_clone/common/constants/rawData/interests.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
@@ -41,6 +42,7 @@ class _InterestsScreenState extends State<InterestsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isWebScreen = MediaQuery.of(context).size.width > Breakpoint.lg;
     return Scaffold(
       appBar: AppBar(
         title: AnimatedOpacity(
@@ -52,40 +54,45 @@ class _InterestsScreenState extends State<InterestsScreen> {
       // -> 단, 컨트롤러가 자식인 SingleChildScrollView 의 것과 동일해야 한다.
       body: Scrollbar(
         controller: _scrollController,
-        child: SingleChildScrollView(
-          controller: _scrollController,
-          child: Padding(
-            padding: const EdgeInsets.only(
-                left: Sizes.size24, right: Sizes.size24, bottom: Sizes.size16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Gaps.v32,
-                const Text(
-                  'Choose your interests',
-                  style: TextStyle(
-                    fontSize: Sizes.size40,
-                    fontWeight: FontWeight.bold,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: isWebScreen ? 250 : 0),
+          child: SingleChildScrollView(
+            controller: _scrollController,
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  left: Sizes.size24,
+                  right: Sizes.size24,
+                  bottom: Sizes.size16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Gaps.v32,
+                  const Text(
+                    'Choose your interests',
+                    style: TextStyle(
+                      fontSize: Sizes.size40,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                Gaps.v20,
-                const Text(
-                  'Get better video recommendations',
-                  style: TextStyle(
-                    fontSize: Sizes.size20,
+                  Gaps.v20,
+                  const Text(
+                    'Get better video recommendations',
+                    style: TextStyle(
+                      fontSize: Sizes.size20,
+                    ),
                   ),
-                ),
-                Gaps.v40,
-                // Grid 유사 위젯
-                Wrap(
-                  spacing: Sizes.size15,
-                  runSpacing: Sizes.size15,
-                  children: [
-                    for (var interest in interests)
-                      InterestButton(interest: interest)
-                  ],
-                ),
-              ],
+                  Gaps.v40,
+                  // Grid 유사 위젯
+                  Wrap(
+                    spacing: Sizes.size15,
+                    runSpacing: Sizes.size15,
+                    children: [
+                      for (var interest in interests)
+                        InterestButton(interest: interest)
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -93,11 +100,11 @@ class _InterestsScreenState extends State<InterestsScreen> {
       bottomNavigationBar: BottomAppBar(
         elevation: 2,
         child: Padding(
-          padding: const EdgeInsets.only(
+          padding: EdgeInsets.only(
             top: Sizes.size16,
             bottom: Sizes.size40,
-            left: Sizes.size24,
-            right: Sizes.size24,
+            left: isWebScreen ? 275 : Sizes.size24,
+            right: isWebScreen ? 275 : Sizes.size24,
           ),
           // CupertinoButton 또는 TextButton 위젯 사용
           child: CupertinoButton(

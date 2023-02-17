@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/common/constants/gaps.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
+import 'package:tiktok_clone/common/widgets/web_container.dart';
 import 'package:tiktok_clone/features/authentication/screens/username_screen.dart';
 import 'package:tiktok_clone/features/authentication/widgets/auth_button.dart';
 import 'package:tiktok_clone/utils/utils.dart';
@@ -16,13 +17,12 @@ class SignUpScreen extends StatelessWidget {
     return OrientationBuilder(
       builder: (BuildContext context, Orientation orientation) {
         bool isLandscape = orientation == Orientation.landscape;
-        print(orientation);
+        // print(orientation);
         return Scaffold(
           body: SafeArea(
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: isLandscape ? 560 : Sizes.size36,
-              ),
+            child: WebContainer(
+              padding: const EdgeInsets.all(Sizes.size36),
+              maxWidth: 800,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [

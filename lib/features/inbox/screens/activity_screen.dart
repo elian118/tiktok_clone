@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/common/constants/gaps.dart';
 import 'package:tiktok_clone/common/constants/rawData/inboxes.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
+import 'package:tiktok_clone/features/inbox/widgets/activities.dart';
 
 class ActivityScreen extends StatefulWidget {
   const ActivityScreen({Key? key}) : super(key: key);
@@ -66,172 +67,32 @@ class _ActivityScreenState extends State<ActivityScreen>
   Widget build(BuildContext context) {
     // print(_notifications); // _onDismissed 결과 확인
     return Scaffold(
-      appBar: AppBar(
-        title: GestureDetector(
-          onTap: _toggleAnimations,
-          child: Row(
-            mainAxisSize: MainAxisSize.min, // 제목 가운데 정렬을 위해 너비를 자식 위젯에 맞춘다.
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text('All activity'),
-              Gaps.h2,
-              RotationTransition(
-                turns: _arrowAnimation, // 회전의 정도 -> 0: 0도, 1: 360도
-                child: const FaIcon(
-                  FontAwesomeIcons.chevronDown,
-                  size: Sizes.size14,
-                ),
-              )
-            ],
+        appBar: AppBar(
+          title: GestureDetector(
+            onTap: _toggleAnimations,
+            child: Row(
+              mainAxisSize: MainAxisSize.min, // 제목 가운데 정렬을 위해 너비를 자식 위젯에 맞춘다.
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text('All activity'),
+                Gaps.h2,
+                RotationTransition(
+                  turns: _arrowAnimation, // 회전의 정도 -> 0: 0도, 1: 360도
+                  child: const FaIcon(
+                    FontAwesomeIcons.chevronDown,
+                    size: Sizes.size14,
+                  ),
+                )
+              ],
+            ),
           ),
         ),
-      ),
-      body: Stack(
-        children: [
-          ListView(
-            // padding: const EdgeInsets.symmetric(horizontal: Sizes.size20),
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: Sizes.size16),
-                child: Text(
-                  'New',
-                  style: TextStyle(
-                    fontSize: Sizes.size14,
-                    color: Colors.grey.shade500,
-                  ),
-                ),
-              ),
-              Gaps.v14,
-              for (var notification in notifications)
-                // Dismissible -> 자식을 옆으로 밀어 제거할 수 있는 기능 간단 적용
-                Dismissible(
-                  key: Key(notification),
-                  onDismissed: (direction) => _onDismissed(notification),
-                  background: Container(
-                    alignment: Alignment.centerLeft,
-                    color: Colors.green,
-                    child: const Padding(
-                      padding: EdgeInsets.only(left: Sizes.size10),
-                      child: FaIcon(
-                        FontAwesomeIcons.checkDouble,
-                        color: Colors.white,
-                        size: Sizes.size32,
-                      ),
-                    ),
-                  ),
-                  secondaryBackground: Container(
-                    alignment: Alignment.centerRight,
-                    color: Colors.red,
-                    child: const Padding(
-                      padding: EdgeInsets.only(right: Sizes.size10),
-                      child: FaIcon(
-                        FontAwesomeIcons.trashCan,
-                        color: Colors.white,
-                        size: Sizes.size32,
-                      ),
-                    ),
-                  ),
-                  child: ListTile(
-                    minVerticalPadding: Sizes.size16,
-                    // contentPadding: EdgeInsets.zero, // 콘텐츠 패딩 제거
-                    leading: Container(
-                      width: Sizes.size52,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white,
-                        border: Border.all(
-                          color: Colors.grey.shade400,
-                          width: Sizes.size1,
-                        ),
-                      ),
-                      child: const Center(
-                        child: FaIcon(
-                          FontAwesomeIcons.bell,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                    title: RichText(
-                      text: TextSpan(
-                        text: "Accounts updates:",
-                        // RichText 기본 스타일
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black,
-                          fontSize: Sizes.size16,
-                        ),
-                        children: [
-                          const TextSpan(
-                            text: ' Upload longer videos',
-                            style: TextStyle(
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
-                          TextSpan(
-                            text: ' $notification',
-                            style: TextStyle(
-                              fontWeight: FontWeight.normal,
-                              color: Colors.grey.shade500,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    trailing: const FaIcon(
-                      FontAwesomeIcons.chevronRight,
-                      size: Sizes.size16,
-                    ),
-                  ),
-                ),
-            ],
-          ),
-          // ListView 보다 뒤에 위치해야 배리어 효과 적용 가능
-          if (_showBarrier) // 배리어 제거 -> ListView 포인터 인식 가능
-            AnimatedModalBarrier(
-              color: _barrierAnimation,
-              dismissible: true, // 영역 클릭 시 사라짐 옵션 허용 -> onDismiss 와 연계해야 이벤트 작동
-              onDismiss: _toggleAnimations, // 사라질 때 실행할 콜백
-            ),
-          SlideTransition(
-            position: _panelAnimation,
-            child: Container(
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(Sizes.size4),
-                  bottomRight: Radius.circular(Sizes.size4),
-                ),
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  for (var tab in tabs)
-                    ListTile(
-                      title: Row(
-                        children: [
-                          FaIcon(
-                            tab['icon'],
-                            color: Colors.black,
-                            size: Sizes.size16,
-                          ),
-                          Gaps.h20,
-                          Text(
-                            tab['title'],
-                            style: const TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  Gaps.v16,
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
+        body: Activities(
+          onDismissed: _onDismissed,
+          barrierAnimation: _barrierAnimation,
+          panelAnimation: _panelAnimation,
+          showBarrier: _showBarrier,
+          toggleAnimations: _toggleAnimations,
+        ));
   }
 }

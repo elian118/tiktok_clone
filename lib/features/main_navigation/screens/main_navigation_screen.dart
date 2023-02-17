@@ -1,10 +1,11 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:tiktok_clone/common/constants/enums/breakpoints.dart';
 import 'package:tiktok_clone/common/constants/rawData/discovers.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
+import 'package:tiktok_clone/common/widgets/web_container.dart';
 import 'package:tiktok_clone/features/main_navigation/widgets/custom_navigaton.dart';
+import 'package:tiktok_clone/features/main_navigation/widgets/post_video_button.dart';
 import 'package:tiktok_clone/utils/utils.dart';
 
 class MainNavigationScreen extends StatefulWidget {
@@ -15,7 +16,7 @@ class MainNavigationScreen extends StatefulWidget {
 }
 
 class _MainNavigationScreenState extends State<MainNavigationScreen> {
-  int _selectedIndex = 1;
+  int _selectedIndex = 3;
   bool _isVideoButtonHovered = false;
 
   void _onLongPressUp() {
@@ -54,7 +55,6 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final bool isWebScreen = MediaQuery.of(context).size.width > Breakpoint.md;
     return Scaffold(
       // bottomNavigationBar, bottomSheet 등장으로
       // 다른 위젯에 있던 이미지나 영상의 fit 을 그대로 유지(기본설정)하는 설정 제거
@@ -66,48 +66,64 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
       //    body: screens.elementAt(_selectedIndex), // screens[_selectedIndex],
       // 2) 새로 빌드하되, 기존 위젯은 잠시 화면에서 감추는 방식 -> 기존 위젯 state 유지
       //    즉, 현재 스크롤 위치, 입력중이던 텍스트 등 유지 가능 -> 단, OffStage() 늘수록 메모리 부담 증가
-      body: isWebScreen
+      body: Utils.isWebScreen(context)
           ? Row(
               children: [
                 NavigationRail(
+                  backgroundColor:
+                      _selectedIndex == 0 ? Colors.black : Colors.white,
                   labelType: NavigationRailLabelType.selected,
                   selectedIconTheme:
                       IconThemeData(color: Theme.of(context).primaryColor),
+                  unselectedIconTheme: IconThemeData(
+                    color: _selectedIndex == 0
+                        ? Colors.grey.shade200
+                        : Colors.grey.shade600,
+                  ),
                   indicatorColor: Theme.of(context).primaryColor,
                   selectedLabelTextStyle:
                       TextStyle(color: Theme.of(context).primaryColor),
+                  unselectedLabelTextStyle: TextStyle(
+                    color: _selectedIndex == 0
+                        ? Colors.grey.shade200
+                        : Colors.grey.shade600,
+                  ),
                   selectedIndex: _selectedIndex,
                   onDestinationSelected: _onTap,
+                  trailing: Padding(
+                    padding: const EdgeInsets.only(top: Sizes.size20),
+                    child: PostVideoButton(
+                      isVideoButtonHovered: _isVideoButtonHovered,
+                      onHover: _onHover,
+                      inverted: _selectedIndex != 0,
+                      onLongPressDown: _onLongPressDown,
+                      onLongPressUp: _onLongPressUp,
+                    ),
+                  ),
                   destinations: [
-                    for (var nav in navs)
-                      navs.indexOf(nav) != 2
-                          ? NavigationRailDestination(
-                              icon: FaIcon(nav['icon']),
-                              label: Text(nav['title']),
-                            )
-                          : const NavigationRailDestination(
-                              icon: FaIcon(FontAwesomeIcons.plus),
-                              label: Text('Add'),
-                            ),
+                    for (var nav in navs2)
+                      NavigationRailDestination(
+                        icon: FaIcon(nav['icon']),
+                        label: Text(nav['title']),
+                      ),
                   ],
                 ),
-                const VerticalDivider(
+                VerticalDivider(
+                  color: _selectedIndex == 0
+                      ? Colors.grey.shade800
+                      : Colors.grey.shade300,
                   thickness: 1,
                   width: 1,
                 ),
-                Container(
-                  constraints: isWebScreen
-                      ? BoxConstraints(
-                          maxWidth: MediaQuery.of(context).size.width - 75)
-                      : null,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 200),
+                Expanded(
+                  child: WebContainer(
+                    maxWidth: 1400,
                     child: Stack(
                       children: [
-                        for (var offStage in offStages)
+                        for (var offStage in offStages2)
                           Offstage(
                             offstage:
-                                _selectedIndex != offStages.indexOf(offStage),
+                                _selectedIndex != offStages2.indexOf(offStage),
                             child: offStage,
                           )
                       ],
@@ -125,7 +141,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                   )
               ],
             ),
-      bottomNavigationBar: !isWebScreen
+      bottomNavigationBar: !Utils.isWebScreen(context)
           ? BottomAppBar(
               color: _selectedIndex == 0 ? Colors.black : Colors.white,
               child: Padding(

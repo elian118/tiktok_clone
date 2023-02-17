@@ -53,7 +53,6 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
   @override
   Widget build(BuildContext context) {
     final width = Utils.getWinWidth(context);
-    final bool isWebScreen = MediaQuery.of(context).size.width > Breakpoint.md;
 
     return DefaultTabController(
       initialIndex: 0,
@@ -61,7 +60,7 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          elevation: isWebScreen ? 0 : 1, // 앱바와 바디 사이 구분선 효과
+          elevation: Utils.isWebScreen(context) ? 0 : 1, // 앱바와 바디 사이 구분선 효과
           // ConstrainedBox -> 최대/최소 크기를 제한할 수 있는 박스
           //  참고. Container -> constraints 에서 동일한 속성 설정 가능(기능 동일)
           title: ConstrainedBox(

@@ -46,6 +46,13 @@ List<Widget> offStages = [
   const UserProfileScreen(),
 ];
 
+List<Widget> offStages2 = [
+  const VideoTimelineScreen(),
+  const DiscoverScreen(),
+  const InboxScreen(),
+  const UserProfileScreen(),
+];
+
 List<dynamic> navs = [
   {
     'title': 'Home',
@@ -56,8 +63,27 @@ List<dynamic> navs = [
     'icon': FontAwesomeIcons.compass,
   },
   {
-    'title': null,
-    'icon': null,
+    'title': 'Add Video',
+    'icon': FontAwesomeIcons.plus,
+  },
+  {
+    'title': 'Inbox',
+    'icon': FontAwesomeIcons.solidMessage,
+  },
+  {
+    'title': 'Profile',
+    'icon': FontAwesomeIcons.solidUser,
+  },
+];
+
+List<dynamic> navs2 = [
+  {
+    'title': 'Home',
+    'icon': FontAwesomeIcons.house,
+  },
+  {
+    'title': 'Discover',
+    'icon': FontAwesomeIcons.compass,
   },
   {
     'title': 'Inbox',

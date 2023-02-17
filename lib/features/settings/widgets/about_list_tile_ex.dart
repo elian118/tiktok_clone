@@ -25,8 +25,7 @@ class AboutListTileEx extends StatelessWidget {
     // 위 코드를 간소화한 위젯
     return const AboutListTile(
       applicationVersion: "v 1.0",
-      applicationLegalese:
-          "Copyright(c) All rights reserved. Please don't copy me.",
+      applicationLegalese: "Copyright(c) All rights reserved.",
     );
   }
 }

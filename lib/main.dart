@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
-
-import 'features/main_navigation/screens/main_navigation_screen.dart';
+import 'package:tiktok_clone/features/authentication/screens/sign_up_screen.dart';
 
 void main() async {
   /*
@@ -58,11 +57,12 @@ class TickTokApp extends StatelessWidget {
               fontWeight: FontWeight.w600),
         ),
       ),
-      // home: const SignUpScreen(),
-      home: const MainNavigationScreen(),
+      home: const SignUpScreen(),
+      // home: const MainNavigationScreen(),
       // home: const LayoutBuilderCodeLab(), // 메인레이아웃 위젯 역할 확인
       // home: const ActivityScreen(),
       // home: const InterestsScreen(),
+      // home: const TutorialScreen(),
     );
   }
 }

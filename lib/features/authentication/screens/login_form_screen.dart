@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:tiktok_clone/common/constants/enums/breakpoints.dart';
 import 'package:tiktok_clone/common/constants/gaps.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
+import 'package:tiktok_clone/common/widgets/web_container.dart';
 import 'package:tiktok_clone/features/authentication/widgets/form_button.dart';
 import 'package:tiktok_clone/features/onboarding/screens/interests_screen.dart';
 import 'package:tiktok_clone/utils/utils.dart';
@@ -53,8 +55,9 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
         appBar: AppBar(
           title: const Text('Login'),
         ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: Sizes.size36),
+        body: WebContainer(
+          padding: const EdgeInsets.all(Sizes.size36),
+          maxWidth: Breakpoint.sm,
           child: Form(
             key: _formKey,
             child: Column(

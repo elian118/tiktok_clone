@@ -4,6 +4,7 @@ import 'package:tiktok_clone/common/constants/enums/breakpoints.dart';
 import 'package:tiktok_clone/common/constants/gaps.dart';
 import 'package:tiktok_clone/common/constants/rawData/interests.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
+import 'package:tiktok_clone/common/widgets/web_container.dart';
 import 'package:tiktok_clone/features/onboarding/screens/tutorial_screen.dart';
 import 'package:tiktok_clone/features/onboarding/widgets/interest_button.dart';
 import 'package:tiktok_clone/utils/utils.dart';
@@ -54,8 +55,8 @@ class _InterestsScreenState extends State<InterestsScreen> {
       // -> 단, 컨트롤러가 자식인 SingleChildScrollView 의 것과 동일해야 한다.
       body: Scrollbar(
         controller: _scrollController,
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: isWebScreen ? 250 : 0),
+        child: WebContainer(
+          maxWidth: 1200,
           child: SingleChildScrollView(
             controller: _scrollController,
             child: Padding(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tiktok_clone/common/constants/enums/breakpoints.dart';
 
 class Utils {
   // 모든 네비게이터는 스택(Stack) 구조이며, 밑에서부터 위로 겹쳐 쌓는 형태로 렌더링 -> Flutter Outline 확인
@@ -49,4 +50,8 @@ class Utils {
   // 스크린 높이값 가져오기
   static double getWinHeight(BuildContext context) =>
       MediaQuery.of(context).size.height;
+
+  // 웹화면인가?
+  static bool isWebScreen(BuildContext context) =>
+      MediaQuery.of(context).size.width > Breakpoint.md;
 }

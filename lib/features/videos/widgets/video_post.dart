@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tiktok_clone/common/constants/enums/breakpoints.dart';
 import 'package:tiktok_clone/common/constants/gaps.dart';
 import 'package:tiktok_clone/common/constants/rawData/foreground_image.dart';
 import 'package:tiktok_clone/common/constants/rawData/video_data.dart';
@@ -132,6 +133,7 @@ class _VideoPostState extends State<VideoPost>
     }
     // 초간단 바닥모달시트 생성
     await showModalBottomSheet(
+      constraints: const BoxConstraints(maxWidth: Breakpoint.sm),
       context: context,
       isScrollControlled: true, // 허용 시, 바닥모달시트 기본높이 한계치(50%)가 플림 -> 자식 높이에 좌우됨
       backgroundColor: Colors.transparent,

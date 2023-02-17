@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tiktok_clone/common/constants/enums/breakpoints.dart';
 import 'package:tiktok_clone/common/constants/gaps.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
+import 'package:tiktok_clone/common/widgets/web_container.dart';
 import 'package:tiktok_clone/features/authentication/screens/login_form_screen.dart';
 import 'package:tiktok_clone/features/authentication/widgets/auth_button.dart';
 import 'package:tiktok_clone/utils/utils.dart';
@@ -13,13 +15,12 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return OrientationBuilder(
       builder: (BuildContext context, Orientation orientation) {
-        bool isLandscape = orientation == Orientation.landscape;
         return Scaffold(
           body: SafeArea(
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: isLandscape ? 560 : Sizes.size36,
-              ),
+            child: WebContainer(
+              alignment: Alignment.bottomCenter,
+              padding: const EdgeInsets.all(Sizes.size36),
+              maxWidth: Breakpoint.sm,
               child: Column(
                 children: [
                   Gaps.v80,

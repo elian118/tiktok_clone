@@ -101,8 +101,8 @@ class _TutorialScreenState extends State<TutorialScreen> {
                     onPressed: () =>
                         _showingPage == ShowingPage.first && isWebScreen
                             ? _onPressArrow(Direction.left)
-                            : Utils.navPushAndRemoveUntil(
-                                context, const MainNavigationScreen()),
+                            : Utils.navPushAndRemoveUntil(context,
+                                const MainNavigationScreen(), (route) => false),
                     color: Theme.of(context).primaryColor,
                     child: Text(_showingPage == ShowingPage.first && isWebScreen
                         ? 'Next'

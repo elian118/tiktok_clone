@@ -35,13 +35,18 @@ class SignUpScreen extends StatelessWidget {
                     ),
                   ),
                   Gaps.v20,
-                  const Text(
-                    'Create a profile, follow other accounts, make your own videos, and more.',
-                    style: TextStyle(
-                      fontSize: Sizes.size16,
-                      color: Colors.black45,
+                  const Opacity(
+                    opacity: 0.7, // 텍스트는 불투명도 설정이 테마별 색상을 직접 입력하는 방법보다 더 간편
+                    child: Text(
+                      'Create a profile, follow other accounts, make your own videos, and more.',
+                      style: TextStyle(
+                        fontSize: Sizes.size16,
+                        // color: isDarkMode(context)
+                        //     ? Colors.grey.shade300
+                        //     : Colors.black45,
+                      ),
+                      textAlign: TextAlign.center,
                     ),
-                    textAlign: TextAlign.center,
                   ),
                   Gaps.v40,
                   // 한 번에 여러 트리를 반환하는 경우, 배열화 후 전개연산자를 사용한다.
@@ -114,7 +119,9 @@ class SignUpScreen extends StatelessWidget {
             ),
           ),
           bottomNavigationBar: BottomAppBar(
-            color: Colors.grey.shade50,
+            color: isDarkMode(context)
+                ? null // null -> 기본 다크테마 지정컬러 적용
+                : Colors.grey.shade50,
             elevation: 1,
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: Sizes.size32),

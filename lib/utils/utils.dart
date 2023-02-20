@@ -55,3 +55,6 @@ class Utils {
   static bool isWebScreen(BuildContext context) =>
       MediaQuery.of(context).size.width > Breakpoint.md;
 }
+
+bool isDarkMode(BuildContext context) =>
+    MediaQuery.of(context).platformBrightness == Brightness.dark;

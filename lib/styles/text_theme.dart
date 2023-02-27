@@ -32,3 +32,11 @@ TextTheme textTheme = TextTheme(
   labelSmall: GoogleFonts.roboto(
       fontSize: 10, fontWeight: FontWeight.w400, letterSpacing: 1.5),
 );
+
+// 그리고 위 코드는 아래처럼 구글 폰트에 지정된 폰트별 정적테마 코드를 통째로 가져오는 방법도 있다.
+// TextTheme textTheme = GoogleFonts.robotoTextTheme(); // roboto 폰트 텍스트 테마 일체
+TextTheme textTheme2 = GoogleFonts.itimTextTheme(); // iTim 폰트 텍스트 테마 일체
+
+TextTheme textTheme2dark = GoogleFonts.itimTextTheme(
+  ThemeData(brightness: Brightness.dark).textTheme, // 기본 테마 밝기 변경(다크모드용)
+);

@@ -33,6 +33,7 @@ class _PostVideoButtonState extends State<PostVideoButton> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = isDarkMode(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: Sizes.size24),
       child: GestureDetector(
@@ -106,7 +107,9 @@ class _PostVideoButtonState extends State<PostVideoButton> {
                   height: heightAni(),
                   padding: const EdgeInsets.symmetric(horizontal: Sizes.size12),
                   decoration: BoxDecoration(
-                    color: !widget.inverted ? Colors.white : Colors.black,
+                    color: !widget.inverted || isDark
+                        ? Colors.white
+                        : Colors.black,
                     borderRadius: BorderRadius.circular(sizeAni()),
                   ),
                   child: Center(
@@ -117,7 +120,9 @@ class _PostVideoButtonState extends State<PostVideoButton> {
                         widget.isVideoButtonHovered
                             ? FontAwesomeIcons.camera
                             : FontAwesomeIcons.plus,
-                        color: widget.inverted ? Colors.white : Colors.black,
+                        color: widget.inverted && !isDark
+                            ? Colors.white
+                            : Colors.black,
                         size: sizeAni(Sizes.size18),
                       ),
                     ),

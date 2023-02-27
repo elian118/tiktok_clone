@@ -55,6 +55,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = isDarkMode(context);
     return Scaffold(
       // bottomNavigationBar, bottomSheet 등장으로
       // 다른 위젯에 있던 이미지나 영상의 fit 을 그대로 유지(기본설정)하는 설정 제거
@@ -70,8 +71,9 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
           ? Row(
               children: [
                 NavigationRail(
-                  backgroundColor:
-                      _selectedIndex == 0 ? Colors.black : Colors.white,
+                  backgroundColor: _selectedIndex == 0 || isDark
+                      ? Colors.black
+                      : Colors.white,
                   labelType: NavigationRailLabelType.selected,
                   selectedIconTheme:
                       IconThemeData(color: Theme.of(context).primaryColor),
@@ -143,7 +145,8 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
             ),
       bottomNavigationBar: !isWebScreen(context)
           ? BottomAppBar(
-              color: _selectedIndex == 0 ? Colors.black : Colors.white,
+              color:
+                  _selectedIndex == 0 || isDark ? Colors.black : Colors.white,
               child: Padding(
                 padding: const EdgeInsets.all(Sizes.size12),
                 child: CustomNavigation(

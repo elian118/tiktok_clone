@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:tiktok_clone/utils/utils.dart';
 
 class CupertinoSearchTextFieldEx extends StatelessWidget {
   final TextEditingController? textEditingController;
@@ -18,6 +20,9 @@ class CupertinoSearchTextFieldEx extends StatelessWidget {
       controller: textEditingController,
       onChanged: onSearchChanged,
       onSubmitted: onSearchSubmitted,
+      style: TextStyle(
+        color: isDarkMode(context) ? Colors.white : Colors.black,
+      ),
     );
   }
 }

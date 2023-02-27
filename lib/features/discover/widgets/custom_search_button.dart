@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
+import 'package:tiktok_clone/utils/utils.dart';
 
 class CustomSearchButton extends StatelessWidget {
   final VoidCallback moveBack;
@@ -37,20 +38,25 @@ class CustomSearchButton extends StatelessWidget {
               onSubmitted: onSearchSubmitted,
               cursorColor: Theme.of(context).primaryColor,
               decoration: InputDecoration(
+                hintText: 'Search',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(Sizes.size5),
                   borderSide: BorderSide.none,
                 ),
                 filled: true,
-                fillColor: Colors.grey.shade200,
+                fillColor: isDarkMode(context)
+                    ? Colors.grey.shade800
+                    : Colors.grey.shade200,
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: Sizes.size12),
                 prefixIcon: Container(
                   width: Sizes.size20,
                   alignment: Alignment.center,
-                  child: const FaIcon(
+                  child: FaIcon(
                     FontAwesomeIcons.magnifyingGlass,
-                    color: Colors.black,
+                    color: isDarkMode(context)
+                        ? Colors.grey.shade500
+                        : Colors.black,
                     size: Sizes.size18,
                   ),
                 ),

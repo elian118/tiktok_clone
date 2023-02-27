@@ -83,9 +83,9 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
             labelStyle: const TextStyle(
               fontWeight: FontWeight.w600,
             ),
-            labelColor: Colors.black,
-            unselectedLabelColor: Colors.grey.shade500,
-            indicatorColor: Colors.black,
+            // 원래는 테마 변경 시 결과가 바로 적용돼야 하지만, 자동 적용이 안 되는 경우도 있다.
+            //  그럴 땐 아래처럼 직접 재지정해준다.
+            indicatorColor: Theme.of(context).tabBarTheme.indicatorColor,
             tabs: [
               for (var tab in tabs) Tab(text: tab),
             ],
@@ -140,7 +140,9 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                         style: TextStyle(
                           fontSize: Sizes.size14,
                           fontWeight: FontWeight.w600,
-                          color: Colors.grey.shade600,
+                          color: isDarkMode(context)
+                              ? Colors.grey.shade300
+                              : Colors.grey.shade600,
                         ),
                         child: Row(
                           children: [
@@ -160,7 +162,9 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                             FaIcon(
                               FontAwesomeIcons.heart,
                               size: Sizes.size16,
-                              color: Colors.grey.shade600,
+                              color: isDarkMode(context)
+                                  ? Colors.grey.shade300
+                                  : Colors.grey.shade600,
                             ),
                             Gaps.h2,
                             const Text(

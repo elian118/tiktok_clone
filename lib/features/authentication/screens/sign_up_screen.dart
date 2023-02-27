@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/intl_generated.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/common/constants/gaps.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
@@ -32,7 +33,8 @@ class SignUpScreen extends StatelessWidget {
                 children: [
                   Gaps.v80,
                   Text(
-                    'Sign up for TikTok',
+                    // 'Sign up for TikTok',
+                    AppLocalizations.of(context)!.signUpTitle("TikTok"),
                     style: Theme.of(context).textTheme.headlineSmall,
                     // headlineSmall 테마 스타일의 특정 속성만 변경해 사용하려면, copyWith 사용
                     // style: Theme.of(context)

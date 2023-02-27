@@ -13,9 +13,8 @@ import 'package:flutter/material.dart';
        intl_generated.dart, intl_generated_en.dart, intl_generated_ko.dart
 */
 import 'package:flutter_gen/gen_l10n/intl_generated.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
-import 'package:tiktok_clone/features/settings/screens/setting_screen.dart';
+import 'package:tiktok_clone/features/authentication/screens/sign_up_screen.dart';
 import 'package:tiktok_clone/styles/text_theme.dart';
 
 void main() async {
@@ -51,7 +50,8 @@ class TickTokApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'TikTok Clone',
-      // 번역 설정
+      /*
+      번역 설정
       localizationsDelegates: const [
         // 터미널에서 flutter gen-l10n 실행 > intl_generated.dart 파일 생성 후 인식 가능
         AppLocalizations.delegate,
@@ -59,12 +59,18 @@ class TickTokApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
       ],
-      // 지원 언어 => https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry
+      지원 언어 => https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry
       supportedLocales: const [
         Locale('ko'), // kr로 절대 쓰지 말 것
         Locale('en'),
         Locale('es'),
       ],
+      */
+      // AppLocalizations.delegate 설정되면 어떤 언어가 지원되는지 파일명에서 알 수 있으므로,
+      //  아래 코드로 기존 localizationsDelegates, supportedLocales 속성 코드 대체 가능
+      localizationsDelegates:
+          AppLocalizations.localizationsDelegates, // 글로벌 코드 기본 내장
+      supportedLocales: AppLocalizations.supportedLocales,
       themeMode: ThemeMode.system, // 다크/라이트 모드 - ThemeMode.system -> 시스템 설정에 따름
 
       /*
@@ -152,9 +158,9 @@ class TickTokApp extends StatelessWidget {
           iconColor: Colors.white,
         ),
       ),
-      // home: const SignUpScreen(),
+      home: const SignUpScreen(),
       // home: const MainNavigationScreen(),
-      home: const SettingScreen(),
+      // home: const SettingScreen(),
       // home: const LayoutBuilderCodeLab(), // 메인레이아웃 위젯 역할 확인
     );
   }

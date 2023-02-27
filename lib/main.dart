@@ -37,6 +37,17 @@ class TickTokApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'TikTok Clone',
       themeMode: ThemeMode.system, // 다크/라이트 모드 - ThemeMode.system -> 시스템 설정에 따름
+
+      /*
+      이하 복잡한 전역 테마 설정 코드들은 간단히 flex_color_scheme 패키지를 사용함으로써,
+       라이트모드와 다크모드를 각각 설정하는 단 두줄의 코드만으로 끝내버릴 수도 있다.
+       Ex. 설치 후 아래 코드 입력
+        theme: FlexThemeData.light(scheme: FlexScheme.mandyRed),
+        darkTheme: FlexThemeData.dark(scheme: FlexScheme.mandyRed),
+
+      - 패키지: https://pub.dev/packages/flex_color_scheme
+      - 테마 미리보기: https://rydmike.com/flexcolorscheme/themesplayground-v6/#/
+      */
       // 전역 테마 설정
       theme: ThemeData(
         useMaterial3: true, // 매터리얼3 스타일 이관 여부

@@ -1,10 +1,16 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-class DateTimePickerEx extends StatelessWidget {
+class DateTimePickerEx extends StatefulWidget {
   const DateTimePickerEx({
     super.key,
   });
 
+  @override
+  State<DateTimePickerEx> createState() => _DateTimePickerExState();
+}
+
+class _DateTimePickerExState extends State<DateTimePickerEx> {
   @override
   Widget build(BuildContext context) {
     return ListTile(
@@ -15,12 +21,18 @@ class DateTimePickerEx extends StatelessWidget {
           firstDate: DateTime(1980),
           lastDate: DateTime(2030),
         );
-        print(date);
+        if (kDebugMode) {
+          print(date);
+        }
+        if (!mounted) return;
         final time = await showTimePicker(
           context: context,
           initialTime: TimeOfDay.now(),
         );
-        print(time);
+        if (kDebugMode) {
+          print(time);
+        }
+        if (!mounted) return;
         final booking = await showDateRangePicker(
           context: context,
           firstDate: DateTime(1980),
@@ -37,7 +49,9 @@ class DateTimePickerEx extends StatelessWidget {
             );
           },
         );
-        print(booking);
+        if (kDebugMode) {
+          print(booking);
+        }
       },
       title: const Text("What is your birthday?"),
       subtitle: const Text('I need to know!'),

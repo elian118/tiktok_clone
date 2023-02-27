@@ -26,58 +26,66 @@ class _SettingScreenState extends State<SettingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Settings'),
-      ),
-      body: ListView(
-        children: [
-          // Switch.adaptive() = CupertinoSwitch(...)
-          // Switch.adaptive(
-          //   value: _notification,
-          //   onChanged: _onNotificationsChanged,
-          // ),
-          // Switch(
-          //   value: _notification,
-          //   onChanged: _onNotificationsChanged,
-          // ),
-          // Switch -> SwitchListTile(title, ...) -> SwitchListTile(title, ...).adaptive -> 쿠퍼티노 스타일 스위치리스트타일
-          WebContainer(
-            maxWidth: Breakpoint.sm,
-            child: SwitchListTile.adaptive(
-              value: _notification,
-              onChanged: _onNotificationsChanged,
-              title: const Text('Enable notifications'),
-              subtitle: const Text('Enable notifications'),
+    // 번역 강제 오버라이드(현재 위젯만 해당)
+    return Localizations.override(
+      context: context,
+      // locale: const Locale('es'),
+      locale: const Locale('ko'),
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Settings'),
+        ),
+        body: ListView(
+          children: [
+            // Switch.adaptive() = CupertinoSwitch(...)
+            // Switch.adaptive(
+            //   value: _notification,
+            //   onChanged: _onNotificationsChanged,
+            // ),
+            // Switch(
+            //   value: _notification,
+            //   onChanged: _onNotificationsChanged,
+            // ),
+            // Switch -> SwitchListTile(title, ...) -> SwitchListTile(title, ...).adaptive -> 쿠퍼티노 스타일 스위치리스트타일
+            WebContainer(
+              maxWidth: Breakpoint.sm,
+              child: SwitchListTile.adaptive(
+                value: _notification,
+                onChanged: _onNotificationsChanged,
+                title: const Text('Enable notifications'),
+                subtitle: const Text('Enable notifications'),
+              ),
             ),
-          ),
-          // Checkbox(
-          //   value: _notification,
-          //   onChanged: _onNotificationsChanged,
-          // ),
-          // Checkbox -> CheckboxListTile(title, ...)
-          WebContainer(
-            maxWidth: Breakpoint.sm,
-            child: CheckboxListTile(
-              activeColor: Theme.of(context).primaryColor,
-              // checkColor: Theme.of(context).primaryColor,
-              value: _notification,
-              onChanged: _onNotificationsChanged,
-              title: const Text('Marketing emails'),
-              subtitle: const Text("We won't spam you."),
+            // Checkbox(
+            //   value: _notification,
+            //   onChanged: _onNotificationsChanged,
+            // ),
+            // Checkbox -> CheckboxListTile(title, ...)
+            WebContainer(
+              maxWidth: Breakpoint.sm,
+              child: CheckboxListTile(
+                activeColor: Theme.of(context).primaryColor,
+                // checkColor: Theme.of(context).primaryColor,
+                value: _notification,
+                onChanged: _onNotificationsChanged,
+                title: const Text('Marketing emails'),
+                subtitle: const Text("We won't spam you."),
+              ),
             ),
-          ),
-          const WebContainer(
-              maxWidth: Breakpoint.sm, child: DateTimePickerEx()),
-          const WebContainer(
-              maxWidth: Breakpoint.sm, child: CupertinoDialogEx()),
-          const WebContainer(maxWidth: Breakpoint.sm, child: AndroidDialogEx()),
-          const WebContainer(
-              maxWidth: Breakpoint.sm, child: CupertinoModalEx()),
-          const WebContainer(maxWidth: Breakpoint.sm, child: AboutListTileEx()),
-          // const IndicatorEx(),
-          // const ListWheelScrollViewEx(),
-        ],
+            const WebContainer(
+                maxWidth: Breakpoint.sm, child: DateTimePickerEx()),
+            const WebContainer(
+                maxWidth: Breakpoint.sm, child: CupertinoDialogEx()),
+            const WebContainer(
+                maxWidth: Breakpoint.sm, child: AndroidDialogEx()),
+            const WebContainer(
+                maxWidth: Breakpoint.sm, child: CupertinoModalEx()),
+            const WebContainer(
+                maxWidth: Breakpoint.sm, child: AboutListTileEx()),
+            // const IndicatorEx(),
+            // const ListWheelScrollViewEx(),
+          ],
+        ),
       ),
     );
   }

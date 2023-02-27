@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
-import 'package:tiktok_clone/features/authentication/screens/sign_up_screen.dart';
+import 'package:tiktok_clone/features/settings/screens/setting_screen.dart';
 import 'package:tiktok_clone/styles/text_theme.dart';
 
 void main() async {
@@ -36,6 +37,18 @@ class TickTokApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'TikTok Clone',
+      // 번역 설정
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      // 지원 언어 => https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry
+      supportedLocales: const [
+        Locale('ko'), // kr로 절대 쓰지 말 것
+        Locale('en'),
+        Locale('es'),
+      ],
       themeMode: ThemeMode.system, // 다크/라이트 모드 - ThemeMode.system -> 시스템 설정에 따름
 
       /*
@@ -123,8 +136,9 @@ class TickTokApp extends StatelessWidget {
           iconColor: Colors.white,
         ),
       ),
-      home: const SignUpScreen(),
+      // home: const SignUpScreen(),
       // home: const MainNavigationScreen(),
+      home: const SettingScreen(),
       // home: const LayoutBuilderCodeLab(), // 메인레이아웃 위젯 역할 확인
       // home: const ActivityScreen(),
       // home: const InterestsScreen(),

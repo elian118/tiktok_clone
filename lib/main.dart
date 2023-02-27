@@ -1,4 +1,13 @@
 import 'package:flutter/material.dart';
+/*
+번역본 적용 방법
+  1) 루트 > l10n.yaml 생성
+  2) lib/intl/intl_en.arb, intl_ko.arb 생성
+  3) 터미널에서 flutter gen-l10n 실행 > 관련 번역본 매핑 다트 파일 3종 생성 후 삽입
+   > dart_tool/flutter_gen/gen_l10n/
+       intl_generated.dart, intl_generated_en.dart, intl_generated_ko.dart
+*/
+import 'package:flutter_gen/gen_l10n/intl_generated.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
 import 'package:tiktok_clone/features/settings/screens/setting_screen.dart';
@@ -39,6 +48,8 @@ class TickTokApp extends StatelessWidget {
       title: 'TikTok Clone',
       // 번역 설정
       localizationsDelegates: const [
+        // 터미널에서 flutter gen-l10n 실행 > intl_generated.dart 파일 생성 후 인식 가능
+        AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
@@ -140,9 +151,6 @@ class TickTokApp extends StatelessWidget {
       // home: const MainNavigationScreen(),
       home: const SettingScreen(),
       // home: const LayoutBuilderCodeLab(), // 메인레이아웃 위젯 역할 확인
-      // home: const ActivityScreen(),
-      // home: const InterestsScreen(),
-      // home: const TutorialScreen(),
     );
   }
 }

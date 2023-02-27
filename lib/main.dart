@@ -4,7 +4,11 @@ import 'package:flutter/material.dart';
   1) 루트 > l10n.yaml 생성
   2) lib/intl/intl_en.arb, intl_ko.arb 생성
   3) 터미널에서 flutter gen-l10n 실행 > 관련 번역본 매핑 다트 파일 3종 생성 후 삽입
-   > dart_tool/flutter_gen/gen_l10n/
+    ❯ flutter gen-l10n
+    Because l10n.yaml exists, the options defined there will be used instead.
+    To use the command line arguments, delete the l10n.yaml file in the Flutter project.
+
+   > 생성 > dart_tool/flutter_gen/gen_l10n/
        intl_generated.dart, intl_generated_en.dart, intl_generated_ko.dart
 */
 import 'package:flutter_gen/gen_l10n/intl_generated.dart';

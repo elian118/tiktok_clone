@@ -27,8 +27,7 @@ class CustomNavigation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = isDarkMode(context);
-    return BottomAppBar(
-      elevation: 0,
+    return Container(
       color: selectedIndex == 0 || isDark ? Colors.black : Colors.white,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

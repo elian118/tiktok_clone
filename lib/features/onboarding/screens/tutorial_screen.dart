@@ -73,7 +73,13 @@ class _TutorialScreenState extends State<TutorialScreen> {
             ),
           ),
         ),
-        bottomNavigationBar: BottomAppBar(
+        bottomNavigationBar: Container(
+          padding: EdgeInsets.only(
+            top: Sizes.size32,
+            bottom: Sizes.size32,
+            left: isWebScreen ? 275 : Sizes.size24,
+            right: isWebScreen ? 275 : Sizes.size24,
+          ),
           color: isDarkMode(context) ? Colors.black : Colors.white,
           child: Padding(
             padding: const EdgeInsets.symmetric(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
-import 'package:tiktok_clone/features/main_navigation/screens/main_navigation_screen.dart';
+import 'package:tiktok_clone/features/authentication/screens/sign_up_screen.dart';
 import 'package:tiktok_clone/styles/text_theme.dart';
 
 void main() async {
@@ -39,6 +39,7 @@ class TickTokApp extends StatelessWidget {
       themeMode: ThemeMode.system, // 다크/라이트 모드 - ThemeMode.system -> 시스템 설정에 따름
       // 전역 테마 설정
       theme: ThemeData(
+        useMaterial3: true, // 매터리얼3 스타일 이관 여부
         brightness: Brightness.light, // 기본 밝기 - 라이트 모드에 따름
         // textTheme: textTheme,
         textTheme: textTheme3,
@@ -54,6 +55,7 @@ class TickTokApp extends StatelessWidget {
         ),
         // 앱바 테마 전역 설정
         appBarTheme: const AppBarTheme(
+          surfaceTintColor: Colors.white,
           foregroundColor: Colors.black, // 글씨 색
           backgroundColor: Colors.white,
           elevation: 0,
@@ -77,6 +79,7 @@ class TickTokApp extends StatelessWidget {
       ),
       // 다크모드 테마
       darkTheme: ThemeData(
+        useMaterial3: true, // 매터리얼3 스타일 이관 여부
         brightness: Brightness.dark, // 기본 밝기 - 다크 모드에 따름 -> 텍스트 컬러 자동 반전
         // textTheme: textTheme,
         textTheme: textTheme3dark,
@@ -86,11 +89,21 @@ class TickTokApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.black,
         primaryColor: const Color(0xFFE9435A),
         appBarTheme: AppBarTheme(
+          surfaceTintColor: Colors.grey.shade900,
           backgroundColor: Colors.grey.shade900,
+          titleTextStyle: const TextStyle(
+            color: Colors.white,
+            fontSize: Sizes.size16 + Sizes.size2, // Sizes.size18
+            fontWeight: FontWeight.w600,
+          ),
+          actionsIconTheme: IconThemeData(color: Colors.grey.shade100),
+          iconTheme: IconThemeData(color: Colors.grey.shade100),
         ),
         bottomAppBarTheme: BottomAppBarTheme(color: Colors.grey.shade900),
-        tabBarTheme: const TabBarTheme(
+        tabBarTheme: TabBarTheme(
+          labelColor: Colors.white,
           indicatorColor: Colors.white,
+          unselectedLabelColor: Colors.grey.shade700,
         ),
         iconTheme: IconThemeData(
           color: Colors.grey.shade500,
@@ -99,8 +112,8 @@ class TickTokApp extends StatelessWidget {
           iconColor: Colors.white,
         ),
       ),
-      // home: const SignUpScreen(),
-      home: const MainNavigationScreen(),
+      home: const SignUpScreen(),
+      // home: const MainNavigationScreen(),
       // home: const LayoutBuilderCodeLab(), // 메인레이아웃 위젯 역할 확인
       // home: const ActivityScreen(),
       // home: const InterestsScreen(),

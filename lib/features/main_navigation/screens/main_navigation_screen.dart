@@ -145,7 +145,10 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
               ],
             ),
       bottomNavigationBar: !isWebScreen(context)
-          ? BottomAppBar(
+          ? Container(
+              padding: const EdgeInsets.only(
+                bottom: Sizes.size32,
+              ),
               color:
                   _selectedIndex == 0 || isDark ? Colors.black : Colors.white,
               child: Padding(

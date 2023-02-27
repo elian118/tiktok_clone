@@ -134,11 +134,14 @@ class _VideoCommentsState extends State<VideoComments> {
               Positioned(
                 bottom: 0, // 키보드 등장 시 키보드 바로 위에 붙어 이동
                 width: size.width, // 포지션 위젯 너비를 화면너비로 명시 -> 에러 방지
-                child: BottomAppBar(
+                child: Container(
+                  color: Theme.of(context).scaffoldBackgroundColor,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: Sizes.size16,
-                      vertical: Sizes.size10,
+                    padding: const EdgeInsets.only(
+                      left: Sizes.size16,
+                      right: Sizes.size16,
+                      top: Sizes.size10,
+                      bottom: Sizes.size24,
                     ),
                     child: Row(
                       children: [

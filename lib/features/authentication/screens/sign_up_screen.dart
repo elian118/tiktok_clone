@@ -115,13 +115,16 @@ class SignUpScreen extends StatelessWidget {
               ),
             ),
           ),
-          bottomNavigationBar: BottomAppBar(
+          // 매터리얼3 디자인은 BottomNavigationBar 를 사용하지 않으므로, Container 를 대신 사용한다.
+          bottomNavigationBar: Container(
             color: isDarkMode(context)
                 ? null // null -> 기본 다크테마 지정컬러 적용
                 : Colors.grey.shade50,
-            elevation: 1,
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: Sizes.size32),
+              padding: const EdgeInsets.only(
+                top: Sizes.size32,
+                bottom: Sizes.size64,
+              ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

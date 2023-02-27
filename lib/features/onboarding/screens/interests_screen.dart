@@ -99,12 +99,11 @@ class _InterestsScreenState extends State<InterestsScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: BottomAppBar(
-        elevation: 2,
+      bottomNavigationBar: Container(
         child: Padding(
           padding: EdgeInsets.only(
-            top: Sizes.size16,
-            bottom: Sizes.size40,
+            top: Sizes.size32,
+            bottom: Sizes.size32,
             left: isWebScreen ? 275 : Sizes.size24,
             right: isWebScreen ? 275 : Sizes.size24,
           ),

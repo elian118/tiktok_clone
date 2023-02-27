@@ -89,7 +89,9 @@ class TickTokApp extends StatelessWidget {
           backgroundColor: Colors.grey.shade900,
         ),
         bottomAppBarTheme: BottomAppBarTheme(color: Colors.grey.shade900),
-        tabBarTheme: const TabBarTheme(indicatorColor: Colors.white),
+        tabBarTheme: const TabBarTheme(
+          indicatorColor: Colors.white,
+        ),
         iconTheme: IconThemeData(
           color: Colors.grey.shade500,
         ),

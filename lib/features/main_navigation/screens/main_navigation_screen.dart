@@ -61,7 +61,8 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
       // 다른 위젯에 있던 이미지나 영상의 fit 을 그대로 유지(기본설정)하는 설정 제거
       // 기본(true)일 경우, bottomNavigationBar 를 열었을 때 영상이 위아래로 찌그러진다.
       resizeToAvoidBottomInset: false,
-      backgroundColor: _selectedIndex == 0 ? Colors.black : Colors.white,
+      backgroundColor:
+          _selectedIndex == 0 || isDark ? Colors.black : Colors.white,
       // 네비게이션 선택(_selectedIndex 변경)에 따른 body 랜더링은 개발 목적에 따라, 아래 둘 중 하나 선택
       // 1) 새로 빌드하고 기존 위젯은 제거하는 방식 -> 기존 위젯 state 초기화
       //    body: screens.elementAt(_selectedIndex), // screens[_selectedIndex],

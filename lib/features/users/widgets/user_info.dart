@@ -28,6 +28,7 @@ class UserInfo extends StatelessWidget {
           )
         : Column(
             children: const [
+              Gaps.v20,
               UserProfileHeader(),
               Gaps.v14,
               // 부모 위젯 크기에 따른 상대적 사이즈를 지정할 수 있는 Box 위젯

@@ -87,7 +87,7 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
             ),
             Gaps.v28,
             GestureDetector(
-              onTap: () => Utils.navPushAndRemoveUntil(
+              onTap: () => navPushAndRemoveUntil(
                   context, const InterestsScreen(), (route) => false),
               child: const FormButton(disabled: false),
             ), // 위젯 추출 v.2

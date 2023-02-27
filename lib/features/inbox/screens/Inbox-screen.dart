@@ -12,19 +12,19 @@ class InboxScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        elevation: Utils.isWebScreen(context) ? 0 : 1,
+        elevation: isWebScreen(context) ? 0 : 1,
         title: const Text('Inbox'),
         actions: [
           IconButton(
             icon: const FaIcon(FontAwesomeIcons.paperPlane),
-            onPressed: () => Utils.navPush(context, const ChatScreen()),
+            onPressed: () => navPush(context, const ChatScreen()),
           ),
         ],
       ),
       body: ListView(
         children: [
           ListTile(
-            onTap: () => Utils.navPush(context, const ActivityScreen()),
+            onTap: () => navPush(context, const ActivityScreen()),
             title: const Text(
               'Activity',
               style: TextStyle(

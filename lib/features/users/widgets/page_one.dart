@@ -28,7 +28,7 @@ class PageOne extends StatelessWidget {
           itemCount: viewItemCounts,
           padding: EdgeInsets.zero,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: Utils.isWebScreen(context) ? 5 : 3,
+            crossAxisCount: isWebScreen(context) ? 5 : 3,
             crossAxisSpacing: Sizes.size2,
             mainAxisSpacing: Sizes.size2,
             childAspectRatio: 9 / 14, // 그리드 비율

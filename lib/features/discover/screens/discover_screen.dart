@@ -52,7 +52,7 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final width = Utils.getWinWidth(context);
+    final width = getWinWidth(context);
 
     return DefaultTabController(
       initialIndex: 0,
@@ -60,7 +60,7 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          elevation: Utils.isWebScreen(context) ? 0 : 1, // 앱바와 바디 사이 구분선 효과
+          elevation: isWebScreen(context) ? 0 : 1, // 앱바와 바디 사이 구분선 효과
           // ConstrainedBox -> 최대/최소 크기를 제한할 수 있는 박스
           //  참고. Container -> constraints 에서 동일한 속성 설정 가능(기능 동일)
           title: ConstrainedBox(
@@ -76,7 +76,7 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
           ),
           // PreferredSizeWidget bottom -> 자식의 크기를 제한하지 않는다. TabBar 가 대표적
           bottom: TabBar(
-            onTap: (value) => Utils.focusout(context),
+            onTap: (value) => focusout(context),
             splashFactory: NoSplash.splashFactory, // 클릭 시 기본 번짐 효과 제거
             padding: const EdgeInsets.symmetric(horizontal: Sizes.size16),
             isScrollable: true,

@@ -27,11 +27,11 @@ class CupertinoModalEx extends StatelessWidget {
             actions: [
               CupertinoActionSheetAction(
                 isDefaultAction: true, // 기본 선택 효과 -> 폰트 굵게
-                onPressed: () => Utils.navPop(context),
+                onPressed: () => navPop(context),
                 child: const Text('Not log out'),
               ),
               CupertinoActionSheetAction(
-                onPressed: () => Utils.navPop(context),
+                onPressed: () => navPop(context),
                 isDestructiveAction: true, // 폰트에 빨간색 입혀짐
                 child: const Text('Yes, Please.'),
               ),

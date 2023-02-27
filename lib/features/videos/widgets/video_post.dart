@@ -240,7 +240,7 @@ class _VideoPostState extends State<VideoPost>
             bottom: 20,
             left: 10,
             child: SizedBox(
-              width: Utils.getWinWidth(context) - 100,
+              width: getWinWidth(context) - 100,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

@@ -43,7 +43,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     });
   }
 
-  void _videoPost() => Utils.navPush(
+  void _videoPost() => navPush(
         context,
         Scaffold(
           appBar: AppBar(
@@ -66,7 +66,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
       //    body: screens.elementAt(_selectedIndex), // screens[_selectedIndex],
       // 2) 새로 빌드하되, 기존 위젯은 잠시 화면에서 감추는 방식 -> 기존 위젯 state 유지
       //    즉, 현재 스크롤 위치, 입력중이던 텍스트 등 유지 가능 -> 단, OffStage() 늘수록 메모리 부담 증가
-      body: Utils.isWebScreen(context)
+      body: isWebScreen(context)
           ? Row(
               children: [
                 NavigationRail(
@@ -141,7 +141,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                   )
               ],
             ),
-      bottomNavigationBar: !Utils.isWebScreen(context)
+      bottomNavigationBar: !isWebScreen(context)
           ? BottomAppBar(
               color: _selectedIndex == 0 ? Colors.black : Colors.white,
               child: Padding(

@@ -52,7 +52,7 @@ class SignUpScreen extends StatelessWidget {
                       icon: const FaIcon(FontAwesomeIcons.user),
                       text: 'Use email & password',
                       onTapHandler: () =>
-                          Utils.navPush(context, const UsernameScreen()),
+                          navPush(context, const UsernameScreen()),
                     ),
                     Gaps.v16,
                     const AuthButton(
@@ -79,7 +79,7 @@ class SignUpScreen extends StatelessWidget {
                             icon: const FaIcon(FontAwesomeIcons.user),
                             text: 'Use email & password',
                             onTapHandler: () =>
-                                Utils.navPush(context, const UsernameScreen()),
+                                navPush(context, const UsernameScreen()),
                           ),
                         ),
                         Gaps.h16,
@@ -128,7 +128,7 @@ class SignUpScreen extends StatelessWidget {
                   const Text('Already have an account?'),
                   Gaps.h5,
                   GestureDetector(
-                    onTap: () => Utils.navPush(context, const LoginScreen()),
+                    onTap: () => navPush(context, const LoginScreen()),
                     child: Text(
                       'Log in',
                       style: TextStyle(

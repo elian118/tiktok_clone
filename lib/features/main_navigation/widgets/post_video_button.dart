@@ -38,7 +38,7 @@ class _PostVideoButtonState extends State<PostVideoButton> {
       child: GestureDetector(
         onLongPressUp: widget.onLongPressUp,
         onLongPressDown: widget.onLongPressDown,
-        onTap: () => Utils.navPush(
+        onTap: () => navPush(
           context,
           Scaffold(
             appBar: AppBar(

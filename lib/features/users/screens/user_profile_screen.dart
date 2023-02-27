@@ -30,8 +30,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               title: const Text('Profile'),
               actions: [
                 IconButton(
-                  onPressed: () =>
-                      Utils.navPush(context, const SettingScreen()),
+                  onPressed: () => navPush(context, const SettingScreen()),
                   icon: const FaIcon(FontAwesomeIcons.gear),
                 ),
               ],

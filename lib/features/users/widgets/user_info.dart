@@ -14,7 +14,7 @@ class UserInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Utils.isWebScreen(context)
+    return isWebScreen(context)
         ? WebContainer(
             padding: const EdgeInsets.symmetric(vertical: Sizes.size96),
             maxWidth: Breakpoint.md,

@@ -50,7 +50,7 @@ class _ChatScreenState extends State<ChatScreen> {
   ListTile _makeTile(int index) {
     return ListTile(
       onLongPress: () => _deleteItem(index),
-      onTap: () => Utils.navPush(context, const ChatDetailScreen()),
+      onTap: () => navPush(context, const ChatDetailScreen()),
       key: UniqueKey(), // 유니크 키 적용 => 정확한 요소별 매핑 완료 -> 화면에 보인다.
       leading: const CircleAvatar(
         radius: 30,

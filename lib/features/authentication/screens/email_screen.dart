@@ -49,14 +49,14 @@ class _EmailScreenState extends State<EmailScreen> {
 
   void _onSubmit() {
     if (_email.isEmpty || _isEmailValid() != null) return;
-    Utils.navPush(context, const PasswordScreen());
+    navPush(context, const PasswordScreen());
   }
 
   @override
   Widget build(BuildContext context) {
     // EmailScreen 전체를 GestureDetector 로 감싸 텍스트인풋 포커스 아웃 적용
     return GestureDetector(
-      onTap: () => Utils.focusout(context),
+      onTap: () => focusout(context),
       child: Scaffold(
         appBar: AppBar(
           elevation: 0,
@@ -85,7 +85,7 @@ class _EmailScreenState extends State<EmailScreen> {
                 autocorrect: false, // 키보드 상단 자동완성 기능 제거
                 // 완료(done) 키 클릭 시, 실행할 콜백 설정
                 onEditingComplete: () =>
-                    Utils.navPush(context, const PasswordScreen()),
+                    navPush(context, const PasswordScreen()),
                 // 포커스 상태 밑줄 색상을 바꾸려면 enabledBorder, focusedBorder 두 속성을 모두 설정해야 한다.
                 decoration: InputDecoration(
                   hintText: 'Email',

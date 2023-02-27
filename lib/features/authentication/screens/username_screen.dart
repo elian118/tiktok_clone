@@ -40,7 +40,7 @@ class _UsernameScreenState extends State<UsernameScreen> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Utils.focusout(context),
+      onTap: () => focusout(context),
       child: Scaffold(
         appBar: AppBar(
           elevation: 0,
@@ -91,7 +91,7 @@ class _UsernameScreenState extends State<UsernameScreen> {
               Gaps.v28,
               // FormButton(username: _username) // 위젯 추출 v.1
               GestureDetector(
-                onTap: () => Utils.navPush(context, const EmailScreen()),
+                onTap: () => navPush(context, const EmailScreen()),
                 child: FormButton(disabled: _username.isEmpty),
               ) // 위젯 추출 v.2
             ],

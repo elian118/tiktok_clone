@@ -72,7 +72,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
         ),
       ),
       body: GestureDetector(
-        onTap: () => Utils.focusout(context),
+        onTap: () => focusout(context),
         child: Container(
           color: Colors.grey.shade100,
           child: Stack(
@@ -128,7 +128,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
               ),
               Positioned(
                 bottom: 0,
-                width: Utils.getWinWidth(context),
+                width: getWinWidth(context),
                 child: BottomAppBar(
                   elevation: 0,
                   color: Colors.grey.shade100,

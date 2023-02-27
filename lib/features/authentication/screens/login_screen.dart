@@ -39,8 +39,7 @@ class LoginScreen extends StatelessWidget {
                   ),
                   Gaps.v40,
                   GestureDetector(
-                    onTap: () =>
-                        Utils.navPush(context, const LoginFormScreen()),
+                    onTap: () => navPush(context, const LoginFormScreen()),
                     child: const AuthButton(
                       // font_awesome_flutter 패키지 설치 이후 사용 가능
                       icon: FaIcon(FontAwesomeIcons.user),
@@ -73,7 +72,7 @@ class LoginScreen extends StatelessWidget {
                   const Text("Don't have an account?"),
                   Gaps.h5,
                   GestureDetector(
-                    onTap: () => Utils.navPop(context),
+                    onTap: () => navPop(context),
                     child: Text(
                       'Sign up',
                       style: TextStyle(

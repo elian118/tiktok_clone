@@ -21,11 +21,11 @@ class AndroidDialogEx extends StatelessWidget {
             content: const Text("Please don't go"),
             actions: [
               IconButton(
-                onPressed: () => Utils.navPop(context),
+                onPressed: () => navPop(context),
                 icon: const FaIcon(FontAwesomeIcons.car),
               ),
               TextButton(
-                onPressed: () => Utils.navPop(context),
+                onPressed: () => navPop(context),
                 child: const Text('Yes'),
               ),
             ],

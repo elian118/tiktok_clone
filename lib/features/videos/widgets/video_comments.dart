@@ -18,11 +18,11 @@ class _VideoCommentsState extends State<VideoComments> {
   final ScrollController _scrollController = ScrollController();
 
   void _onClosePressed() {
-    Utils.navPop(context);
+    navPop(context);
   }
 
   void _onStopWriting() {
-    Utils.focusout(context);
+    focusout(context);
     setState(() {
       _isWriting = false;
     });

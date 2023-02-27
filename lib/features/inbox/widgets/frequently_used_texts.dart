@@ -13,7 +13,7 @@ class FrequentlyUsedTexts extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: Utils.getWinWidth(context) - 30,
+      width: getWinWidth(context) - 30,
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(

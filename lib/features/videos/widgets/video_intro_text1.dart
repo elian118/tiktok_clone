@@ -34,7 +34,7 @@ class VideoIntroText1 extends StatelessWidget {
               0,
               _isSeeMore
                   ? _descText.length
-                  : (Utils.getWinWidth(context) * 0.75 / 9).ceil(),
+                  : (getWinWidth(context) * 0.75 / 9).ceil(),
             )}${_isSeeMore ? '' : '...'}',
             // 'Watching wild flowers',
           ),

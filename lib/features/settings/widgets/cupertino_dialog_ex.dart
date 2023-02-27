@@ -20,11 +20,11 @@ class CupertinoDialogEx extends StatelessWidget {
             content: const Text("Please don't go"),
             actions: [
               CupertinoDialogAction(
-                onPressed: () => Utils.navPop(context),
+                onPressed: () => navPop(context),
                 child: const Text('No'),
               ),
               CupertinoDialogAction(
-                onPressed: () => Utils.navPop(context),
+                onPressed: () => navPop(context),
                 isDestructiveAction: true, // 폰트에 빨간색 입혀짐
                 child: const Text('Yes'),
               ),

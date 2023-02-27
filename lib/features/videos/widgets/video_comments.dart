@@ -37,6 +37,7 @@ class _VideoCommentsState extends State<VideoComments> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size; // 미디어쿼리 사이즈는 build() 직후 얻을 수 있다.
+    final isDark = isDarkMode(context);
 
     return Container(
       // 화면높이 70% 차지
@@ -49,8 +50,9 @@ class _VideoCommentsState extends State<VideoComments> {
         ),
       ),
       child: Scaffold(
-        backgroundColor: Colors.grey.shade50,
+        backgroundColor: isDark ? null : Colors.grey.shade50,
         appBar: AppBar(
+          backgroundColor: isDark ? null : Colors.grey.shade50,
           automaticallyImplyLeading: false, // 기본 좌상단 이동 화살표 제거
           title: const Text('22796 comments'),
           // 우상단 액션 버튼 설정
@@ -80,11 +82,12 @@ class _VideoCommentsState extends State<VideoComments> {
                   itemBuilder: (context, index) => Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const CircleAvatar(
+                      CircleAvatar(
                         radius: 18,
-                        foregroundColor: Colors.white,
-                        foregroundImage: NetworkImage(foregroundImage),
-                        child: Text('광회'),
+                        foregroundColor: isDark ? Colors.black : Colors.white,
+                        foregroundImage: const NetworkImage(foregroundImage),
+                        backgroundColor: isDark ? Colors.grey.shade500 : null,
+                        child: const Text('광회'),
                       ),
                       Gaps.h10,
                       Expanded(
@@ -132,7 +135,6 @@ class _VideoCommentsState extends State<VideoComments> {
                 bottom: 0, // 키보드 등장 시 키보드 바로 위에 붙어 이동
                 width: size.width, // 포지션 위젯 너비를 화면너비로 명시 -> 에러 방지
                 child: BottomAppBar(
-                  color: Colors.white,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: Sizes.size16,
@@ -167,7 +169,9 @@ class _VideoCommentsState extends State<VideoComments> {
                                   borderSide: BorderSide.none,
                                 ),
                                 filled: true,
-                                fillColor: Colors.grey.shade200,
+                                fillColor: isDark
+                                    ? Colors.grey.shade800
+                                    : Colors.grey.shade200,
                                 contentPadding: const EdgeInsets.symmetric(
                                   horizontal: Sizes.size12,
                                 ),
@@ -181,17 +185,20 @@ class _VideoCommentsState extends State<VideoComments> {
                                     children: [
                                       FaIcon(
                                         FontAwesomeIcons.at,
-                                        color: Colors.grey.shade900,
+                                        color:
+                                            Theme.of(context).iconTheme.color,
                                       ),
                                       Gaps.h14,
                                       FaIcon(
                                         FontAwesomeIcons.gift,
-                                        color: Colors.grey.shade900,
+                                        color:
+                                            Theme.of(context).iconTheme.color,
                                       ),
                                       Gaps.h14,
                                       FaIcon(
                                         FontAwesomeIcons.faceSmile,
-                                        color: Colors.grey.shade900,
+                                        color:
+                                            Theme.of(context).iconTheme.color,
                                       ),
                                       Gaps.h14,
                                       if (_isWriting)

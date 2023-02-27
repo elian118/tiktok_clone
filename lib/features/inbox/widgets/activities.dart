@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/common/constants/gaps.dart';
 import 'package:tiktok_clone/common/constants/rawData/inboxes.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
+import 'package:tiktok_clone/utils/utils.dart';
 
 class Activities extends StatelessWidget {
   final void Function(String) onDismissed;
@@ -22,6 +23,8 @@ class Activities extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = isDarkMode(context);
+
     return Stack(
       children: [
         ListView(
@@ -74,16 +77,17 @@ class Activities extends StatelessWidget {
                     width: Sizes.size52,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: Colors.white,
+                      color: isDark ? Colors.grey.shade800 : Colors.white,
                       border: Border.all(
-                        color: Colors.grey.shade400,
+                        color: isDark
+                            ? Colors.grey.shade800
+                            : Colors.grey.shade400,
                         width: Sizes.size1,
                       ),
                     ),
                     child: const Center(
                       child: FaIcon(
                         FontAwesomeIcons.bell,
-                        color: Colors.black,
                       ),
                     ),
                   ),
@@ -91,9 +95,9 @@ class Activities extends StatelessWidget {
                     text: TextSpan(
                       text: "Accounts updates:",
                       // RichText 기본 스타일
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontWeight: FontWeight.w600,
-                        color: Colors.black,
+                        color: isDark ? null : Colors.black,
                         fontSize: Sizes.size16,
                       ),
                       children: [
@@ -131,9 +135,9 @@ class Activities extends StatelessWidget {
         SlideTransition(
           position: panelAnimation,
           child: Container(
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
+            decoration: BoxDecoration(
+              color: Theme.of(context).appBarTheme.backgroundColor,
+              borderRadius: const BorderRadius.only(
                 bottomLeft: Radius.circular(Sizes.size4),
                 bottomRight: Radius.circular(Sizes.size4),
               ),
@@ -145,16 +149,14 @@ class Activities extends StatelessWidget {
                   ListTile(
                     title: Row(
                       children: [
-                        FaIcon(
+                        Icon(
                           tab['icon'],
-                          color: Colors.black,
                           size: Sizes.size16,
                         ),
                         Gaps.h20,
                         Text(
                           tab['title'],
                           style: const TextStyle(
-                            color: Colors.black,
                             fontWeight: FontWeight.bold,
                           ),
                         ),

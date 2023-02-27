@@ -61,9 +61,10 @@ class _InterestsScreenState extends State<InterestsScreen> {
             controller: _scrollController,
             child: Padding(
               padding: const EdgeInsets.only(
-                  left: Sizes.size24,
-                  right: Sizes.size24,
-                  bottom: Sizes.size16),
+                left: Sizes.size24,
+                right: Sizes.size24,
+                bottom: Sizes.size16,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

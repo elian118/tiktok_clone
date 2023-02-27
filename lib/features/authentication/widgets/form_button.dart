@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
+import 'package:tiktok_clone/utils/utils.dart';
 
 class FormButton extends StatelessWidget {
   // 부모 위젯 email_screen.dart 참고
@@ -32,7 +33,9 @@ class FormButton extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(Sizes.size5),
           color: disabled // _username.isEmpty
-              ? Theme.of(context).disabledColor
+              ? isDarkMode(context)
+                  ? Colors.grey.shade800
+                  : Theme.of(context).disabledColor
               : Theme.of(context).primaryColor,
         ),
         // 텍스트 전환 효과를 AnimatedContainer 주기에 맞춤

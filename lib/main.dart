@@ -41,7 +41,7 @@ class TickTokApp extends StatelessWidget {
       theme: ThemeData(
         brightness: Brightness.light, // 기본 밝기 - 라이트 모드에 따름
         // textTheme: textTheme,
-        textTheme: textTheme2,
+        textTheme: textTheme3,
         scaffoldBackgroundColor: Colors.white, // 스카폴드 배경
         // bottomAppBarTheme: BottomAppBarTheme(color: Colors.grey.shade50),
         primaryColor: const Color(0xFFE9435A), // 주 컬러
@@ -67,9 +67,12 @@ class TickTokApp extends StatelessWidget {
       darkTheme: ThemeData(
         brightness: Brightness.dark, // 기본 밝기 - 다크 모드에 따름 -> 텍스트 컬러 자동 반전
         // textTheme: textTheme,
-        textTheme: textTheme2dark,
+        textTheme: textTheme3dark,
         scaffoldBackgroundColor: Colors.black,
         primaryColor: const Color(0xFFE9435A),
+        appBarTheme: AppBarTheme(
+          backgroundColor: Colors.grey.shade900,
+        ),
         bottomAppBarTheme: BottomAppBarTheme(color: Colors.grey.shade900),
       ),
       home: const SignUpScreen(),

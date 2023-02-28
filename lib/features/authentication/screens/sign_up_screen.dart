@@ -59,7 +59,7 @@ class SignUpScreen extends StatelessWidget {
                       icon: const FaIcon(FontAwesomeIcons.user),
                       text: S.of(context).emailPasswordButton,
                       onTapHandler: () =>
-                          navPush(context, const UsernameScreen()),
+                          navPagePush(context, const UsernameScreen()),
                     ),
                     Gaps.v16,
                     AuthButton(

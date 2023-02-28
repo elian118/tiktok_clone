@@ -20,6 +20,47 @@ void navPush(
   }
 }
 
+// 화면 이동(PageRouteBuilder 방식) => 애니메이션 커스더마이징 가능
+void navPagePush(
+  BuildContext context,
+  Widget widget, [
+  bool? isFullScreenDialog,
+]) async {
+  // 화면(PageRoute 대상)을 추가하면, 추가된 화면이 바로 위에 쌓여 마치 스크린을 이동한 것처럼 보이게 됨.
+  final result = await Navigator.of(context).push(
+    PageRouteBuilder(
+      transitionDuration: const Duration(milliseconds: 500),
+      reverseTransitionDuration:
+          const Duration(milliseconds: 500), // 뒤로가기 작동 애니메이션 시간
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        // 위치 이동 애니메이션
+        final offsetAnimation = Tween(
+          begin: const Offset(1, 0),
+          end: Offset.zero,
+        ).animate(animation);
+        // 투명도 애니메이션
+        final opacityAnimation = Tween(
+          begin: 0.5,
+          end: 1.0,
+        ).animate(animation);
+
+        return SlideTransition(
+          position: offsetAnimation,
+          child: FadeTransition(
+            opacity: opacityAnimation,
+            child: child,
+          ),
+        );
+      },
+      pageBuilder: (context, animation, secondaryAnimation) => widget,
+      fullscreenDialog: isFullScreenDialog ?? false, // 꽉찬 다이얼로그로 표시 여부 설정
+    ),
+  );
+  if (kDebugMode) {
+    print(result);
+  }
+}
+
 // 조건부 화면 이동 -> 세 번째 인자(조건 콜백)을 생략하면 navPush 메서드와 같다.
 void navPushAndRemoveUntil(
   BuildContext context,

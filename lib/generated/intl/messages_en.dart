@@ -22,9 +22,15 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m0(nameOfTheApp) => "Continue with ${nameOfTheApp}";
 
-  static String m1(nameOfTheApp) => "login into your ${nameOfTheApp} account";
+  static String m1(gender) =>
+      "Log in ${Intl.gender(gender, female: 'madam', male: 'sir', other: 'human')}";
 
-  static String m2(nameOfTheApp) => "Sign up for ${nameOfTheApp}";
+  static String m2(nameOfTheApp) => "login into your ${nameOfTheApp} account";
+
+  static String m3(videoCount) =>
+      "Create a profile, follow other accounts, make your own ${Intl.plural(videoCount, zero: 'no videos', one: 'video', other: 'videos')}, and more.";
+
+  static String m4(nameOfTheApp) => "Sign up for ${nameOfTheApp}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -39,10 +45,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Continue with Facebook"),
         "googleButton":
             MessageLookupByLibrary.simpleMessage("Continue with Google"),
-        "logIn": MessageLookupByLibrary.simpleMessage("Log in"),
-        "loginTitle": m1,
-        "signUpSubtitle": MessageLookupByLibrary.simpleMessage(
-            "Create a profile, follow other accounts, make your own videos, and more."),
-        "signUpTitle": m2
+        "logIn": m1,
+        "loginTitle": m2,
+        "signUpSubtitle": m3,
+        "signUpTitle": m4
       };
 }

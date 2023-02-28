@@ -47,7 +47,7 @@ class SignUpScreen extends StatelessWidget {
                   Opacity(
                     opacity: 0.7, // 텍스트는 불투명도 설정이 테마별 색상을 직접 입력하는 방법보다 더 간편
                     child: Text(
-                      S.of(context).signUpSubtitle,
+                      S.of(context).signUpSubtitle(13944),
                       style: Theme.of(context).textTheme.titleMedium,
                       textAlign: TextAlign.center,
                     ),
@@ -146,7 +146,7 @@ class SignUpScreen extends StatelessWidget {
                   GestureDetector(
                     onTap: () => navPush(context, const LoginScreen()),
                     child: Text(
-                      S.of(context).logIn,
+                      S.of(context).logIn('x'),
                       style: TextStyle(
                         color: Theme.of(context).primaryColor,
                         fontWeight: FontWeight.w600,

@@ -14,6 +14,8 @@ class TickTokApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // 강제로 언어설정 바꾸기 -> 단, 자식 위젯에는 영향이 미치지 않는다.
+    // S.load(const Locale('en'));
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'TikTok Clone',

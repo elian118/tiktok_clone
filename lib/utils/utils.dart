@@ -29,8 +29,8 @@ bool isKorean(BuildContext context) =>
 // 1) 웹앱 호환 공통 페이지 이동 Navigator2 방식 유틸 - 최신 방식(추천)
 
 // 화면 이동 -> 스택 위에 또 다른 스택을 쌓는다.
-void goRoutePush(BuildContext context, String location) =>
-    context.push(location);
+void goRoutePush(BuildContext context, String location, {Object? extra}) =>
+    context.push(location, extra: extra);
 
 // 화면 이동 => 기존 스택과의 관계를 끊고 원하는 화면 위치로 이동시킨다.
 //  앱이라면 이동한 화면 앱바의 뒤로가기 버튼이 사라지고 context.pop() 사용 불가, 웹 뒤로가기는 사용 가능

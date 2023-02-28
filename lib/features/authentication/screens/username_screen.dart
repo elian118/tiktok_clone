@@ -92,10 +92,15 @@ class _UsernameScreenState extends State<UsernameScreen> {
               Gaps.v28,
               // FormButton(username: _username) // 위젯 추출 v.1
               GestureDetector(
-                onTap: () => routePush(
+                // onTap: () => routePush(
+                //   context,
+                //   EmailScreen.routeName,
+                //   args: EmailScreenParams(userName: _username),
+                // ),
+                onTap: () => goRoutePush(
                   context,
                   EmailScreen.routeName,
-                  args: EmailScreenParams(userName: _username),
+                  extra: EmailScreenArgs(username: _username),
                 ),
                 child: FormButton(disabled: _username.isEmpty),
               ) // 위젯 추출 v.2

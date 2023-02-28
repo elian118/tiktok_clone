@@ -7,5 +7,5 @@ final namedRoutes = {
   SignUpScreen.routeName: (context) => const SignUpScreen(),
   UsernameScreen.routeName: (context) => const UsernameScreen(),
   LoginScreen.routeName: (context) => const LoginScreen(),
-  EmailScreen.routeName: (context) => const EmailScreen(),
+  EmailScreen.routeName: (context) => const EmailScreen(username: ''),
 };

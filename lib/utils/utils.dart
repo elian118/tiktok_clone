@@ -1,5 +1,5 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:tiktok_clone/common/constants/enums/breakpoints.dart';
 
 // 모든 네비게이터는 스택(Stack) 구조이며, 밑에서부터 위로 겹쳐 쌓는 형태로 렌더링 -> Flutter Outline 확인
 // 화면 이동(실제로는 화면 추가)
@@ -7,14 +7,17 @@ void navPush(
   BuildContext context,
   Widget widget, [
   bool? isFullScreenDialog,
-]) {
+]) async {
   // 화면(PageRoute 대상)을 추가하면, 추가된 화면이 바로 위에 쌓여 마치 스크린을 이동한 것처럼 보이게 됨.
-  Navigator.of(context).push(
+  final result = await Navigator.of(context).push(
     MaterialPageRoute(
       builder: (context) => widget,
       fullscreenDialog: isFullScreenDialog ?? false, // 꽉찬 다이얼로그로 표시 여부 설정
     ),
   );
+  if (kDebugMode) {
+    print(result);
+  }
 }
 
 // 조건부 화면 이동 -> 세 번째 인자(조건 콜백)을 생략하면 navPush 메서드와 같다.
@@ -32,8 +35,8 @@ void navPushAndRemoveUntil(
 }
 
 // 뒤로 가기(실제로는 맨 위에 놓인 화면 제거)
-void navPop(BuildContext context) {
-  Navigator.of(context).pop();
+void navPop(BuildContext context, [dynamic result]) {
+  Navigator.of(context).pop(result);
 }
 
 // 포커스 아웃 -> 자식 위젯의 GestureDetector 영역(여기서는 TextField)을 제외한 부모 위젯에서만 발동
@@ -48,8 +51,7 @@ double getWinWidth(BuildContext context) => MediaQuery.of(context).size.width;
 double getWinHeight(BuildContext context) => MediaQuery.of(context).size.height;
 
 // 웹화면인가?
-bool isWebScreen(BuildContext context) =>
-    MediaQuery.of(context).size.width > Breakpoint.md;
+bool isWebScreen(BuildContext context) => kIsWeb;
 
 // 다크모드인가?
 bool isDarkMode(BuildContext context) =>

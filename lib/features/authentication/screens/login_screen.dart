@@ -76,7 +76,7 @@ class LoginScreen extends StatelessWidget {
                   const Text("Don't have an account?"),
                   Gaps.h5,
                   GestureDetector(
-                    onTap: () => navPop(context),
+                    onTap: () => navPop(context, 'to Sign up'),
                     child: Text(
                       'Sign up',
                       style: TextStyle(

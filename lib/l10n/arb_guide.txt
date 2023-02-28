@@ -1,15 +1,79 @@
 ARB 파일은 넘겨받은 인자에 따라, 다르게 문자가 반환되도록 표현을 지정할 수 있다.
-{메서드명, plural / select, 조건A{표현A} 조건B{표현B} other{그 외 모든 표현}}
+    {메서드명, plural / select, 조건A{표현A} 조건B{표현B} other{그 외 모든 표현}}
 
 1) plural > 지정한 숫자를 인자로 넣으면 해당 값 반환(단수/복수 표현에 적합)
     여기서, =0 을 제외한 '=1'은 아무 숫자나 넣어도 상관 없다.
 
-{
-  "signUpSubtitle": "프로필을 만들고, 다른 계정을 팔로우하고, 자신만의 {videoCount, plural, =0{동영상 없음} =1{동영상을} other{동영상들을}} 만드는 등의 작업을 수행할 수 있습니다.",
-}
+    {
+      "signUpSubtitle": "프로필을 만들고, 다른 계정을 팔로우하고, 자신만의 {videoCount, plural, =0{동영상 없음} =1{동영상을} other{동영상들을}} 만드는 등의 작업을 수행할 수 있습니다.",
+    }
 
 2) select > 지정한 문자열을 인자로 넣으면 해당 값 반환
 
-{
-  "logIn": "{gender, select, male{형님,} female{누님,} other{}} 로그인하세요"
-}
+    {
+      "logIn": "{gender, select, male{형님,} female{누님,} other{}} 로그인하세요"
+    }
+
+또, ARB 파일은 국가별 단위를 자동 적용할 수도 있다.
+
+1) intl_en.arb, intl_ko.arb 모두 아래 코드 입력
+    > {what} 은 아무 문자열이나 넣어도 상관 없다.
+
+    {
+      "likeCount": "{what}",
+      "commentCount": "{what}"
+    }
+
+2) 기준이 되는 언어 ARB 파일(intl_en.arb)에 주석 추가
+
+    // intl_en.arb
+    {
+      "likeCount": "{what}",
+      "@likeCount": {
+        "description": "Anything you want",
+        "placeholders": {
+          "what": {
+            "type": "int",
+            "format": "compact"
+          }
+        }
+      },
+      "commentCount": "{what}",
+      "@commentCount": {
+        "description": "Anything you want",
+        "placeholders": {
+          "what": {
+            "type": "int",
+            "format": "compact"
+          }
+        }
+      }
+    }
+
+3) 필요한 곳에서 지정된 숫자 입력하면 선택된 언어 단위로 변환돼 표현
+
+    // video_post.dart
+    VideoButton(
+      icon: FontAwesomeIcons.solidHeart,
+      text: S.of(context).likeCount(2923330000), // 한국어 > 29.2억, 영어 > 2.92B
+    ),
+
+*** 지역 화폐단위로 표시하려면 placeholders.format > compactCurrency 로 바꾸면 된다.
+
+    {
+      "likeCount": "{what}",
+      "@likeCount": {
+        "description": "Anything you want",
+        "placeholders": {
+          "what": {
+            "type": "int",
+            "format": "compactCurrency" // 여기
+          }
+        }
+      },
+    },
+
+    그 외 다른 형식들은 아래 페이지
+    Messages with numbers and currencies 단락에서 자세히 확인할 수 있다.
+
+    https://docs.flutter.dev/development/accessibility-and-localization/internationalization

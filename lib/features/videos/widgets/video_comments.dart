@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/common/constants/gaps.dart';
 import 'package:tiktok_clone/common/constants/rawData/foreground_image.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
+import 'package:tiktok_clone/generated/l10n.dart';
 import 'package:tiktok_clone/utils/utils.dart';
 
 class VideoComments extends StatefulWidget {
@@ -54,7 +55,7 @@ class _VideoCommentsState extends State<VideoComments> {
         appBar: AppBar(
           backgroundColor: isDark ? null : Colors.grey.shade50,
           automaticallyImplyLeading: false, // 기본 좌상단 이동 화살표 제거
-          title: const Text('22796 comments'),
+          title: Text(S.of(context).commentTitle(22796, 22796)),
           // 우상단 액션 버튼 설정
           actions: [
             IconButton(

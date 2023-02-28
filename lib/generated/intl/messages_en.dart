@@ -22,15 +22,22 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m0(nameOfTheApp) => "Continue with ${nameOfTheApp}";
 
-  static String m1(gender) =>
+  static String m1(count) => "${count}";
+
+  static String m2(count, count2) =>
+      "${count} ${Intl.plural(count2, zero: 'comment', one: 'comment', other: 'comments')}";
+
+  static String m3(count) => "${count}";
+
+  static String m4(gender) =>
       "Log in ${Intl.gender(gender, female: 'madam', male: 'sir', other: 'human')}";
 
-  static String m2(nameOfTheApp) => "login into your ${nameOfTheApp} account";
+  static String m5(nameOfTheApp) => "login into your ${nameOfTheApp} account";
 
-  static String m3(videoCount) =>
+  static String m6(videoCount) =>
       "Create a profile, follow other accounts, make your own ${Intl.plural(videoCount, zero: 'no videos', one: 'video', other: 'videos')}, and more.";
 
-  static String m4(nameOfTheApp) => "Sign up for ${nameOfTheApp}";
+  static String m7(nameOfTheApp) => "Sign up for ${nameOfTheApp}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -39,15 +46,18 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Already have an account?"),
         "appleButton":
             MessageLookupByLibrary.simpleMessage("Continue with Apple"),
+        "commentCount": m1,
+        "commentTitle": m2,
         "emailPasswordButton":
             MessageLookupByLibrary.simpleMessage("Use email & password"),
         "facebookButton":
             MessageLookupByLibrary.simpleMessage("Continue with Facebook"),
         "googleButton":
             MessageLookupByLibrary.simpleMessage("Continue with Google"),
-        "logIn": m1,
-        "loginTitle": m2,
-        "signUpSubtitle": m3,
-        "signUpTitle": m4
+        "likeCount": m3,
+        "logIn": m4,
+        "loginTitle": m5,
+        "signUpSubtitle": m6,
+        "signUpTitle": m7
       };
 }

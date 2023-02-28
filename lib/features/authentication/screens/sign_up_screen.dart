@@ -12,6 +12,7 @@ import 'package:tiktok_clone/utils/utils.dart';
 import 'login_screen.dart';
 
 class SignUpScreen extends StatelessWidget {
+  static String routeName = "/";
   const SignUpScreen({Key? key}) : super(key: key);
 
   @override
@@ -58,8 +59,12 @@ class SignUpScreen extends StatelessWidget {
                     AuthButton(
                       icon: const FaIcon(FontAwesomeIcons.user),
                       text: S.of(context).emailPasswordButton,
+                      // onTapHandler: () => navPagePush(
+                      //   context,
+                      //   const UsernameScreen(),
+                      // ),
                       onTapHandler: () =>
-                          navPagePush(context, const UsernameScreen()),
+                          routePush(context, UsernameScreen.routeName),
                     ),
                     Gaps.v16,
                     AuthButton(
@@ -89,7 +94,7 @@ class SignUpScreen extends StatelessWidget {
                             icon: const FaIcon(FontAwesomeIcons.user),
                             text: S.of(context).emailPasswordButton,
                             onTapHandler: () =>
-                                navPush(context, const UsernameScreen()),
+                                routePush(context, UsernameScreen.routeName),
                           ),
                         ),
                         Gaps.h16,

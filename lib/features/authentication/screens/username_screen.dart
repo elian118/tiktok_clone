@@ -92,7 +92,11 @@ class _UsernameScreenState extends State<UsernameScreen> {
               Gaps.v28,
               // FormButton(username: _username) // 위젯 추출 v.1
               GestureDetector(
-                onTap: () => navPush(context, const EmailScreen()),
+                onTap: () => routePush(
+                  context,
+                  EmailScreen.routeName,
+                  args: EmailScreenParams(userName: _username),
+                ),
                 child: FormButton(disabled: _username.isEmpty),
               ) // 위젯 추출 v.2
             ],

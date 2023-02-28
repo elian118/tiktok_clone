@@ -2,9 +2,18 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 // 모든 네비게이터는 스택(Stack) 구조이며, 밑에서부터 위로 겹쳐 쌓는 형태로 렌더링 -> Flutter Outline 확인
+// 화면에 넘긴 파라미터 가져오기
+Object? getParams(BuildContext context) =>
+    ModalRoute.of(context)!.settings.arguments;
+
 // 화면 이동(특정된 이름이 붙은 화면으로 라우트하는 방식 - 권장)
-void routePush(BuildContext context, String routeName) async {
-  final result = await Navigator.of(context).pushNamed(routeName);
+void routePush(
+  BuildContext context,
+  String routeName, {
+  Object? args,
+}) async {
+  final result =
+      await Navigator.of(context).pushNamed(routeName, arguments: args);
   if (kDebugMode) print(result);
 }
 

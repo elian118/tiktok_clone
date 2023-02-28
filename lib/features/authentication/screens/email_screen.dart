@@ -7,7 +7,15 @@ import 'package:tiktok_clone/features/authentication/screens/password_screen.dar
 import 'package:tiktok_clone/features/authentication/widgets/form_button.dart';
 import 'package:tiktok_clone/utils/utils.dart';
 
+class EmailScreenParams {
+  final String userName;
+
+  EmailScreenParams({required this.userName});
+}
+
 class EmailScreen extends StatefulWidget {
+  static String routeName = "/email";
+
   const EmailScreen({Key? key}) : super(key: key);
 
   @override
@@ -54,6 +62,7 @@ class _EmailScreenState extends State<EmailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final args = getParams(context) as EmailScreenParams;
     // EmailScreen 전체를 GestureDetector 로 감싸 텍스트인풋 포커스 아웃 적용
     return GestureDetector(
       onTap: () => focusout(context),
@@ -69,9 +78,9 @@ class _EmailScreenState extends State<EmailScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Gaps.v40,
-              const Text(
-                'What is your email?',
-                style: TextStyle(
+              Text(
+                'What is your email, ${args.userName}?',
+                style: const TextStyle(
                   fontSize: Sizes.size22,
                   fontWeight: FontWeight.w700,
                 ),

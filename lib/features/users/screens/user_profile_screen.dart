@@ -7,7 +7,8 @@ import 'package:tiktok_clone/features/users/widgets/user_info.dart';
 import 'package:tiktok_clone/utils/utils.dart';
 
 class UserProfileScreen extends StatefulWidget {
-  const UserProfileScreen({Key? key}) : super(key: key);
+  final String username;
+  const UserProfileScreen({Key? key, required this.username}) : super(key: key);
 
   @override
   State<UserProfileScreen> createState() => _UserProfileScreenState();
@@ -30,7 +31,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           child: NestedScrollView(
             headerSliverBuilder: (context, innerBoxIsScrolled) => [
               SliverAppBar(
-                title: const Text('Profile'),
+                title: Text(widget.username),
                 // backgroundColor: isDark ? Colors.black : null,
                 actions: [
                   IconButton(
@@ -39,8 +40,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   ),
                 ],
               ),
-              const SliverToBoxAdapter(
-                child: UserInfo(),
+              SliverToBoxAdapter(
+                child: UserInfo(username: widget.username),
               ),
               SliverPersistentHeader(
                 pinned: true,

@@ -8,8 +8,10 @@ import 'package:tiktok_clone/features/users/widgets/user_profile_header.dart';
 import 'package:tiktok_clone/utils/utils.dart';
 
 class UserInfo extends StatelessWidget {
+  final String username;
   const UserInfo({
     super.key,
+    required this.username,
   });
 
   @override
@@ -20,20 +22,20 @@ class UserInfo extends StatelessWidget {
             maxWidth: Breakpoint.md,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
-                UserProfileHeader(),
-                UserProfileBody(),
+              children: [
+                UserProfileHeader(username: username),
+                const UserProfileBody(),
               ],
             ),
           )
         : Column(
-            children: const [
+            children: [
               Gaps.v20,
-              UserProfileHeader(),
+              UserProfileHeader(username: username),
               Gaps.v14,
               // 부모 위젯 크기에 따른 상대적 사이즈를 지정할 수 있는 Box 위젯
               // 부모 대비 높이(heightFactor), 너비(widthFactor)
-              UserProfileBody(),
+              const UserProfileBody(),
               Gaps.v20,
             ],
           );

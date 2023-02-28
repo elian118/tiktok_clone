@@ -5,27 +5,29 @@ import 'package:tiktok_clone/common/constants/rawData/foreground_image.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
 
 class UserProfileHeader extends StatelessWidget {
+  final String username;
   const UserProfileHeader({
     super.key,
+    required this.username,
   });
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const CircleAvatar(
+        CircleAvatar(
           radius: 50,
           foregroundColor: Colors.teal,
-          foregroundImage: NetworkImage(foregroundImage),
-          child: Text('광회'),
+          foregroundImage: const NetworkImage(foregroundImage),
+          child: Text(username),
         ),
         Gaps.v20,
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
-              '@광회',
-              style: TextStyle(
+            Text(
+              '@$username',
+              style: const TextStyle(
                 fontWeight: FontWeight.w600,
                 fontSize: Sizes.size18,
               ),

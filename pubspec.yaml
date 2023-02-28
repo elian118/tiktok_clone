@@ -20,6 +20,7 @@ dependencies:
   readmore: ^2.2.0
   marquee_text: ^2.5.0+1
   google_fonts: ^4.0.3
+  go_router: ^6.2.0
 
 dev_dependencies:
   flutter_test:

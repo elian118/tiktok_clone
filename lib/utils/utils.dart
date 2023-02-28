@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 // 포커스 아웃 -> 자식 위젯의 GestureDetector 영역(여기서는 TextField)을 제외한 부모 위젯에서만 발동
 void focusout(BuildContext context) {
@@ -23,29 +24,25 @@ bool isDarkMode(BuildContext context) =>
 bool isKorean(BuildContext context) =>
     Localizations.localeOf(context).toString() == 'ko';
 
-/*
-  앱과 함께 웹을 동시 지원하는 Navigator2 등장 이후 GoRouter()를 사용하게 되면서부터
-   아래 정의된 routePush(), navPagePush() 방식들은 전부 구식이 됐다.
+// 모든 화면은 스택(Stack) 구조이며, 밑에서부터 위로 겹쳐 쌓는 형태로 렌더링 -> Flutter Outline 확인
 
-  실제로, 플러터 공식 홈에서는 아래 routePush() 방식을 지양하라고 공지하고 있다.
+// 1) 웹앱 호환 공통 페이지 이동 Navigator2 방식 유틸 - 최신 방식(추천)
 
-  플러터에 따르면, routePush() -> pushNamed(routeName, arguments: args)는
-   url 을 직접 입력해 원하는 페이지로 이동이 가능한 반면에,
-   웹 브라우저의 뒤로가기 기능을 지원하지 않는다고 한다. -> 버튼 눌러도 동작 안 함
+// 화면 이동 -> 스택 위에 또 다른 스택을 쌓는다.
+void goRoutePush(BuildContext context, String location) =>
+    context.push(location);
 
-  반면에, navPagePush() 방식은 웹 브라우저의 뒤로가기 기능을 지원하지만,
-   -> 페이지 이동 후 url 변경이 되질 않고 그대로이다.
-   -> 즉, url 을 직접 입력해 원하는 페이지로 이동할 수 없는 문제가 있다.
+// 화면 이동 => 기존 스택과의 관계를 끊고 원하는 화면 위치로 이동시킨다.
+//  앱이라면 이동한 화면 앱바의 뒤로가기 버튼이 사라지고 context.pop() 사용 불가, 웹 뒤로가기는 사용 가능
+void goRouteGo(BuildContext context, String location) => context.go(location);
 
-   GoRouter 는 이러한 문제를 해결하기 위해 등장했으며,
-   일반적인 웹 개발의 라우팅 방식처럼 파라미터까지 문자열 안에 중첩적으로 입력할 수 있다.
+// 뒤로 가기 => goRoutePush()로 이동한 화면(페이지)에서만 사용 가능
+void goRoutePop(BuildContext context) => context.pop();
 
-   /user/video/:username/:id
-*/
+// 2) 앱 전용 페이지 이동 Navigator1 방식 유틸
 
-// 아레 코드는 앱 전용 Navigator1 유틸
-// 모든 네비게이터는 스택(Stack) 구조이며, 밑에서부터 위로 겹쳐 쌓는 형태로 렌더링 -> Flutter Outline 확인
-// 화면에 넘긴 파라미터 가져오기
+// 화면에 넘긴 파라미터 가져오기 => routePath()에 두번째 인자 args 를 입력한 경우
+//  입력된 args 파라미터 정보를 가져오기 위해 사용
 Object? getParams(BuildContext context) =>
     ModalRoute.of(context)!.settings.arguments;
 
@@ -125,8 +122,8 @@ void navPushAndRemoveUntil(
   Widget widget, [
   // 콜백이 false 반환 시 네비게이터 아래 쌓인 라우트 스택 모두 제거(초기화) -> 뒤로가기 할 화면 제거됨
   bool Function(Route<dynamic>)? predicate,
-]) {
-  Navigator.of(context).pushAndRemoveUntil(
+]) async {
+  await Navigator.of(context).pushAndRemoveUntil(
     MaterialPageRoute(builder: (context) => widget),
     // 기본: predicate 생략 시 네비게이터 라우트 스텍 유지 -> 뒤로가기 할 화면 유지
     predicate ?? (route) => true,

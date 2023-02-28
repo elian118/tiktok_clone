@@ -64,7 +64,7 @@ class SignUpScreen extends StatelessWidget {
                       //   const UsernameScreen(),
                       // ),
                       onTapHandler: () =>
-                          routePush(context, UsernameScreen.routeName),
+                          goRoutePush(context, UsernameScreen.routeName),
                     ),
                     Gaps.v16,
                     AuthButton(
@@ -94,7 +94,7 @@ class SignUpScreen extends StatelessWidget {
                             icon: const FaIcon(FontAwesomeIcons.user),
                             text: S.of(context).emailPasswordButton,
                             onTapHandler: () =>
-                                routePush(context, UsernameScreen.routeName),
+                                goRoutePush(context, UsernameScreen.routeName),
                           ),
                         ),
                         Gaps.h16,
@@ -149,7 +149,7 @@ class SignUpScreen extends StatelessWidget {
                   Text(S.of(context).alreadyHaveAnAccount),
                   Gaps.h5,
                   GestureDetector(
-                    onTap: () => navPush(context, const LoginScreen()),
+                    onTap: () => goRoutePush(context, LoginScreen.routeName),
                     child: Text(
                       S.of(context).logIn('x'),
                       style: TextStyle(

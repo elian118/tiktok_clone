@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
-import 'package:tiktok_clone/common/routes/routes.dart';
-import 'package:tiktok_clone/features/authentication/screens/sign_up_screen.dart';
+import 'package:tiktok_clone/common/routes/router.dart';
 import 'package:tiktok_clone/generated/l10n.dart';
 import 'package:tiktok_clone/styles/text_theme.dart';
 
@@ -17,7 +16,8 @@ class TickTokApp extends StatelessWidget {
   Widget build(BuildContext context) {
     // 강제로 언어설정 바꾸기
     // S.load(const Locale('en'));
-    return MaterialApp(
+    return MaterialApp.router(
+      routerConfig: router,
       debugShowCheckedModeBanner: false,
       title: 'TikTok Clone',
       // 번역 설정
@@ -108,9 +108,6 @@ class TickTokApp extends StatelessWidget {
           iconColor: Colors.white,
         ),
       ),
-      // 라우트 설정
-      initialRoute: SignUpScreen.routeName,
-      routes: routes,
       // home: const SignUpScreen(),
       // home: const LayoutBuilderCodeLab(), // 메인레이아웃 위젯 역할 확인
     );

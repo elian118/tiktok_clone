@@ -49,6 +49,106 @@ class S {
   static S? maybeOf(BuildContext context) {
     return Localizations.of<S>(context, S);
   }
+
+  /// `Sign up for {nameOfTheApp}`
+  String signUpTitle(String nameOfTheApp) {
+    return Intl.message(
+      'Sign up for $nameOfTheApp',
+      name: 'signUpTitle',
+      desc: 'The title people see when they open the app for the first time.',
+      args: [nameOfTheApp],
+    );
+  }
+
+  /// `login into your {nameOfTheApp} account`
+  String loginTitle(String nameOfTheApp) {
+    return Intl.message(
+      'login into your $nameOfTheApp account',
+      name: 'loginTitle',
+      desc: 'The title people see when they open the login screen.',
+      args: [nameOfTheApp],
+    );
+  }
+
+  /// `Create a profile, follow other accounts, make your own videos, and more.`
+  String get signUpSubtitle {
+    return Intl.message(
+      'Create a profile, follow other accounts, make your own videos, and more.',
+      name: 'signUpSubtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Use email & password`
+  String get emailPasswordButton {
+    return Intl.message(
+      'Use email & password',
+      name: 'emailPasswordButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Continue with Facebook`
+  String get facebookButton {
+    return Intl.message(
+      'Continue with Facebook',
+      name: 'facebookButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Continue with Apple`
+  String get appleButton {
+    return Intl.message(
+      'Continue with Apple',
+      name: 'appleButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Continue with Google`
+  String get googleButton {
+    return Intl.message(
+      'Continue with Google',
+      name: 'googleButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Continue with {nameOfTheApp}`
+  String accountLoginButton(Object nameOfTheApp) {
+    return Intl.message(
+      'Continue with $nameOfTheApp',
+      name: 'accountLoginButton',
+      desc: '',
+      args: [nameOfTheApp],
+    );
+  }
+
+  /// `Already have an account?`
+  String get alreadyHaveAnAccount {
+    return Intl.message(
+      'Already have an account?',
+      name: 'alreadyHaveAnAccount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Log in`
+  String get logIn {
+    return Intl.message(
+      'Log in',
+      name: 'logIn',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
@@ -57,6 +157,7 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
   List<Locale> get supportedLocales {
     return const <Locale>[
       Locale.fromSubtags(languageCode: 'en'),
+      Locale.fromSubtags(languageCode: 'ko'),
     ];
   }
 

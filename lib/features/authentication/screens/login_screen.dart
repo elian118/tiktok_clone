@@ -6,6 +6,7 @@ import 'package:tiktok_clone/common/constants/sizes.dart';
 import 'package:tiktok_clone/common/widgets/web_container.dart';
 import 'package:tiktok_clone/features/authentication/screens/login_form_screen.dart';
 import 'package:tiktok_clone/features/authentication/widgets/auth_button.dart';
+import 'package:tiktok_clone/generated/l10n.dart';
 import 'package:tiktok_clone/utils/utils.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -25,7 +26,8 @@ class LoginScreen extends StatelessWidget {
                 children: [
                   Gaps.v80,
                   Text(
-                    'Log in to TikTok',
+                    // 'Log in to TikTok',
+                    S.of(context).loginTitle('TikTok'),
                     style: Theme.of(context).textTheme.headlineSmall,
                   ),
                   Gaps.v20,

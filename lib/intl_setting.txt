@@ -6,7 +6,7 @@ dependencies:
   ...
   flutter_localizations:
     sdk: flutter
-    intl: any
+    intl: ^0.17.0
   ...
 
 flutter:
@@ -81,6 +81,11 @@ flutter:
              GlobalMaterialLocalizations.delegate,
              GlobalCupertinoLocalizations.delegate,
              GlobalWidgetsLocalizations.delegate,
+             // intl 버전이 18 이상인 경우, 아래 코드로 대체 -> 예외 발생
+             AppLocalizations.delegate,
+             DefaultMaterialLocalizations.delegate,
+             DefaultCupertinoLocalizations.delegate,
+             DefaultWidgetsLocalizations.delegate,
            ],
            // 지원 언어 => https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry
            supportedLocales: const [
@@ -131,3 +136,6 @@ flutter:
         AppLocalizations.of(context)!.signUpTitle("TikTok"),
         ...
     ),
+
+*** 위 과정은 flutter_intl 익스텐션 툴을 사용하면 간단하게 처리할 수 있고, 자동 import 까지 지원된다.
+    자세한 내용은 flutter_intl_tool.txt 참고

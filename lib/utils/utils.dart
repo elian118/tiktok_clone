@@ -54,3 +54,7 @@ bool isWebScreen(BuildContext context) =>
 // 다크모드인가?
 bool isDarkMode(BuildContext context) =>
     MediaQuery.of(context).platformBrightness == Brightness.dark;
+
+// 한국어인가?
+bool isKorean(BuildContext context) =>
+    Localizations.localeOf(context).toString() == 'ko';

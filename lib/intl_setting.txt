@@ -1,0 +1,133 @@
+번역본 적용 설정 과정 예시
+
+1) 언어별 번역본 사용을 설정하려면 먼저 pubspec.yaml 파일에 아래 의존성을 추가한다.
+
+dependencies:
+  ...
+  flutter_localizations:
+    sdk: flutter
+    intl: any
+  ...
+
+flutter:
+  generate: true
+  ...
+
+    이 중 아래 코드는 외부파일로부터 다트파일 생성을 허용하는 설정이다.
+
+2) l10n.yaml 파일을 루트 폴더에 생성하고 아래 코드를 붙인다.
+
+    arb-dir: lib/intl
+    template-arb-file: intl_en.arb
+    output-localization-file: intl_generated.dart
+
+    이 파일을 생성한 이후부터는 터미널에서 flutter gen-l10n 명령으로
+    위 코드에 따라, arb 파일들을 인식함으로써 특정한 다트파일들을 생성할 수 있게 되는데,
+    l10n.yaml 파일은 이 때 생성될 다트 파일의 기본명세를 정의하기 위해
+    arb 파일이 위치한 경로, 견본파일명, 산출물 파일명에 대한 정보를 담고 있다.
+
+3) l10n.yaml 에서 지정한 lib/intl 폴더에 아래 두 파일을 생성한다.
+    각각 영어, 한국어 설정을 정의한 arb 파일들이다.
+
+   // intl_en.arb
+   {
+     "signUpTitle": "Sign up for {nameOfTheApp}",
+     "@signUpTitle": {
+       "description": "The title people see when they open the app for the first time.",
+       "placeholders": {
+         "nameOfTheApp": {
+           "type": "String",
+           "example": "TikTok"
+         }
+       }
+     }
+   }
+
+   * @signUpTitle 부분은 설명과 타입을 강제하는 설정으로,
+    자동생성될 다트 파일에 description 을 주석으로 추가할 뿐만 아니라,
+    placeholders 내용까지 개발자에게 안내하도록 돕는다.
+    예를 들어, signUpTitle 메서드를 삽입해 쓸 때 마우스를 올려 놓으면
+    @signUpTitle 에서 정의한 내용을 팝업창에서 볼 수 있다.
+
+   // intl_ko.arb
+   {
+     "signUpTitle": "{nameOfTheApp}에 가입하세요"
+   }
+
+4) 터미널에서 flutter gen-l10n 실행
+
+    ❯ flutter gen-l10n
+    Because l10n.yaml exists, the options defined there will be used instead.
+    To use the command line arguments, delete the l10n.yaml file in the Flutter project.
+
+    이 명령을 실행하면 .dart_tool/flutter_gen/gen_l10n 아래 다음 3개 파일이 생성됨을 확인할 수 있다.
+    모두 libs/intl 아래 위치한 intl_en.arb, intl_ko.arb 파일 설정에 의한 결과물이다.
+
+    - intl_generated.dart
+    - intl_generated_en.dart
+    - intl_generated_kr.dart
+
+5) main.dart 파일에 번역설정을 추가한다.
+
+    ...
+    import 'package:flutter_gen/gen_l10n/intl_generated.dart';
+
+    Widget build(BuildContext context) {
+        return MaterialApp(
+           ...
+           localizationsDelegates: const [
+             // 터미널에서 flutter gen-l10n 실행 > intl_generated.dart 파일 생성 후 인식 가능
+             AppLocalizations.delegate,
+             GlobalMaterialLocalizations.delegate,
+             GlobalCupertinoLocalizations.delegate,
+             GlobalWidgetsLocalizations.delegate,
+           ],
+           // 지원 언어 => https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry
+           supportedLocales: const [
+             Locale('ko'), // 한국어. kr로 절대 쓰지 말 것
+             Locale('en'), // 영어
+             Locale('es'), // 스페인어
+           ],
+           ...
+        );
+    }
+
+   위 설정이 있어야만, 앱 실행 뒤에 번역본을 확인할 수 있다.
+   참고로 현재 기기에서 선택된 언어팩은 아래 코드로 확인 가능하다.
+
+   if (kDebugMode) {
+     print(Localizations.localeOf(context));
+   }
+
+   * 특히, 위 코드는 AppLocalizations 클래스를 사용하면 아래 코드로도 대체 가능하다.
+   localizationsDelegates: AppLocalizations.localizationsDelegates, // 글로벌 코드 기본 내장
+   supportedLocales: AppLocalizations.supportedLocales,
+
+   그 이유는 ctrl + click 으로 arb 파일로 인해 생성된
+   intl_generated.dart 파일에서 그 내용을 찾으면 알 수 있다.
+
+   // intl_generated.dart
+   static const List<LocalizationsDelegate<dynamic>> localizationsDelegates = <LocalizationsDelegate<dynamic>>[
+       delegate,
+       GlobalMaterialLocalizations.delegate,
+       GlobalCupertinoLocalizations.delegate,
+       GlobalWidgetsLocalizations.delegate,
+   ];
+
+   static const List<Locale> supportedLocales = <Locale>[
+       Locale('en'),
+       Locale('ko')
+   ];
+
+6) 필요한 위젯에서 가져다 쓴다.
+   번역 설정은 AppLocalizations.of(context)!로 접근 가능하다.
+
+    // sign_up_screen.dart
+    import 'package:flutter_gen/gen_l10n/intl_generated.dart';
+    ...
+
+    Text(
+        // 'Sign up for TikTok',
+        AppLocalizations.of(context)!.signUpTitle("TikTok"),
+        ...
+    ),

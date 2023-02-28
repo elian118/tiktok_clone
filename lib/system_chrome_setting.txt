@@ -1,0 +1,37 @@
+플러터는 선호하는 기기 해상도나 OS UI 스타일 설정을 할 수 있는데,
+이러한 설정들은 대부분 앱 동작 전에 해야 한다.
+특히, 기기 유형 정보는 앱 실행 직전에만 확인 가능하다.
+
+// main.dart
+void main() async {
+  runApp() 보다 앞서 실행될 아래 코드들은 애플리케이션 실행 환경을 커스더마이징할 목적에서 작성되며,
+   모두 바인딩 초기화 이후에만 설정이 가능하다.
+
+  1. runApp(app) 호출 전에 바인딩 초기화
+  // WidgetsFlutterBinding.ensureInitialized();
+
+  2. 선호하는 기기 해상도 설정 -> 복수 설정 가능
+  await SystemChrome.setPreferredOrientations(
+    [
+      // 세로 모드(portraitUp) 하나만 설정하면, 폰을 가로 놓아도 화면전환이 되지 않는다.
+      DeviceOrientation.portraitUp,
+      ...
+    ],
+  );
+
+  3. OS UI 스타일 설정
+  // SafeArea 안에 위치하는 UI를 고정된 light 모드로 전환 -> 흰 바탕이면 글씨가 안 보이게 됨
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
+
+  4. 기기 유형 정보 확인
+  if (kDebugMode) {
+      print('isIOS: ${Platform.isIOS}');
+      print('isAndroid: ${Platform.isAndroid}');
+      print('isWindows: ${Platform.isWindows}');
+      print('isMacOS: ${Platform.isMacOS}');
+      print('isFuchsia: ${Platform.isFuchsia}');
+      print('isLinux: ${Platform.isLinux}');
+  }
+
+  runApp(const TickTokApp()); // 서비스(앱) 실행
+}

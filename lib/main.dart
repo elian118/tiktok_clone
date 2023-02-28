@@ -1,44 +1,10 @@
 import 'package:flutter/material.dart';
-/*
-번역본 적용 방법
-  1) 루트 > l10n.yaml 생성
-  2) lib/intl/intl_en.arb, intl_ko.arb 생성
-  3) 터미널에서 flutter gen-l10n 실행 > 관련 번역본 매핑 다트 파일 3종 생성 후 삽입
-
-    터미널❯ flutter gen-l10n
-    Because l10n.yaml exists, the options defined there will be used instead.
-    To use the command line arguments, delete the l10n.yaml file in the Flutter project.
-
-   > 생성 > dart_tool/flutter_gen/gen_l10n/
-       intl_generated.dart, intl_generated_en.dart, intl_generated_ko.dart
-*/
 import 'package:flutter_gen/gen_l10n/intl_generated.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
 import 'package:tiktok_clone/features/authentication/screens/sign_up_screen.dart';
 import 'package:tiktok_clone/styles/text_theme.dart';
 
 void main() async {
-  /*
-  runApp() 보다 앞서 실행될 아래 코드들은 애플리케이션 실행 환경을 커스더마이징할 목적에서 작성되며,
-   모두 바인딩 초기화 이후에만 설정이 가능하다.
-
-  1. runApp(app) 호출 전에 바인딩 초기화
-  // WidgetsFlutterBinding.ensureInitialized();
-
-  2. 선호하는 기기 해상도 설정 -> 복수 설정 가능
-  await SystemChrome.setPreferredOrientations(
-    [
-      // 세로 모드(portraitUp) 하나만 설정하면, 폰을 가로 놓아도 화면전환이 되지 않는다.
-      DeviceOrientation.portraitUp,
-      ...
-    ],
-  );
-
-  3. OS UI 스타일 설정
-  // SafeArea 안에 위치하는 UI를 고정된 light 모드로 전환 -> 흰 바탕이면 글씨가 안 보이게 됨
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
-  */
-
   runApp(const TickTokApp());
 }
 
@@ -50,39 +16,11 @@ class TickTokApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'TikTok Clone',
-      /*
-      번역 설정
-      localizationsDelegates: const [
-        // 터미널에서 flutter gen-l10n 실행 > intl_generated.dart 파일 생성 후 인식 가능
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-      ],
-      지원 언어 => https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry
-      supportedLocales: const [
-        Locale('ko'), // kr로 절대 쓰지 말 것
-        Locale('en'),
-        Locale('es'),
-      ],
-      */
-      // AppLocalizations.delegate 설정되면 어떤 언어가 지원되는지 파일명에서 알 수 있으므로,
-      //  아래 코드로 기존 localizationsDelegates, supportedLocales 속성 코드 대체 가능
+      // 번역 설정
       localizationsDelegates:
           AppLocalizations.localizationsDelegates, // 글로벌 코드 기본 내장
       supportedLocales: AppLocalizations.supportedLocales,
       themeMode: ThemeMode.system, // 다크/라이트 모드 - ThemeMode.system -> 시스템 설정에 따름
-
-      /*
-      이하 복잡한 전역 테마 설정 코드들은 간단히 flex_color_scheme 패키지를 사용함으로써,
-       라이트모드와 다크모드를 각각 설정하는 단 두줄의 코드만으로 끝내버릴 수도 있다.
-       Ex. 설치 후 아래 코드 입력
-        theme: FlexThemeData.light(scheme: FlexScheme.mandyRed),
-        darkTheme: FlexThemeData.dark(scheme: FlexScheme.mandyRed),
-
-      - 패키지: https://pub.dev/packages/flex_color_scheme
-      - 테마 미리보기: https://rydmike.com/flexcolorscheme/themesplayground-v6/#/
-      */
       // 전역 테마 설정
       theme: ThemeData(
         useMaterial3: true, // 매터리얼3 스타일 이관 여부
@@ -162,38 +100,6 @@ class TickTokApp extends StatelessWidget {
       // home: const MainNavigationScreen(),
       // home: const SettingScreen(),
       // home: const LayoutBuilderCodeLab(), // 메인레이아웃 위젯 역할 확인
-    );
-  }
-}
-
-// 반응형 로직 확인을 위한 예시 위젯
-class LayoutBuilderCodeLab extends StatelessWidget {
-  const LayoutBuilderCodeLab({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    return Scaffold(
-      body: SizedBox(
-        width: size.width / 2,
-        // LayoutBuilder -> 자식 위젯의 최대 크기 정보를 알 수 있다.
-        child: LayoutBuilder(
-          builder: (context, constraints) => Container(
-            width: constraints.maxWidth,
-            height: constraints.maxHeight,
-            color: Colors.teal,
-            child: Center(
-              child: Text(
-                '${constraints.maxWidth} / ${size.width}',
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 98,
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
     );
   }
 }

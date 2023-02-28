@@ -1,0 +1,16 @@
+복잡한 전역 테마 설정 코드들은 간단히 flex_color_scheme 패키지를 사용함으로써,
+라이트모드와 다크모드를 각각 설정하는 단 두줄의 코드만으로 끝내버릴 수도 있다.
+
+   Ex. 설치 후 아래 코드 입력
+   @override
+     Widget build(BuildContext context) {
+       return MaterialApp(
+        theme: FlexThemeData.light(scheme: FlexScheme.mandyRed),
+        darkTheme: FlexThemeData.dark(scheme: FlexScheme.mandyRed),
+        ...
+      )
+    }
+
+flex_color_scheme 에서 제공하는 테마 종류는 다양하며, 색 조합도 괜찮다.
+  - 패키지: https://pub.dev/packages/flex_color_scheme
+  - 테마 미리보기: https://rydmike.com/flexcolorscheme/themesplayground-v6/#/

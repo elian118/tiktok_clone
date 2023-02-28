@@ -32,9 +32,17 @@ bool isKorean(BuildContext context) =>
 void goRoutePush(BuildContext context, String location, {Object? extra}) =>
     context.push(location, extra: extra);
 
+// 화면 이동 -> goRoutePush()와 같지만, url 로 라우트명이 아닌 name 속성값을 참조해 명령을 실행한다.
+void goRoutePushNamed(BuildContext context, String location, {Object? extra}) =>
+    context.pushNamed(location, extra: extra);
+
 // 화면 이동 => 기존 스택과의 관계를 끊고 원하는 화면 위치로 이동시킨다.
 //  앱이라면 이동한 화면 앱바의 뒤로가기 버튼이 사라지고 context.pop() 사용 불가, 웹 뒤로가기는 사용 가능
 void goRouteGo(BuildContext context, String location) => context.go(location);
+
+// goRouteGo()와 같지만, url 로 라우트명이 아닌 name 속성값을 참조해 명령을 실행한다.
+void goRouteGoNamed(BuildContext context, String location) =>
+    context.goNamed(location);
 
 // 뒤로 가기 => goRoutePush()로 이동한 화면(페이지)에서만 사용 가능
 void goRoutePop(BuildContext context) => context.pop();

@@ -8,7 +8,10 @@ import 'package:tiktok_clone/features/authentication/widgets/form_button.dart';
 import 'package:tiktok_clone/utils/utils.dart';
 
 class UsernameScreen extends StatefulWidget {
-  static String routeName = "/username";
+  // SignUpScreen.routeURL = '/' -> 하위라우트 > UsernameScreen.routeURL
+  static String routeURL = 'username'; // 하위라우트라 '/' 불필요
+  static String routeName = 'username';
+
   const UsernameScreen({Key? key}) : super(key: key);
 
   @override
@@ -97,7 +100,7 @@ class _UsernameScreenState extends State<UsernameScreen> {
                 //   EmailScreen.routeName,
                 //   args: EmailScreenParams(userName: _username),
                 // ),
-                onTap: () => goRoutePush(
+                onTap: () => goRoutePushNamed(
                   context,
                   EmailScreen.routeName,
                   extra: EmailScreenArgs(username: _username),

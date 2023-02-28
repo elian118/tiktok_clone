@@ -12,7 +12,8 @@ import 'package:tiktok_clone/utils/utils.dart';
 import 'login_screen.dart';
 
 class SignUpScreen extends StatelessWidget {
-  static String routeName = "/";
+  static String routeURL = "/";
+  static String routeName = "signUp";
   const SignUpScreen({Key? key}) : super(key: key);
 
   @override
@@ -64,7 +65,7 @@ class SignUpScreen extends StatelessWidget {
                       //   const UsernameScreen(),
                       // ),
                       onTapHandler: () =>
-                          goRoutePush(context, UsernameScreen.routeName),
+                          goRoutePushNamed(context, UsernameScreen.routeName),
                     ),
                     Gaps.v16,
                     AuthButton(
@@ -91,11 +92,12 @@ class SignUpScreen extends StatelessWidget {
                       children: [
                         Expanded(
                           child: AuthButton(
-                            icon: const FaIcon(FontAwesomeIcons.user),
-                            text: S.of(context).emailPasswordButton,
-                            onTapHandler: () =>
-                                goRoutePush(context, UsernameScreen.routeName),
-                          ),
+                              icon: const FaIcon(FontAwesomeIcons.user),
+                              text: S.of(context).emailPasswordButton,
+                              onTapHandler: () => goRoutePushNamed(
+                                  context, UsernameScreen.routeName)
+                              // goRoutePush(context, UsernameScreen.routeName),
+                              ),
                         ),
                         Gaps.h16,
                         Expanded(
@@ -149,7 +151,8 @@ class SignUpScreen extends StatelessWidget {
                   Text(S.of(context).alreadyHaveAnAccount),
                   Gaps.h5,
                   GestureDetector(
-                    onTap: () => goRoutePush(context, LoginScreen.routeName),
+                    onTap: () =>
+                        goRoutePushNamed(context, LoginScreen.routeName),
                     child: Text(
                       S.of(context).logIn('x'),
                       style: TextStyle(

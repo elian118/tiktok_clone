@@ -73,7 +73,46 @@ ARB 파일은 넘겨받은 인자에 따라, 다르게 문자가 반환되도록
       },
     },
 
+*** 지역 날짜를 표시하려면 기준 언어인 intl_en.arb 파일에서 아래 코드를 추가하고
+    placeholders.type > DateTime
+    placeholders.format > 지정된 날짜 enum 또는 문자열 + enum 조합으로 바꾸면 된다.
+    단, 문자열 + enum 조합인 경우,
+    placeholders.isCustomDateFormat > true 를 추가로 넣어준다.
+
+    // intl_en.arb
+    {
+      "signUpTitle": "Sign up for {nameOfTheApp} {when}",
+      "@signUpTitle": {
+        "description": "The title people see when they open the app for the first time.",
+        "placeholders": {
+          "nameOfTheApp": {
+            "type": "String",
+            "example": "TikTok"
+          },
+          "when": {
+            "type": "DateTime",
+            "format": "yQQQQ 💖 LLLL 😱 Hm", // 문자열 + enum 조합
+            "isCustomDateFormat": "true" // 추가
+          }
+        }
+      },
+    }
+
+    물론, 한국어 설정도 추가해준다.
+
+    // intl_ko.arb
+    {
+      "signUpTitle": "{nameOfTheApp}에 가입하세요 {when}",
+    }
+
+    // sign_up_screen.dart
+    S.of(context).signUpTitle("TikTok", DateTime.now()),
+
     그 외 다른 형식들은 아래 페이지
     Messages with numbers and currencies 단락에서 자세히 확인할 수 있다.
 
     https://docs.flutter.dev/development/accessibility-and-localization/internationalization
+
+    날짜 표시 형식 enum 목록은 아래 DateFormat 클래스 문서에서 확인 가능하다.
+
+    https://api.flutter.dev/flutter/intl/DateFormat-class.html

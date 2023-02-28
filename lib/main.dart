@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
-import 'package:tiktok_clone/features/main_navigation/screens/main_navigation_screen.dart';
+import 'package:tiktok_clone/features/authentication/screens/sign_up_screen.dart';
 import 'package:tiktok_clone/generated/l10n.dart';
 import 'package:tiktok_clone/styles/text_theme.dart';
 
@@ -107,8 +107,8 @@ class TickTokApp extends StatelessWidget {
           iconColor: Colors.white,
         ),
       ),
-      // home: const SignUpScreen(),
-      home: const MainNavigationScreen(),
+      home: const SignUpScreen(),
+      // home: const MainNavigationScreen(),
       // home: const SettingScreen(),
       // home: const LayoutBuilderCodeLab(), // 메인레이아웃 위젯 역할 확인
     );

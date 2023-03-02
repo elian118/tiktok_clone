@@ -1,0 +1,34 @@
+플러터 앱에서 스마트폰 카메라를 조작하기 위해서는 camera 패키지가 필요하다.
+
+이 패키지는 설치 후 안드로이드와 iOS에 아래 사항을 추가하도록 권고하고 있다.
+
+1) 안드로이드 -> android/app/build.gradle
+
+if (flutterRoot == null) {
+    // 플러터 camera 패키지 설치 후 권고사항에 따라,
+    // anroid.defaultConfig.minSdkVersion 21 설정 후 오류 발생 -> 예외 임시 차단
+//    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
+}
+...
+
+android {
+...
+    defaultConfig {
+        minSdkVersion 21
+        ...
+
+
+2) iOS -> Info.plist -> 아래 카메라, 마이크 접근권한 추가
+
+<key>NSCameraUsageDescription</key>
+<string>your usage description here</string>
+<key>NSMicrophoneUsageDescription</key>
+<string>your usage description here</string>
+
+이후 플러터 앱 실행 시 권한접근 설정은 camera 패키지가 알아서 자동 설정하게 되는데,
+이걸 그대로 써도 되지만, 보다 세밀하고 고도화된 접근권한 설정을 위해 아래 패키지를 추가 설치할 것을 권한다.
+
+permission_handler
+
+이 패키지는 플러터 앱이 스마트폰의 다양한 제어 접근 권한을 개발자가 커스더마이징할 수 있도록 돕는다.
+무엇보다, camera 패키지는 자동 접근권한 설정에서 버그가 일부 존재하는데, 이걸로 깔끔히 예방할 수 있다.

@@ -18,6 +18,7 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
   bool _isSelfieMode = false;
   // 전후면 카메라를 언제든 전환할 수 있으므로, 카메라 컨트롤러는 상수일 수 없다.
   late CameraController _cameraController;
+  late FlashMode _flashMode;
 
   Future<void> initCamera() async {
     // 앱이 설치된 기기에서 얼마나 많은 카메라를 제어할 수 있는지 확인
@@ -30,6 +31,8 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
       _cameraController = CameraController(
           cameras[_isSelfieMode ? 1 : 0], ResolutionPreset.ultraHigh);
       await _cameraController.initialize(); // 후면 카메라 초기화
+      // 카메라 플래시모드 상태 -> _flashMode state 연동
+      _flashMode = _cameraController.value.flashMode;
     } catch (err) {
       if (err is CameraException) {
         switch (err.code) {
@@ -71,6 +74,12 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
     _isSelfieMode = !_isSelfieMode;
     // 전후면 카메라 전환 -> 카메라 컨트롤러 초기화 필요
     await initCamera();
+    setState(() {});
+  }
+
+  Future<void> _setFlashMode(FlashMode newFlashMode) async {
+    await _cameraController.setFlashMode(newFlashMode); // 카메라 플레시모드 변경
+    _flashMode = newFlashMode; // state 변경
     setState(() {});
   }
 
@@ -124,12 +133,48 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
                   children: [
                     CameraPreview(_cameraController),
                     Positioned(
-                      top: Sizes.size20,
-                      left: Sizes.size20,
-                      child: IconButton(
-                        color: Colors.white,
-                        onPressed: _toggleSelfieMode,
-                        icon: const Icon(Icons.cameraswitch),
+                      top: Sizes.size10,
+                      right: Sizes.size10,
+                      child: Column(
+                        children: [
+                          IconButton(
+                            color: Colors.white,
+                            onPressed: _toggleSelfieMode,
+                            icon: const Icon(Icons.cameraswitch),
+                          ),
+                          Gaps.v10,
+                          IconButton(
+                            color: _flashMode == FlashMode.off
+                                ? Colors.amber
+                                : Colors.white,
+                            onPressed: () => _setFlashMode(FlashMode.off),
+                            icon: const Icon(Icons.flash_off_rounded),
+                          ),
+                          Gaps.v10,
+                          IconButton(
+                            color: _flashMode == FlashMode.always
+                                ? Colors.amber
+                                : Colors.white,
+                            onPressed: () => _setFlashMode(FlashMode.always),
+                            icon: const Icon(Icons.flash_on_rounded),
+                          ),
+                          Gaps.v10,
+                          IconButton(
+                            color: _flashMode == FlashMode.auto
+                                ? Colors.amber
+                                : Colors.white,
+                            onPressed: () => _setFlashMode(FlashMode.auto),
+                            icon: const Icon(Icons.flash_auto_rounded),
+                          ),
+                          Gaps.v10,
+                          IconButton(
+                            color: _flashMode == FlashMode.torch
+                                ? Colors.amber
+                                : Colors.white,
+                            onPressed: () => _setFlashMode(FlashMode.torch),
+                            icon: const Icon(Icons.flashlight_on_rounded),
+                          ),
+                        ],
                       ),
                     )
                   ],

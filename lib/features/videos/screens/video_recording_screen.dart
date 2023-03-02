@@ -15,7 +15,9 @@ class VideoRecordingScreen extends StatefulWidget {
 class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
   bool _hasPermission = false;
   bool _deniedPermission = false;
-  late final CameraController _cameraController;
+  bool _isSelfieMode = false;
+  // 전후면 카메라를 언제든 전환할 수 있으므로, 카메라 컨트롤러는 상수일 수 없다.
+  late CameraController _cameraController;
 
   Future<void> initCamera() async {
     // 앱이 설치된 기기에서 얼마나 많은 카메라를 제어할 수 있는지 확인
@@ -25,8 +27,8 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
     if (cameras.isEmpty) return;
     try {
       // 후면 카메라 프리셋
-      _cameraController =
-          CameraController(cameras[0], ResolutionPreset.ultraHigh);
+      _cameraController = CameraController(
+          cameras[_isSelfieMode ? 1 : 0], ResolutionPreset.ultraHigh);
       await _cameraController.initialize(); // 후면 카메라 초기화
     } catch (err) {
       if (err is CameraException) {
@@ -63,6 +65,13 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
       _cameraController.dispose();
       setState(() {});
     }
+  }
+
+  Future<void> _toggleSelfieMode() async {
+    _isSelfieMode = !_isSelfieMode;
+    // 전후면 카메라 전환 -> 카메라 컨트롤러 초기화 필요
+    await initCamera();
+    setState(() {});
   }
 
   @override
@@ -109,11 +118,22 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
                         ),
                 ],
               )
-            : Stack(
-                alignment: Alignment.center,
-                children: [
-                  CameraPreview(_cameraController),
-                ],
+            : SafeArea(
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    CameraPreview(_cameraController),
+                    Positioned(
+                      top: Sizes.size20,
+                      left: Sizes.size20,
+                      child: IconButton(
+                        color: Colors.white,
+                        onPressed: _toggleSelfieMode,
+                        icon: const Icon(Icons.cameraswitch),
+                      ),
+                    )
+                  ],
+                ),
               ),
       ),
     );

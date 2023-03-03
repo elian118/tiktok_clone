@@ -184,7 +184,7 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
                       bottom: Sizes.size40,
                       child: GestureDetector(
                         onTapDown: _startRecording,
-                        onTapUp: (detail) => _stopRecording,
+                        onTapUp: (detail) => _stopRecording(),
                         child: ScaleTransition(
                           scale: _buttonAnimation,
                           child: Stack(

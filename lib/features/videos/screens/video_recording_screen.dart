@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:tiktok_clone/common/constants/gaps.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
+import 'package:tiktok_clone/features/videos/widgets/camera_control_buttons.dart';
 
 class VideoRecordingScreen extends StatefulWidget {
   const VideoRecordingScreen({Key? key}) : super(key: key);
@@ -135,47 +136,11 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
                     Positioned(
                       top: Sizes.size10,
                       right: Sizes.size10,
-                      child: Column(
-                        children: [
-                          IconButton(
-                            color: Colors.white,
-                            onPressed: _toggleSelfieMode,
-                            icon: const Icon(Icons.cameraswitch),
-                          ),
-                          Gaps.v10,
-                          IconButton(
-                            color: _flashMode == FlashMode.off
-                                ? Colors.amber
-                                : Colors.white,
-                            onPressed: () => _setFlashMode(FlashMode.off),
-                            icon: const Icon(Icons.flash_off_rounded),
-                          ),
-                          Gaps.v10,
-                          IconButton(
-                            color: _flashMode == FlashMode.always
-                                ? Colors.amber
-                                : Colors.white,
-                            onPressed: () => _setFlashMode(FlashMode.always),
-                            icon: const Icon(Icons.flash_on_rounded),
-                          ),
-                          Gaps.v10,
-                          IconButton(
-                            color: _flashMode == FlashMode.auto
-                                ? Colors.amber
-                                : Colors.white,
-                            onPressed: () => _setFlashMode(FlashMode.auto),
-                            icon: const Icon(Icons.flash_auto_rounded),
-                          ),
-                          Gaps.v10,
-                          IconButton(
-                            color: _flashMode == FlashMode.torch
-                                ? Colors.amber
-                                : Colors.white,
-                            onPressed: () => _setFlashMode(FlashMode.torch),
-                            icon: const Icon(Icons.flashlight_on_rounded),
-                          ),
-                        ],
-                      ),
+                      child: CameraControlButtons(
+                          controller: _cameraController,
+                          flashMode: _flashMode,
+                          setFlashMode: _setFlashMode,
+                          toggleSelfieMode: _toggleSelfieMode),
                     )
                   ],
                 ),

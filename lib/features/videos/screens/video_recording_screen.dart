@@ -13,13 +13,29 @@ class VideoRecordingScreen extends StatefulWidget {
   State<VideoRecordingScreen> createState() => _VideoRecordingScreenState();
 }
 
-class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
+class _VideoRecordingScreenState extends State<VideoRecordingScreen>
+    with TickerProviderStateMixin {
   bool _hasPermission = false;
   bool _deniedPermission = false;
   bool _isSelfieMode = false;
   // 전후면 카메라를 언제든 전환할 수 있으므로, 카메라 컨트롤러는 상수일 수 없다.
   late CameraController _cameraController;
   late FlashMode _flashMode;
+
+  late final AnimationController _buttonAnimationController =
+      AnimationController(
+          vsync: this, duration: const Duration(milliseconds: 200));
+
+  late final AnimationController _progressAnimationController =
+      AnimationController(
+          vsync: this,
+          duration: const Duration(seconds: 10),
+          // 애니메이션 최소/최대값 지정
+          lowerBound: 0.0,
+          upperBound: 1.0);
+
+  late final Animation<double> _buttonAnimation =
+      Tween(begin: 1.0, end: 1.3).animate(_buttonAnimationController);
 
   Future<void> initCamera() async {
     // 앱이 설치된 기기에서 얼마나 많은 카메라를 제어할 수 있는지 확인
@@ -84,15 +100,37 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
     setState(() {});
   }
 
+  void _startRecording(TapDownDetails details) {
+    _buttonAnimationController.forward();
+    _progressAnimationController.forward();
+  }
+
+  void _stopRecording() {
+    _buttonAnimationController.reverse();
+    _progressAnimationController.reset();
+  }
+
   @override
   void initState() {
     super.initState();
     initPermission();
+    // _progressAnimationController.value 변화 추적
+    _progressAnimationController.addListener(() {
+      setState(() {}); // 변화가 감지되면 화면 갱신 -> 진행도 애니메이션 동작
+    });
+    // _progressAnimationController.status 변화 추적
+    _progressAnimationController.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        _stopRecording(); // 변화가 감지되면 화면 갱신 -> 진행도 애니메이션 종료(리셋)
+      }
+    });
   }
 
   @override
   void dispose() {
     _cameraController.dispose();
+    _buttonAnimationController.dispose();
+    _progressAnimationController.dispose();
     super.dispose();
   }
 
@@ -141,7 +179,40 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
                           flashMode: _flashMode,
                           setFlashMode: _setFlashMode,
                           toggleSelfieMode: _toggleSelfieMode),
-                    )
+                    ),
+                    Positioned(
+                      bottom: Sizes.size40,
+                      child: GestureDetector(
+                        onTapDown: _startRecording,
+                        onTapUp: (detail) => _stopRecording,
+                        child: ScaleTransition(
+                          scale: _buttonAnimation,
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              SizedBox(
+                                width: Sizes.size80,
+                                height: Sizes.size80,
+                                child: CircularProgressIndicator(
+                                  color: Colors.amber.shade400,
+                                  strokeWidth: Sizes.size6,
+                                  value: _progressAnimationController
+                                      .value, // 지정 시 로딩이 아닌, 진척도 표시로 전환됨다.
+                                ),
+                              ),
+                              Container(
+                                width: Sizes.size60,
+                                height: Sizes.size60,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.red.shade400,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),

@@ -18,7 +18,7 @@ class VideoRecordingScreen extends StatefulWidget {
 }
 
 class _VideoRecordingScreenState extends State<VideoRecordingScreen>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin, WidgetsBindingObserver {
   bool _hasPermission = false;
   bool _deniedPermission = false;
   bool _isSelfieMode = false;
@@ -59,6 +59,8 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
 
       // 카메라 플래시모드 상태 -> _flashMode state 연동
       _flashMode = _cameraController.value.flashMode;
+
+      setState(() {});
     } catch (err) {
       if (err is CameraException) {
         switch (err.code) {
@@ -145,6 +147,8 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
   void initState() {
     super.initState();
     initPermission();
+    // 이 앱의 라이프사이클(실행중/백그라운드에서 실행중/종료 등)을 추적하는 옵저버 추가
+    WidgetsBinding.instance.addObserver(this);
     // _progressAnimationController.value 변화 추적
     _progressAnimationController.addListener(() {
       setState(() {}); // 변화가 감지되면 화면 갱신 -> 진행도 애니메이션 동작
@@ -163,6 +167,30 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
     _buttonAnimationController.dispose();
     _progressAnimationController.dispose();
     super.dispose();
+  }
+
+  // 아래 앱 라이프사이클 추적 메서드는 WidgetsBindingObserver 믹싱으로 오버라이드 가능
+  // -> 목적: 앱 라이프사이클 변화에 따라, 카메라제어자(_cameraController) 초기화 또는 제거 실행
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    // 단, 이 메서드는 앱 처음 실행 시 카메라 접근권한 설정 창이 뜨는 상황에서도 자동 실행된다.
+    //  -> 카메라 제어 권한도 없는 상태에서 앱 라이프사이클 추적은 무의미 -> 불필요한 추적 중단
+    if (!_hasPermission) return;
+    if (!_cameraController.value.isInitialized) return; // 카메라 초기화가 안 된 경우도 마찬가지
+    /*
+    print(state);
+      // ❏ 또는 ❍ 눌러 밖으로 나가면
+      I/flutter ( 9846): AppLifecycleState.inactive
+      I/flutter ( 9846): AppLifecycleState.paused
+      // 다시 앱으로 들어오면
+      I/flutter ( 9846): AppLifecycleState.resumed
+    */
+    if (state == AppLifecycleState.inactive) {
+      _cameraController.dispose();
+    } else if (state == AppLifecycleState.resumed) {
+      initCamera();
+    }
   }
 
   @override

@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:tiktok_clone/common/constants/gaps.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
+import 'package:tiktok_clone/features/videos/screens/video_preview_screen.dart';
 import 'package:tiktok_clone/features/videos/widgets/camera_control_buttons.dart';
+import 'package:tiktok_clone/utils/utils.dart';
 
 class VideoRecordingScreen extends StatefulWidget {
   const VideoRecordingScreen({Key? key}) : super(key: key);
@@ -46,8 +48,13 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
     try {
       // 후면 카메라 프리셋
       _cameraController = CameraController(
-          cameras[_isSelfieMode ? 1 : 0], ResolutionPreset.ultraHigh);
+        cameras[_isSelfieMode ? 1 : 0], ResolutionPreset.ultraHigh,
+        // enableAudio: false, // 참고: 에뮬레이터에서 테스트할 경우, 오디오 기능을 꺼야 에러(camera 패키지 버그) 없음
+      );
       await _cameraController.initialize(); // 후면 카메라 초기화
+      // 녹화준비(iOS 전용 카메라 제어 메서드 -> 이걸 안 하면 싱크가 안 맞는 경우가 종종 있기 때문)
+      await _cameraController.prepareForVideoRecording();
+
       // 카메라 플래시모드 상태 -> _flashMode state 연동
       _flashMode = _cameraController.value.flashMode;
     } catch (err) {
@@ -100,14 +107,26 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
     setState(() {});
   }
 
-  void _startRecording(TapDownDetails details) {
+  Future<void> _startRecording(TapDownDetails details) async {
+    if (_cameraController.value.isRecordingVideo) return;
+    await _cameraController.startVideoRecording();
+
     _buttonAnimationController.forward();
     _progressAnimationController.forward();
   }
 
-  void _stopRecording() {
+  Future<void> _stopRecording() async {
+    // 녹화중이 아니라면 중지명령 무시
+    if (!_cameraController.value.isRecordingVideo) return;
+
     _buttonAnimationController.reverse();
     _progressAnimationController.reset();
+
+    final XFile video = await _cameraController.stopVideoRecording();
+    // final XFile file = await _cameraController.takePicture(); // 참고: 사진 촬영
+
+    if (!mounted) return;
+    navPush(context, VideoPreviewScreen(video: video));
   }
 
   @override

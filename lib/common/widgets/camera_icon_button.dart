@@ -4,7 +4,6 @@ class CameraIconButton extends StatelessWidget {
   final IconData icon;
   final bool isSelect;
   final void Function()? onPressed;
-  // final void Function(FlashMode? flashMode)? onPressed;
 
   const CameraIconButton({
     Key? key,

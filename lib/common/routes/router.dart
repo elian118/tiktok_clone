@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tiktok_clone/common/widgets/main_navigation/screens/main_navigation_screen.dart';
 import 'package:tiktok_clone/features/authentication/screens/login_screen.dart';
@@ -55,9 +56,21 @@ final router = GoRouter(
           )
         ]),
     GoRoute(
-      name: VideoRecordingScreen.routeName,
-      path: VideoRecordingScreen.routeURL,
-      builder: (context, state) => const VideoRecordingScreen(),
-    ),
+        name: VideoRecordingScreen.routeName,
+        path: VideoRecordingScreen.routeURL,
+        // builder: (context, state) => const VideoRecordingScreen(),
+        // pageBuilder: 페이지 이동 시 커스덤 에니메이션 설정이 가능한 속성
+        pageBuilder: (context, state) => CustomTransitionPage(
+              transitionDuration: const Duration(milliseconds: 200),
+              child: const VideoRecordingScreen(),
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) {
+                final position = Tween(
+                  begin: const Offset(0, 1), // 밑에서 위로
+                  end: Offset.zero,
+                ).animate(animation);
+                return SlideTransition(position: position, child: child);
+              },
+            )),
   ],
 );

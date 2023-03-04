@@ -200,7 +200,9 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
 
   @override
   void dispose() {
-    _cameraController.dispose();
+    // iOS 시뮬레이터에서 실행한 경우, _noCamera 로직 상 _cameraController 가 정의(초기화)되지 않아,
+    //  이 상태에서 곧바로 _cameraController.dispose() 자동 실행되면 dispose 대상이 없어 에러 발생
+    if (!_noCamera) _cameraController.dispose(); // if (!_noCamera) 조건식 추가
     _buttonAnimationController.dispose();
     _progressAnimationController.dispose();
     super.dispose();
@@ -211,8 +213,9 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
-    // 단, 이 메서드는 앱 처음 실행 시 카메라 접근권한 설정 창이 뜨는 상황에서도 자동 실행된다.
-    //  -> 카메라 제어 권한도 없는 상태에서 앱 라이프사이클 추적은 무의미 -> 불필요한 추적 중단
+    if (_noCamera) return; // iOS 시뮬레이터 실행 -> 카메라 컨트롤러 없음 -> 추적 중단
+    // 또한, 이 메서드는 최초 앱 실행 시 카메라 접근권한 설정 창이 뜨는 상황에서도 자동 실행된다.
+    //  -> 카메라 제어 권한 설정도 되지 않은 상태에서 앱 라이프사이클 추적은 무의미 -> 불필요한 추적 중단
     if (!_hasPermission) return;
     if (!_cameraController.value.isInitialized) return; // 카메라 초기화가 안 된 경우도 마찬가지
     /*
@@ -268,6 +271,13 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
                   children: [
                     if (!_noCamera && _cameraController.value.isInitialized)
                       CameraPreview(_cameraController),
+                    const Positioned(
+                      top: Sizes.size10,
+                      right: Sizes.size10,
+                      child: CloseButton(
+                        color: Colors.white,
+                      ),
+                    ),
                     if (!_noCamera)
                       Positioned(
                         top: Sizes.size10,

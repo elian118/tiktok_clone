@@ -20,7 +20,7 @@ class InboxScreen extends StatelessWidget {
         actions: [
           IconButton(
             icon: const FaIcon(FontAwesomeIcons.paperPlane),
-            onPressed: () => context.goNamed(ChatScreen.routeName),
+            onPressed: () => context.pushNamed(ChatScreen.routeName),
           ),
         ],
       ),

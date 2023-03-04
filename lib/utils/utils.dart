@@ -36,6 +36,12 @@ void goRoutePush(BuildContext context, String location, {Object? extra}) =>
 void goRoutePushNamed(BuildContext context, String location, {Object? extra}) =>
     context.pushNamed(location, extra: extra);
 
+// 화면 이동 -> goRoutePushNamed()와 같지만, 이동될 화면의 뒤로가기를 방지한다.
+//  * 네비게이터1 방식의 navPushAndRemoveUntil 메서드와 기능 동일
+void goPushReplacementNamed(BuildContext context, String location,
+        {Object? extra}) =>
+    context.pushReplacementNamed(location, extra: extra);
+
 // 화면 이동 => 기존 스택과의 관계를 끊고 원하는 화면 위치로 이동시킨다.
 //  앱이라면 이동한 화면 앱바의 뒤로가기 버튼이 사라지고 context.pop() 사용 불가, 웹 뒤로가기는 사용 가능
 void goRouteGo(BuildContext context, String location) => context.go(location);

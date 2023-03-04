@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tiktok_clone/features/main_navigation/widgets/stf_screen.dart';
+import 'package:tiktok_clone/common/widgets/main_navigation/widgets/stf_screen.dart';
 
 /*
 동일한 위젯을 배열 요소로 하나 이상 선택하면, 플러터에서 같은 화면으로 보아 각 요소를 서로 다르게 랜더하지 못한다.

@@ -87,8 +87,12 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
             ),
             Gaps.v28,
             GestureDetector(
-              onTap: () => navPushAndRemoveUntil(
-                  context, const InterestsScreen(), (route) => false),
+              // 1) navigate1 방식 -> 이동될 화면의 뒤로가기 방지
+              // onTap: () => navPushAndRemoveUntil(
+              //     context, const InterestsScreen(), (route) => false),
+              // 2) navigate2(goRouter) 방식 -> 이동될 화면의 뒤로가기 방지
+              onTap: () =>
+                  goPushReplacementNamed(context, InterestsScreen.routeName),
               child: const FormButton(disabled: false),
             ), // 위젯 추출 v.2
             Gaps.v96,
@@ -104,6 +108,7 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
       ),
       bottomNavigationBar: !isWebScreen
           ? BottomAppBar(
+              height: MediaQuery.of(context).size.height * 0.3,
               child: BirthdayDatePicker(
                 initialDateTime: initDate,
                 minimumDate: minDate,

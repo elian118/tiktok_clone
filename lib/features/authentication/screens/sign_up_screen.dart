@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/common/constants/gaps.dart';
@@ -12,15 +11,16 @@ import 'package:tiktok_clone/utils/utils.dart';
 import 'login_screen.dart';
 
 class SignUpScreen extends StatelessWidget {
-  static String routeURL = "/";
-  static String routeName = "signUp";
+  static const String routeName = "signUp";
+  static const String routeURL = "/";
+
   const SignUpScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    if (kDebugMode) {
-      print(Localizations.localeOf(context));
-    }
+    // if (kDebugMode) {
+    //   print(Localizations.localeOf(context));
+    // }
     return OrientationBuilder(
       builder: (BuildContext context, Orientation orientation) {
         bool isLandscape = orientation == Orientation.landscape;
@@ -65,7 +65,7 @@ class SignUpScreen extends StatelessWidget {
                       //   const UsernameScreen(),
                       // ),
                       onTapHandler: () =>
-                          goRoutePushNamed(context, UsernameScreen.routeName),
+                          navPush(context, const UsernameScreen()),
                     ),
                     Gaps.v16,
                     AuthButton(
@@ -94,8 +94,8 @@ class SignUpScreen extends StatelessWidget {
                           child: AuthButton(
                               icon: const FaIcon(FontAwesomeIcons.user),
                               text: S.of(context).emailPasswordButton,
-                              onTapHandler: () => goRoutePushNamed(
-                                  context, UsernameScreen.routeName)
+                              onTapHandler: () =>
+                                  navPush(context, const UsernameScreen())
                               // goRoutePush(context, UsernameScreen.routeName),
                               ),
                         ),

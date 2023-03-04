@@ -1,0 +1,17 @@
+라우터 전략: goRouter + navigate1.0 혼합
+
+/signup -> Sign Up
+    * 이하 모든 회원가입 스크린을 같은 라우터 안에서 작동하도록 설정 -> url 입력으로 과정 건너뛰기 불허 목적
+    /
+    /
+    /
+    /
+/login
+    / login Form
+/onboarding
+    / onboarding Interest
+    / onboarding Tutorial
+/home -> home
+/discover -> discover
+/inbox -> inbox
+/profile -> profile

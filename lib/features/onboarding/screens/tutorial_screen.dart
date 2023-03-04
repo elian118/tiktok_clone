@@ -5,7 +5,7 @@ import 'package:tiktok_clone/common/constants/enums/breakpoints.dart';
 import 'package:tiktok_clone/common/constants/enums/direction.dart';
 import 'package:tiktok_clone/common/constants/enums/showing_page.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
-import 'package:tiktok_clone/features/main_navigation/screens/main_navigation_screen.dart';
+import 'package:tiktok_clone/common/widgets/main_navigation/screens/main_navigation_screen.dart';
 import 'package:tiktok_clone/features/onboarding/widgets/tutorial.dart';
 import 'package:tiktok_clone/utils/utils.dart';
 

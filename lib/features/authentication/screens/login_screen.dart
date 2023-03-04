@@ -10,8 +10,8 @@ import 'package:tiktok_clone/generated/l10n.dart';
 import 'package:tiktok_clone/utils/utils.dart';
 
 class LoginScreen extends StatelessWidget {
-  static String routeURL = "/login";
-  static String routeName = "login";
+  static const String routeName = "login";
+  static const String routeURL = "/login";
 
   const LoginScreen({Key? key}) : super(key: key);
 
@@ -45,7 +45,7 @@ class LoginScreen extends StatelessWidget {
                   Gaps.v40,
                   GestureDetector(
                     // onTap: () => navPush(context, const UsernameScreen()),
-                    onTap: () => routePush(context, UsernameScreen.routeName),
+                    onTap: () => navPush(context, const UsernameScreen()),
                     child: const AuthButton(
                       // font_awesome_flutter 패키지 설치 이후 사용 가능
                       icon: FaIcon(FontAwesomeIcons.user),

@@ -10,6 +10,9 @@ import 'package:tiktok_clone/features/onboarding/widgets/interest_button.dart';
 import 'package:tiktok_clone/utils/utils.dart';
 
 class InterestsScreen extends StatefulWidget {
+  static const String routeName = 'interests';
+  static const String routeURL = '/tutorial';
+
   const InterestsScreen({Key? key}) : super(key: key);
 
   @override
@@ -99,38 +102,36 @@ class _InterestsScreenState extends State<InterestsScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: Container(
-        child: Padding(
-          padding: EdgeInsets.only(
-            top: Sizes.size32,
-            bottom: Sizes.size32,
-            left: isWebScreen ? 275 : Sizes.size24,
-            right: isWebScreen ? 275 : Sizes.size24,
-          ),
-          // CupertinoButton 또는 TextButton 위젯 사용
-          child: CupertinoButton(
-            onPressed: () => navPush(context, const TutorialScreen()),
-            color: Theme.of(context).primaryColor,
-            child: const Text('Next'),
-          ),
-          // child: GestureDetector(
-          //   onTap: () => navPush(context, const TutorialScreen()),
-          //   child: Container(
-          //     padding: const EdgeInsets.symmetric(vertical: Sizes.size20),
-          //     decoration: BoxDecoration(
-          //       color: Theme.of(context).primaryColor,
-          //     ),
-          //     child: const Text(
-          //       'Next',
-          //       textAlign: TextAlign.center,
-          //       style: TextStyle(
-          //         color: Colors.white,
-          //         fontSize: Sizes.size16,
-          //       ),
-          //     ),
-          //   ),
-          // ),
+      bottomNavigationBar: Padding(
+        padding: EdgeInsets.only(
+          top: Sizes.size32,
+          bottom: Sizes.size32,
+          left: isWebScreen ? 275 : Sizes.size24,
+          right: isWebScreen ? 275 : Sizes.size24,
         ),
+        // CupertinoButton 또는 TextButton 위젯 사용
+        child: CupertinoButton(
+          onPressed: () => navPush(context, const TutorialScreen()),
+          color: Theme.of(context).primaryColor,
+          child: const Text('Next'),
+        ),
+        // child: GestureDetector(
+        //   onTap: () => navPush(context, const TutorialScreen()),
+        //   child: Container(
+        //     padding: const EdgeInsets.symmetric(vertical: Sizes.size20),
+        //     decoration: BoxDecoration(
+        //       color: Theme.of(context).primaryColor,
+        //     ),
+        //     child: const Text(
+        //       'Next',
+        //       textAlign: TextAlign.center,
+        //       style: TextStyle(
+        //         color: Colors.white,
+        //         fontSize: Sizes.size16,
+        //       ),
+        //     ),
+        //   ),
+        // ),
       ),
     );
   }

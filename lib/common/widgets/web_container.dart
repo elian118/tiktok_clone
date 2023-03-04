@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tiktok_clone/utils/utils.dart';
+import 'package:tiktok_clone/utils/common_utils.dart';
 
 class WebContainer extends StatelessWidget {
   final double? minWidth;

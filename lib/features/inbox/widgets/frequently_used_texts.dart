@@ -3,7 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/common/constants/gaps.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
 import 'package:tiktok_clone/common/widgets/auto_complete_form.dart';
-import 'package:tiktok_clone/utils/utils.dart';
+import 'package:tiktok_clone/utils/common_utils.dart';
 
 class FrequentlyUsedTexts extends StatelessWidget {
   const FrequentlyUsedTexts({
@@ -19,43 +19,48 @@ class FrequentlyUsedTexts extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const AutoCompleteForm(
+            AutoCompleteForm(
               content: Text(
                 '❤️❤️❤️',
                 style: TextStyle(
                   fontSize: Sizes.size20,
+                  color: Colors.grey.shade800,
                 ),
               ),
             ),
-            const AutoCompleteForm(
+            AutoCompleteForm(
               content: Text(
                 '😂😂😂',
                 style: TextStyle(
                   fontSize: Sizes.size20,
+                  color: Colors.grey.shade800,
                 ),
               ),
             ),
-            const AutoCompleteForm(
+            AutoCompleteForm(
               content: Text(
                 '👍👍👍',
                 style: TextStyle(
                   fontSize: Sizes.size20,
+                  color: Colors.grey.shade800,
                 ),
               ),
             ),
             AutoCompleteForm(
               content: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
+                children: [
                   FaIcon(
                     FontAwesomeIcons.googlePlay,
                     size: Sizes.size16,
+                    color: Colors.grey.shade800,
                   ),
                   Gaps.h5,
                   Text(
                     'Share post',
                     style: TextStyle(
                       fontSize: Sizes.size14,
+                      color: Colors.grey.shade800,
                     ),
                   ),
                 ],

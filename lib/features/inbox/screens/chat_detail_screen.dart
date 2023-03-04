@@ -4,10 +4,17 @@ import 'package:tiktok_clone/common/constants/gaps.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
 import 'package:tiktok_clone/common/widgets/avatar_form.dart';
 import 'package:tiktok_clone/features/inbox/widgets/frequently_used_texts.dart';
-import 'package:tiktok_clone/utils/utils.dart';
+import 'package:tiktok_clone/utils/common_utils.dart';
 
 class ChatDetailScreen extends StatefulWidget {
-  const ChatDetailScreen({Key? key}) : super(key: key);
+  static const String routeName = 'chatDetail';
+  static const String routeURL = ':chatId'; // nested route -> 맨 앞에 '/'가 없어야 한다.
+
+  final String chatId;
+  const ChatDetailScreen({
+    Key? key,
+    required this.chatId,
+  }) : super(key: key);
 
   @override
   State<ChatDetailScreen> createState() => _ChatDetailScreenState();
@@ -40,31 +47,32 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.grey.shade100,
+        backgroundColor:
+            isDarkMode(context) ? Colors.grey.shade800 : Colors.grey.shade100,
         title: ListTile(
           contentPadding: EdgeInsets.zero,
           horizontalTitleGap: Sizes.size8,
           leading: const AvatarForm(),
-          title: const Text(
-            'xxxxmmm967',
+          title: Text(
+            'xxxxmmm967 (${widget.chatId})',
             style: TextStyle(
               fontWeight: FontWeight.w600,
-              color: Colors.black,
+              color: isDarkMode(context) ? Colors.white : Colors.black,
             ),
           ),
           subtitle: const Text('Active now'),
           trailing: Row(
             mainAxisSize: MainAxisSize.min,
-            children: const [
+            children: [
               FaIcon(
                 FontAwesomeIcons.flag,
-                color: Colors.black,
+                color: isDarkMode(context) ? Colors.white : Colors.black,
                 size: Sizes.size20,
               ),
               Gaps.h32,
               FaIcon(
                 FontAwesomeIcons.ellipsis,
-                color: Colors.black,
+                color: isDarkMode(context) ? Colors.white : Colors.black,
                 size: Sizes.size20,
               ),
             ],
@@ -74,7 +82,8 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
       body: GestureDetector(
         onTap: () => focusout(context),
         child: Container(
-          color: Colors.grey.shade100,
+          color:
+              isDarkMode(context) ? Colors.grey.shade700 : Colors.grey.shade100,
           child: Stack(
             children: [
               ListView.separated(

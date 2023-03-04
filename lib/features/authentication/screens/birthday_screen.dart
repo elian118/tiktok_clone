@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:tiktok_clone/common/constants/enums/breakpoints.dart';
 import 'package:tiktok_clone/common/constants/gaps.dart';
@@ -8,7 +9,6 @@ import 'package:tiktok_clone/features/authentication/widgets/birthday_date_picke
 import 'package:tiktok_clone/features/authentication/widgets/birthday_header.dart';
 import 'package:tiktok_clone/features/authentication/widgets/form_button.dart';
 import 'package:tiktok_clone/features/onboarding/screens/interests_screen.dart';
-import 'package:tiktok_clone/utils/utils.dart';
 
 class BirthdayScreen extends StatefulWidget {
   const BirthdayScreen({Key? key}) : super(key: key);
@@ -91,7 +91,7 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
               // onTap: () => navPushAndRemoveUntil(
               //     context, const InterestsScreen(), (route) => false),
               // 2) navigate2(goRouter) 방식 -> 이동될 화면의 뒤로가기 방지
-              onTap: () => goRouteNamed(context, InterestsScreen.routeName),
+              onTap: () => context.goNamed(InterestsScreen.routeName),
               child: const FormButton(disabled: false),
             ), // 위젯 추출 v.2
             Gaps.v96,

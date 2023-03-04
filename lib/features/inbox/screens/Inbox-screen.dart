@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
+import 'package:tiktok_clone/common/constants/enums/breakpoints.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
 import 'package:tiktok_clone/features/inbox/screens/activity_screen.dart';
 import 'package:tiktok_clone/features/inbox/screens/chat_screen.dart';
-import 'package:tiktok_clone/utils/utils.dart';
+import 'package:tiktok_clone/utils/common_utils.dart';
+import 'package:tiktok_clone/utils/dialog_utils.dart';
 
 class InboxScreen extends StatelessWidget {
   const InboxScreen({Key? key}) : super(key: key);
@@ -17,14 +20,20 @@ class InboxScreen extends StatelessWidget {
         actions: [
           IconButton(
             icon: const FaIcon(FontAwesomeIcons.paperPlane),
-            onPressed: () => navPush(context, const ChatScreen()),
+            onPressed: () => context.goNamed(ChatScreen.routeName),
           ),
         ],
       ),
       body: ListView(
         children: [
           ListTile(
-            onTap: () => navPush(context, const ActivityScreen()),
+            onTap: () => isWebScreen(context)
+                ? callDialog(
+                    context,
+                    width: Breakpoint.sm,
+                    child: const ActivityScreen(),
+                  )
+                : context.pushNamed(ActivityScreen.routeName),
             title: const Text(
               'Activity',
               style: TextStyle(

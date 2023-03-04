@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:tiktok_clone/utils/utils.dart';
+import 'package:tiktok_clone/utils/route_utils.dart';
 
 class CupertinoModalEx extends StatelessWidget {
   const CupertinoModalEx({

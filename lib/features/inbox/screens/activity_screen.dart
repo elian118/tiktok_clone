@@ -1,11 +1,16 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/common/constants/gaps.dart';
 import 'package:tiktok_clone/common/constants/rawData/inboxes.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
 import 'package:tiktok_clone/features/inbox/widgets/activities.dart';
+import 'package:tiktok_clone/utils/route_utils.dart';
 
 class ActivityScreen extends StatefulWidget {
+  static const String routeName = 'activity';
+  static const String routeURL = '/activity';
+
   const ActivityScreen({Key? key}) : super(key: key);
 
   @override
@@ -41,6 +46,11 @@ class _ActivityScreenState extends State<ActivityScreen>
     end: Colors.black.withOpacity(0.5),
   ).animate(_animationController);
 
+  late final Animation<double> _appBarAnimation = CurvedAnimation(
+    parent: _animationController,
+    curve: Curves.easeInExpo,
+  );
+
   void _onDismissed(String notification) {
     notifications.remove(notification);
     setState(() {}); // 위젯 트리에 dismiss 반영
@@ -68,6 +78,11 @@ class _ActivityScreenState extends State<ActivityScreen>
     // print(_notifications); // _onDismissed 결과 확인
     return Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            onPressed: () => navPop(context),
+            icon:
+                kIsWeb ? const Icon(Icons.close) : const Icon(Icons.arrow_back),
+          ),
           title: GestureDetector(
             onTap: _toggleAnimations,
             child: Row(
@@ -89,6 +104,7 @@ class _ActivityScreenState extends State<ActivityScreen>
         ),
         body: Activities(
           onDismissed: _onDismissed,
+          appBarAnimation: _appBarAnimation,
           barrierAnimation: _barrierAnimation,
           panelAnimation: _panelAnimation,
           showBarrier: _showBarrier,

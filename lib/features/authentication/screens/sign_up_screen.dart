@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tiktok_clone/common/constants/gaps.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
 import 'package:tiktok_clone/common/widgets/web_container.dart';
 import 'package:tiktok_clone/features/authentication/screens/username_screen.dart';
 import 'package:tiktok_clone/features/authentication/widgets/auth_button.dart';
 import 'package:tiktok_clone/generated/l10n.dart';
-import 'package:tiktok_clone/utils/utils.dart';
+import 'package:tiktok_clone/utils/common_utils.dart';
+import 'package:tiktok_clone/utils/route_utils.dart';
 
 import 'login_screen.dart';
 
@@ -96,7 +98,7 @@ class SignUpScreen extends StatelessWidget {
                               text: S.of(context).emailPasswordButton,
                               onTapHandler: () =>
                                   navPush(context, const UsernameScreen())
-                              // goRoutePush(context, UsernameScreen.routeName),
+                              // context.push(UsernameScreen.routeName),
                               ),
                         ),
                         Gaps.h16,
@@ -151,8 +153,7 @@ class SignUpScreen extends StatelessWidget {
                   Text(S.of(context).alreadyHaveAnAccount),
                   Gaps.h5,
                   GestureDetector(
-                    onTap: () =>
-                        goRoutePushNamed(context, LoginScreen.routeName),
+                    onTap: () => context.pushNamed(LoginScreen.routeName),
                     child: Text(
                       S.of(context).logIn('x'),
                       style: TextStyle(

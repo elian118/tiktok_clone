@@ -1,8 +1,10 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
-import 'package:tiktok_clone/utils/utils.dart';
+import 'package:tiktok_clone/features/videos/screens/video_recording_screen.dart';
+import 'package:tiktok_clone/utils/common_utils.dart';
 
 class PostVideoButton extends StatefulWidget {
   final bool isVideoButtonHovered;
@@ -39,15 +41,7 @@ class _PostVideoButtonState extends State<PostVideoButton> {
       child: GestureDetector(
         onLongPressUp: widget.onLongPressUp,
         onLongPressDown: widget.onLongPressDown,
-        onTap: () => navPush(
-          context,
-          Scaffold(
-            appBar: AppBar(
-              title: const Text('Record video'),
-            ),
-          ),
-          true,
-        ),
+        onTap: () => context.pushNamed(VideoRecordingScreen.routeName),
         child: MouseRegion(
           cursor: SystemMouseCursors.click,
           onEnter: (e) => widget.onHover(),

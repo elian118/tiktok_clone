@@ -3,11 +3,12 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/common/constants/gaps.dart';
 import 'package:tiktok_clone/common/constants/rawData/inboxes.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
-import 'package:tiktok_clone/utils/utils.dart';
+import 'package:tiktok_clone/utils/common_utils.dart';
 
 class Activities extends StatelessWidget {
   final void Function(String) onDismissed;
   final bool showBarrier;
+  final Animation<double> appBarAnimation;
   final Animation<Color?> barrierAnimation;
   final VoidCallback toggleAnimations;
   final Animation<Offset> panelAnimation;
@@ -19,6 +20,7 @@ class Activities extends StatelessWidget {
     required this.barrierAnimation,
     required this.toggleAnimations,
     required this.panelAnimation,
+    required this.appBarAnimation,
   }) : super(key: key);
 
   @override
@@ -97,7 +99,7 @@ class Activities extends StatelessWidget {
                       // RichText 기본 스타일
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
-                        color: isDark ? null : Colors.black,
+                        color: isDark ? Colors.white : Colors.black,
                         fontSize: Sizes.size16,
                       ),
                       children: [
@@ -134,37 +136,40 @@ class Activities extends StatelessWidget {
           ),
         SlideTransition(
           position: panelAnimation,
-          child: Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).appBarTheme.backgroundColor,
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(Sizes.size4),
-                bottomRight: Radius.circular(Sizes.size4),
+          child: FadeTransition(
+            opacity: appBarAnimation,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).appBarTheme.backgroundColor,
+                borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(Sizes.size4),
+                  bottomRight: Radius.circular(Sizes.size4),
+                ),
               ),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                for (var tab in tabs)
-                  ListTile(
-                    title: Row(
-                      children: [
-                        Icon(
-                          tab['icon'],
-                          size: Sizes.size16,
-                        ),
-                        Gaps.h20,
-                        Text(
-                          tab['title'],
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  for (var tab in tabs)
+                    ListTile(
+                      title: Row(
+                        children: [
+                          Icon(
+                            tab['icon'],
+                            size: Sizes.size16,
                           ),
-                        ),
-                      ],
+                          Gaps.h20,
+                          Text(
+                            tab['title'],
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                Gaps.v16,
-              ],
+                  Gaps.v16,
+                ],
+              ),
             ),
           ),
         ),

@@ -4,7 +4,8 @@ import 'package:tiktok_clone/common/constants/gaps.dart';
 import 'package:tiktok_clone/common/constants/rawData/foreground_image.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
 import 'package:tiktok_clone/generated/l10n.dart';
-import 'package:tiktok_clone/utils/utils.dart';
+import 'package:tiktok_clone/utils/common_utils.dart';
+import 'package:tiktok_clone/utils/route_utils.dart';
 
 class VideoComments extends StatefulWidget {
   const VideoComments({Key? key}) : super(key: key);

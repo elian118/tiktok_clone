@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tiktok_clone/common/constants/rawData/discovers.dart';
 import 'package:tiktok_clone/common/widgets/main_navigation/widgets/nav_tab.dart';
 import 'package:tiktok_clone/common/widgets/main_navigation/widgets/post_video_button.dart';
-import 'package:tiktok_clone/utils/utils.dart';
+import 'package:tiktok_clone/utils/common_utils.dart';
 
 class CustomNavigation extends StatelessWidget {
   final int selectedIndex;

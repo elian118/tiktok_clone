@@ -6,7 +6,7 @@ import 'package:tiktok_clone/common/constants/rawData/discovers.dart';
 import 'package:tiktok_clone/common/constants/rawData/foreground_image.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
 import 'package:tiktok_clone/features/discover/widgets/custom_search_button.dart';
-import 'package:tiktok_clone/utils/utils.dart';
+import 'package:tiktok_clone/utils/common_utils.dart';
 
 class DiscoverScreen extends StatefulWidget {
   const DiscoverScreen({Key? key}) : super(key: key);

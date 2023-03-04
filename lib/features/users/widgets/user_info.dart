@@ -5,7 +5,7 @@ import 'package:tiktok_clone/common/constants/sizes.dart';
 import 'package:tiktok_clone/common/widgets/web_container.dart';
 import 'package:tiktok_clone/features/users/widgets/user_profile_body.dart';
 import 'package:tiktok_clone/features/users/widgets/user_profile_header.dart';
-import 'package:tiktok_clone/utils/utils.dart';
+import 'package:tiktok_clone/utils/common_utils.dart';
 
 class UserInfo extends StatelessWidget {
   final String username;

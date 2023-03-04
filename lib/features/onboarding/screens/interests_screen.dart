@@ -7,7 +7,7 @@ import 'package:tiktok_clone/common/constants/sizes.dart';
 import 'package:tiktok_clone/common/widgets/web_container.dart';
 import 'package:tiktok_clone/features/onboarding/screens/tutorial_screen.dart';
 import 'package:tiktok_clone/features/onboarding/widgets/interest_button.dart';
-import 'package:tiktok_clone/utils/utils.dart';
+import 'package:tiktok_clone/utils/route_utils.dart';
 
 class InterestsScreen extends StatefulWidget {
   static const String routeName = 'interests';

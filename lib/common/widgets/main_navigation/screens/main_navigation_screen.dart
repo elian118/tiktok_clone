@@ -6,9 +6,8 @@ import 'package:go_router/go_router.dart';
 import 'package:tiktok_clone/common/constants/rawData/discovers.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
 import 'package:tiktok_clone/common/widgets/main_navigation/widgets/custom_navigaton.dart';
-import 'package:tiktok_clone/common/widgets/main_navigation/widgets/post_video_button.dart';
 import 'package:tiktok_clone/common/widgets/web_container.dart';
-import 'package:tiktok_clone/utils/utils.dart';
+import 'package:tiktok_clone/utils/common_utils.dart';
 
 class MainNavigationScreen extends StatefulWidget {
   static const String routeName = 'mainNavigation';
@@ -21,7 +20,7 @@ class MainNavigationScreen extends StatefulWidget {
 }
 
 class _MainNavigationScreenState extends State<MainNavigationScreen> {
-  List<String> _tabs = [
+  final List<String> _tabs = [
     "home",
     "discover",
     "xxxxx", // fake element for video post icon
@@ -55,16 +54,6 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     _selectedIndex = index;
     setState(() {});
   }
-
-  void _videoPost() => navPush(
-        context,
-        Scaffold(
-          appBar: AppBar(
-            title: const Text('Record video'),
-          ),
-        ),
-        true,
-      );
 
   @override
   void initState() {
@@ -114,16 +103,17 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                   ),
                   selectedIndex: _selectedIndex,
                   onDestinationSelected: _onTap,
-                  trailing: Padding(
-                    padding: const EdgeInsets.only(top: Sizes.size20),
-                    child: PostVideoButton(
-                      isVideoButtonHovered: _isVideoButtonHovered,
-                      onHover: _onHover,
-                      inverted: _selectedIndex != 0,
-                      onLongPressDown: _onLongPressDown,
-                      onLongPressUp: _onLongPressUp,
-                    ),
-                  ),
+                  // 웹에서는 카메라가 없으므로, 생략 -> 활성화해봐야 에러 발생
+                  // trailing: Padding(
+                  //   padding: const EdgeInsets.only(top: Sizes.size20),
+                  //   child: PostVideoButton(
+                  //     isVideoButtonHovered: _isVideoButtonHovered,
+                  //     onHover: _onHover,
+                  //     inverted: _selectedIndex != 0,
+                  //     onLongPressDown: _onLongPressDown,
+                  //     onLongPressUp: _onLongPressUp,
+                  //   ),
+                  // ),
                   destinations: [
                     for (var nav in navs2)
                       NavigationRailDestination(

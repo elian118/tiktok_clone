@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
 import 'package:tiktok_clone/features/inbox/screens/chat_detail_screen.dart';
-import 'package:tiktok_clone/utils/utils.dart';
 
 class ChatScreen extends StatefulWidget {
+  static const String routeName = 'chats';
+  static const String routeURL = '/chats';
+
   const ChatScreen({Key? key}) : super(key: key);
 
   @override
@@ -50,7 +53,9 @@ class _ChatScreenState extends State<ChatScreen> {
   ListTile _makeTile(int index) {
     return ListTile(
       onLongPress: () => _deleteItem(index),
-      onTap: () => navPush(context, const ChatDetailScreen()),
+      // onTap: () => context.push("1"),
+      onTap: () => context
+          .pushNamed(ChatDetailScreen.routeName, params: {"chatId": "$index"}),
       key: UniqueKey(), // 유니크 키 적용 => 정확한 요소별 매핑 완료 -> 화면에 보인다.
       leading: const CircleAvatar(
         radius: 30,

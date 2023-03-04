@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tiktok_clone/common/constants/enums/breakpoints.dart';
 import 'package:tiktok_clone/common/constants/gaps.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
 import 'package:tiktok_clone/common/widgets/web_container.dart';
 import 'package:tiktok_clone/features/authentication/widgets/form_button.dart';
 import 'package:tiktok_clone/features/onboarding/screens/interests_screen.dart';
-import 'package:tiktok_clone/utils/utils.dart';
+import 'package:tiktok_clone/utils/common_utils.dart';
 
 class LoginFormScreen extends StatefulWidget {
   const LoginFormScreen({Key? key}) : super(key: key);
@@ -41,7 +42,7 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
         //   (route) => false,
         // );
         // 2) navigator2
-        goRouteNamed(context, InterestsScreen.routeName);
+        context.goNamed(InterestsScreen.routeName);
       }
     }
   }

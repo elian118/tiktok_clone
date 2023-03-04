@@ -65,8 +65,6 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
       // 줌 레벨 설정
       minZoomLevel = await _cameraController.getMinZoomLevel();
       maxZoomLevel = await _cameraController.getMaxZoomLevel();
-      print('minZoomLevel: $minZoomLevel');
-      print('maxZoomLevel: $maxZoomLevel');
       setState(() {});
     } catch (err) {
       if (err is CameraException) {

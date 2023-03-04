@@ -25,6 +25,9 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
   // 전후면 카메라를 언제든 전환할 수 있으므로, 카메라 컨트롤러는 상수일 수 없다.
   late CameraController _cameraController;
   late FlashMode _flashMode;
+  double zoomLevel = 0.0;
+  late double minZoomLevel;
+  late double maxZoomLevel; // LM V500N -> 10.0
 
   late final AnimationController _buttonAnimationController =
       AnimationController(
@@ -56,10 +59,14 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
       await _cameraController.initialize(); // 후면 카메라 초기화
       // 녹화준비(iOS 전용 카메라 제어 메서드 -> 이걸 안 하면 싱크가 안 맞는 경우가 종종 있기 때문)
       await _cameraController.prepareForVideoRecording();
-
       // 카메라 플래시모드 상태 -> _flashMode state 연동
       _flashMode = _cameraController.value.flashMode;
 
+      // 줌 레벨 설정
+      minZoomLevel = await _cameraController.getMinZoomLevel();
+      maxZoomLevel = await _cameraController.getMaxZoomLevel();
+      print('minZoomLevel: $minZoomLevel');
+      print('maxZoomLevel: $maxZoomLevel');
       setState(() {});
     } catch (err) {
       if (err is CameraException) {
@@ -129,15 +136,33 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
     final XFile video = await _cameraController.stopVideoRecording();
     // final XFile file = await _cameraController.takePicture(); // 참고: 사진 촬영
 
+    // 카메라 줌 초기화
+    zoomLevel = minZoomLevel;
+    await _cameraController.setZoomLevel(minZoomLevel);
+    setState(() {});
+
     if (!mounted) return;
     navPush(context, VideoPreviewScreen(video: video, isPicked: false));
+  }
+
+  Future<void> _onZoomInOut(DragUpdateDetails details) async {
+    double deltaY = details.delta.dy;
+    if (deltaY > 0) {
+      zoomLevel = zoomLevel <= minZoomLevel ? minZoomLevel : zoomLevel - 0.05;
+    } else if (deltaY < 0) {
+      zoomLevel = zoomLevel >= maxZoomLevel ? maxZoomLevel : zoomLevel + 0.05;
+    } else {
+      return;
+    }
+    await _cameraController.setZoomLevel(zoomLevel);
+    setState(() {});
   }
 
   Future<void> _onPickVideoPressed() async {
     // 갤러리 앱 실행
     final video = await ImagePicker().pickVideo(source: ImageSource.gallery);
     // 참고: 내부 카메라 앱 실행
-    // final video = await ImagePicker().pickVideo(source: ImageSource.camera);
+    //  final video = await ImagePicker().pickVideo(source: ImageSource.camera);
     if (video == null) return;
     if (!mounted) return;
     navPush(context, VideoPreviewScreen(video: video, isPicked: true));
@@ -246,6 +271,8 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
                         children: [
                           const Spacer(),
                           GestureDetector(
+                            onPanUpdate: (details) => _onZoomInOut(details),
+                            onPanEnd: (detail) => _stopRecording(),
                             onTapDown: _startRecording,
                             onTapUp: (detail) => _stopRecording(),
                             child: ScaleTransition(

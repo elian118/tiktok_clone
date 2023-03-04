@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +24,9 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
   bool _hasPermission = false;
   bool _deniedPermission = false;
   bool _isSelfieMode = false;
+  // iOS 시뮬레이터 구동중일 때 카메라 화면을 보여주지 않기 위한 설정
+  late final bool _noCamera = kDebugMode && Platform.isIOS;
+
   // 전후면 카메라를 언제든 전환할 수 있으므로, 카메라 컨트롤러는 상수일 수 없다.
   late CameraController _cameraController;
   late FlashMode _flashMode;
@@ -169,7 +174,13 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
   @override
   void initState() {
     super.initState();
-    initPermission();
+    if (!_noCamera) {
+      initPermission();
+    } else {
+      _hasPermission = true;
+      setState(() {});
+    }
+
     // 이 앱의 라이프사이클(실행중/백그라운드에서 실행중/종료 등)을 추적하는 옵저버 추가
     WidgetsBinding.instance.addObserver(this);
     // _progressAnimationController.value 변화 추적
@@ -222,7 +233,7 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
       backgroundColor: Colors.black,
       body: SizedBox(
         width: MediaQuery.of(context).size.width,
-        child: !_hasPermission || !_cameraController.value.isInitialized
+        child: !_hasPermission
             ? Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -252,16 +263,18 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
-                    CameraPreview(_cameraController),
-                    Positioned(
-                      top: Sizes.size10,
-                      right: Sizes.size10,
-                      child: CameraControlButtons(
-                          controller: _cameraController,
-                          flashMode: _flashMode,
-                          setFlashMode: _setFlashMode,
-                          toggleSelfieMode: _toggleSelfieMode),
-                    ),
+                    if (!_noCamera && _cameraController.value.isInitialized)
+                      CameraPreview(_cameraController),
+                    if (!_noCamera)
+                      Positioned(
+                        top: Sizes.size10,
+                        right: Sizes.size10,
+                        child: CameraControlButtons(
+                            controller: _cameraController,
+                            flashMode: _flashMode,
+                            setFlashMode: _setFlashMode,
+                            toggleSelfieMode: _toggleSelfieMode),
+                      ),
                     Positioned(
                       width: MediaQuery.of(context).size.width,
                       bottom: Sizes.size40,

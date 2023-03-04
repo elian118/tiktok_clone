@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tiktok_clone/common/constants/enums/breakpoints.dart';
 import 'package:tiktok_clone/common/constants/enums/direction.dart';
 import 'package:tiktok_clone/common/constants/enums/showing_page.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
-import 'package:tiktok_clone/common/widgets/main_navigation/screens/main_navigation_screen.dart';
 import 'package:tiktok_clone/features/onboarding/widgets/tutorial.dart';
 import 'package:tiktok_clone/utils/utils.dart';
 
@@ -105,11 +105,10 @@ class _TutorialScreenState extends State<TutorialScreen> {
                       ),
                     ),
                   CupertinoButton(
-                    onPressed: () =>
-                        _showingPage == ShowingPage.first && isWebScreen
-                            ? _onPressArrow(Direction.left)
-                            : navPushAndRemoveUntil(context,
-                                const MainNavigationScreen(), (route) => false),
+                    onPressed: () => _showingPage == ShowingPage.first &&
+                            isWebScreen
+                        ? _onPressArrow(Direction.left)
+                        : context.go('/home'), // url -> /:tab 파라미터 정보 입력해 진입
                     color: Theme.of(context).primaryColor,
                     child: Text(_showingPage == ShowingPage.first && isWebScreen
                         ? 'Next'

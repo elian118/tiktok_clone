@@ -4,7 +4,7 @@ import 'package:tiktok_clone/common/constants/enums/breakpoints.dart';
 import 'package:tiktok_clone/common/constants/gaps.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
 import 'package:tiktok_clone/common/widgets/web_container.dart';
-import 'package:tiktok_clone/features/authentication/screens/username_screen.dart';
+import 'package:tiktok_clone/features/authentication/screens/login_form_screen.dart';
 import 'package:tiktok_clone/features/authentication/widgets/auth_button.dart';
 import 'package:tiktok_clone/generated/l10n.dart';
 import 'package:tiktok_clone/utils/utils.dart';
@@ -45,7 +45,7 @@ class LoginScreen extends StatelessWidget {
                   Gaps.v40,
                   GestureDetector(
                     // onTap: () => navPush(context, const UsernameScreen()),
-                    onTap: () => navPush(context, const UsernameScreen()),
+                    onTap: () => navPush(context, const LoginFormScreen()),
                     child: const AuthButton(
                       // font_awesome_flutter 패키지 설치 이후 사용 가능
                       icon: FaIcon(FontAwesomeIcons.user),

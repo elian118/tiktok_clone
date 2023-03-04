@@ -1,6 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tiktok_clone/common/constants/rawData/discovers.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
 import 'package:tiktok_clone/common/widgets/main_navigation/widgets/custom_navigaton.dart';
@@ -9,14 +11,25 @@ import 'package:tiktok_clone/common/widgets/web_container.dart';
 import 'package:tiktok_clone/utils/utils.dart';
 
 class MainNavigationScreen extends StatefulWidget {
-  const MainNavigationScreen({Key? key}) : super(key: key);
+  static const String routeName = 'mainNavigation';
+  final String tab;
+
+  const MainNavigationScreen({Key? key, required this.tab}) : super(key: key);
 
   @override
   State<MainNavigationScreen> createState() => _MainNavigationScreenState();
 }
 
 class _MainNavigationScreenState extends State<MainNavigationScreen> {
-  int _selectedIndex = 0;
+  List<String> _tabs = [
+    "home",
+    "discover",
+    "xxxxx", // fake element for video post icon
+    "inbox",
+    "profile",
+  ];
+
+  late int _selectedIndex = _tabs.indexOf(widget.tab);
   bool _isVideoButtonHovered = false;
 
   void _onLongPressUp() {
@@ -38,9 +51,9 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   }
 
   void _onTap(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+    context.go('/${_tabs[index]}');
+    _selectedIndex = index;
+    setState(() {});
   }
 
   void _videoPost() => navPush(
@@ -52,6 +65,12 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
         ),
         true,
       );
+
+  @override
+  void initState() {
+    super.initState();
+    if (kIsWeb) _tabs.remove("xxxxx");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,8 +95,10 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                       ? Colors.black
                       : Colors.white,
                   labelType: NavigationRailLabelType.selected,
-                  selectedIconTheme:
-                      IconThemeData(color: Theme.of(context).primaryColor),
+                  selectedIconTheme: IconThemeData(
+                      color: isDark
+                          ? Colors.white
+                          : Theme.of(context).primaryColor),
                   unselectedIconTheme: IconThemeData(
                     color: _selectedIndex == 0
                         ? Colors.grey.shade200

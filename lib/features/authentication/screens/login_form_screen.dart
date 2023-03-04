@@ -31,14 +31,17 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
         // 입력값 모두 유효하면, 폼 안에 위치한 모든 TextFormField -> onSaved 실행
         _formKey.currentState?.save();
         // 폼 데이터 확인
-        print(formData);
+        // print(formData);
         // print(formData.keys);
         // print(formData.values);
-        navPushAndRemoveUntil(
-          context,
-          const InterestsScreen(),
-          (route) => false,
-        );
+        // 1) navigator1
+        // navPushAndRemoveUntil(
+        //   context,
+        //   const InterestsScreen(),
+        //   (route) => false,
+        // );
+        // 2) navigator2
+        goRouteNamed(context, InterestsScreen.routeName);
       }
     }
   }

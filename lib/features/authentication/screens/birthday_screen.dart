@@ -91,8 +91,7 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
               // onTap: () => navPushAndRemoveUntil(
               //     context, const InterestsScreen(), (route) => false),
               // 2) navigate2(goRouter) 방식 -> 이동될 화면의 뒤로가기 방지
-              onTap: () =>
-                  goPushReplacementNamed(context, InterestsScreen.routeName),
+              onTap: () => goRouteNamed(context, InterestsScreen.routeName),
               child: const FormButton(disabled: false),
             ), // 위젯 추출 v.2
             Gaps.v96,

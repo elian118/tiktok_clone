@@ -38,7 +38,7 @@ void goRoutePushNamed(BuildContext context, String location, {Object? extra}) =>
 
 // 화면 이동 -> goRoutePushNamed()와 같지만, 이동될 화면의 뒤로가기를 방지한다.
 //  * 네비게이터1 방식의 navPushAndRemoveUntil 메서드와 기능 동일
-void goPushReplacementNamed(BuildContext context, String location,
+void goRoutePushReplacementNamed(BuildContext context, String location,
         {Object? extra}) =>
     context.pushReplacementNamed(location, extra: extra);
 
@@ -47,7 +47,7 @@ void goPushReplacementNamed(BuildContext context, String location,
 void goRouteGo(BuildContext context, String location) => context.go(location);
 
 // goRouteGo()와 같지만, url 로 라우트명이 아닌 name 속성값을 참조해 명령을 실행한다.
-void goRouteGoNamed(BuildContext context, String location) =>
+void goRouteNamed(BuildContext context, String location) =>
     context.goNamed(location);
 
 // 뒤로 가기 => goRoutePush()로 이동한 화면(페이지)에서만 사용 가능

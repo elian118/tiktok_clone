@@ -6,6 +6,7 @@ import 'package:tiktok_clone/common/constants/gaps.dart';
 import 'package:tiktok_clone/common/constants/rawData/foreground_image.dart';
 import 'package:tiktok_clone/common/constants/rawData/video_data.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
+import 'package:tiktok_clone/common/widgets/video_config/video_config.dart';
 import 'package:tiktok_clone/features/videos/widgets/video_bgm_info.dart';
 import 'package:tiktok_clone/features/videos/widgets/video_button.dart';
 import 'package:tiktok_clone/features/videos/widgets/video_comments.dart';
@@ -270,19 +271,26 @@ class _VideoPostState extends State<VideoPost>
             ),
           ),
           Positioned(
+            top: 40,
+            left: 20,
+            child: IconButton(
+              icon: VideoConfig.of(context).autoMute
+                  ? const FaIcon(
+                      FontAwesomeIcons.volumeXmark,
+                      color: Colors.white,
+                    )
+                  : const FaIcon(
+                      FontAwesomeIcons.volumeHigh,
+                      color: Colors.white,
+                    ),
+              onPressed: _toggleMute,
+            ),
+          ),
+          Positioned(
             bottom: 20,
             right: 10,
             child: Column(
               children: [
-                GestureDetector(
-                  onTap: _toggleMute,
-                  child: VideoButton(
-                    icon: _isMute
-                        ? FontAwesomeIcons.volumeXmark
-                        : FontAwesomeIcons.volumeHigh,
-                    text: _isMute ? 'Mute' : 'Sound',
-                  ),
-                ),
                 Gaps.v24,
                 const CircleAvatar(
                   radius: 25,

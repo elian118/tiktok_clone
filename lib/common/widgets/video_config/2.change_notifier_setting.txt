@@ -109,21 +109,21 @@ provider + ChangeNotifier 조합은 아주 편리해서 지금도 널리 쓰고 
 
     // main.dart
     @override
-      Widget build(BuildContext context) {
-        // 다수의 프로버이더를 한 번에 주입할 경우, MultiProvider 사용
-        // (단일 프로바이더만 주입한다면 Provider 사용해도 무관)
-        return MultiProvider(
-          providers: [
-            ChangeNotifierProvider(
-              create: (BuildContext context) => VideoConfig(), // 주입
-            ),
-            ChangeNotifierProvider(
-              create: (BuildContext context) => DarkModeConfig(),
-            ),
-          ],
-          child: const MyApp(),
-        );
-      }
+    Widget build(BuildContext context) {
+      // 다수의 프로버이더를 한 번에 주입할 경우, MultiProvider 사용
+      // (단일 프로바이더만 주입한다면 Provider 사용해도 무관)
+      return MultiProvider(
+        providers: [
+          ChangeNotifierProvider(
+            create: (BuildContext context) => VideoConfig(), // 주입
+          ),
+          ChangeNotifierProvider(
+            create: (BuildContext context) => DarkModeConfig(),
+          ),
+        ],
+        child: const MyApp(),
+      );
+    }
 
     3) ChangeNotifier 접근 -> context
 

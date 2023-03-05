@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tiktok_clone/common/constants/enums/breakpoints.dart';
 import 'package:tiktok_clone/common/widgets/video_config/dark_mode_config.dart';
-import 'package:tiktok_clone/common/widgets/video_config/video_config_change_notifier.dart';
 import 'package:tiktok_clone/common/widgets/web_container.dart';
 import 'package:tiktok_clone/features/settings/widgets/about_list_tile_ex.dart';
 import 'package:tiktok_clone/features/settings/widgets/android_dialog_ex.dart';
 import 'package:tiktok_clone/features/settings/widgets/cupertino_dialog_ex.dart';
 import 'package:tiktok_clone/features/settings/widgets/cupertino_modal_ex.dart';
 import 'package:tiktok_clone/features/settings/widgets/date_time_picker_ex.dart';
+import 'package:tiktok_clone/features/videos/view_models/playback_config_vm.dart';
 
 class SettingScreen extends StatefulWidget {
   const SettingScreen({Key? key}) : super(key: key);
@@ -52,22 +52,23 @@ class _SettingScreenState extends State<SettingScreen> {
             WebContainer(
               maxWidth: Breakpoint.sm,
               child: SwitchListTile.adaptive(
-                  value: context.watch<VideoConfig>().isMuted,
+                  value: context.watch<PlaybackConfigViewModel>().muted,
                   onChanged: (value) =>
-                      context.read<VideoConfig>().toggleMute(),
+                      context.read<PlaybackConfigViewModel>().setMuted(value),
                   title: const Text('Auto Mute'),
                   subtitle: const Text('Video will be muted by default.')),
             ),
-            // Switch.adaptive() = CupertinoSwitch(...)
-            // Switch.adaptive(
-            //   value: _notification,
-            //   onChanged: _onNotificationsChanged,
-            // ),
-            // Switch(
-            //   value: _notification,
-            //   onChanged: _onNotificationsChanged,
-            // ),
-            // Switch -> SwitchListTile(title, ...) -> SwitchListTile(title, ...).adaptive -> 쿠퍼티노 스타일 스위치리스트타일
+            WebContainer(
+              maxWidth: Breakpoint.sm,
+              child: SwitchListTile.adaptive(
+                  value: context.watch<PlaybackConfigViewModel>().autoplay,
+                  onChanged: (value) => context
+                      .read<PlaybackConfigViewModel>()
+                      .setAutoplay(value),
+                  title: const Text('Auto Play'),
+                  subtitle:
+                      const Text('Video will be start playing automatically.')),
+            ),
             WebContainer(
               maxWidth: Breakpoint.sm,
               child: SwitchListTile.adaptive(
@@ -77,11 +78,6 @@ class _SettingScreenState extends State<SettingScreen> {
                 subtitle: const Text('Enable notifications'),
               ),
             ),
-            // Checkbox(
-            //   value: _notification,
-            //   onChanged: _onNotificationsChanged,
-            // ),
-            // Checkbox -> CheckboxListTile(title, ...)
             WebContainer(
               maxWidth: Breakpoint.sm,
               child: CheckboxListTile(

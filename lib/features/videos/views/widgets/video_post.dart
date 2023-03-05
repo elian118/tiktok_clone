@@ -1,17 +1,15 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:provider/provider.dart';
 import 'package:tiktok_clone/common/constants/enums/breakpoints.dart';
 import 'package:tiktok_clone/common/constants/gaps.dart';
 import 'package:tiktok_clone/common/constants/rawData/foreground_image.dart';
 import 'package:tiktok_clone/common/constants/rawData/video_data.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
-import 'package:tiktok_clone/common/widgets/video_config/video_config_change_notifier.dart';
-import 'package:tiktok_clone/features/videos/widgets/video_bgm_info.dart';
-import 'package:tiktok_clone/features/videos/widgets/video_button.dart';
-import 'package:tiktok_clone/features/videos/widgets/video_comments.dart';
-import 'package:tiktok_clone/features/videos/widgets/video_intro_text2.dart';
+import 'package:tiktok_clone/features/videos/views/widgets/video_bgm_info.dart';
+import 'package:tiktok_clone/features/videos/views/widgets/video_button.dart';
+import 'package:tiktok_clone/features/videos/views/widgets/video_comments.dart';
+import 'package:tiktok_clone/features/videos/views/widgets/video_intro_text2.dart';
 import 'package:tiktok_clone/generated/l10n.dart';
 import 'package:tiktok_clone/utils/common_utils.dart';
 import 'package:video_player/video_player.dart';
@@ -263,19 +261,19 @@ class _VideoPostState extends State<VideoPost>
               ),
             ),
           ),
-          Positioned(
-            top: 40,
-            left: 20,
-            child: IconButton(
-              icon: FaIcon(
-                context.watch<VideoConfig>().isMuted
-                    ? FontAwesomeIcons.volumeXmark
-                    : FontAwesomeIcons.volumeHigh,
-                color: Colors.white,
-              ),
-              onPressed: () => context.read<VideoConfig>().toggleMute(),
-            ),
-          ),
+          // Positioned(
+          //   top: 40,
+          //   left: 20,
+          //   child: IconButton(
+          //     icon: FaIcon(
+          //       context.watch<VideoConfig>().isMuted
+          //           ? FontAwesomeIcons.volumeXmark
+          //           : FontAwesomeIcons.volumeHigh,
+          //       color: Colors.white,
+          //     ),
+          //     onPressed: () => context.read<VideoConfig>().toggleMute(),
+          //   ),
+          // ),
           Positioned(
             bottom: 20,
             right: 10,

@@ -7,7 +7,7 @@ import 'package:tiktok_clone/features/inbox/screens/activity_screen.dart';
 import 'package:tiktok_clone/features/inbox/screens/chat_detail_screen.dart';
 import 'package:tiktok_clone/features/inbox/screens/chat_screen.dart';
 import 'package:tiktok_clone/features/onboarding/screens/interests_screen.dart';
-import 'package:tiktok_clone/features/videos/screens/video_recording_screen.dart';
+import 'package:tiktok_clone/features/videos/views/screens/video_recording_screen.dart';
 
 // go_router 전용
 final router = GoRouter(

@@ -1,15 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
 import 'package:tiktok_clone/common/routes/router.dart';
 import 'package:tiktok_clone/common/widgets/video_config/dark_mode_config.dart';
-import 'package:tiktok_clone/common/widgets/video_config/video_config_change_notifier.dart';
+import 'package:tiktok_clone/features/videos/repos/playback_config_repo.dart';
+import 'package:tiktok_clone/features/videos/view_models/playback_config_vm.dart';
 import 'package:tiktok_clone/generated/l10n.dart';
 import 'package:tiktok_clone/styles/text_theme.dart';
 
 void main() async {
-  runApp(const TickTokApp());
+  // runApp() 실행 전에 위젯 바인딩을 먼저
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final preferences =
+      await SharedPreferences.getInstance(); // 기기 저장소 사용을 위한 공유 기본설정 불러오기(싱글톤)
+  final repository =
+      PlaybackConfigRepository(preferences); // 기기 저장소와 리포지토리 클래스 연결
+
+  // WidgetsFlutterBinding.ensureInitialized() -> main() 안에서 MultiProvider 설정 허용
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(
+        create: (context) =>
+            PlaybackConfigViewModel(repository), // 연결된 repository -> VM 초기화
+      ),
+      ChangeNotifierProvider(
+        create: (BuildContext context) => DarkModeConfig(),
+      ),
+    ],
+    child: const TickTokApp(),
+  ));
 }
 
 class TickTokApp extends StatelessWidget {
@@ -19,28 +41,6 @@ class TickTokApp extends StatelessWidget {
   Widget build(BuildContext context) {
     // 강제로 언어설정 바꾸기
     // S.load(const Locale('en'));
-    // 다수의 프로버이더를 한 번에 주입할 경우, MultiProvider 사용
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-          create: (BuildContext context) => VideoConfig(),
-        ),
-        ChangeNotifierProvider(
-          create: (BuildContext context) => DarkModeConfig(),
-        ),
-      ],
-      child: const MyApp(),
-    );
-  }
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
     return MaterialApp.router(
       routerConfig: router,
       debugShowCheckedModeBanner: false,

@@ -1,0 +1,43 @@
+shared_preferences 는 크롬 로컬 스토리지처럼
+기기 내에 데이터를 영구적으로 저장하는 용도로 활용하는 패키지다.
+
+* 설치 직후에는 라이브러리 인식이 잘 안될 수도 있어, 차라리 인텔리제이를 다시 껐다 켜는 편이 낫다.
+
+---------------------------------------------------------
+
+본 프로젝트는 MVVM(Model-View-View Model) 아키텍처로 구성함에 따라, 각 feature 도 아래와 같이 재구성된다.
+
+    /lib
+        /features
+            /videos
+                /models
+                /repos -> repository
+                /view_models 또는 services
+                /views
+
+shared_preferences 로 기기에 저장될 데이터 역시 이 구조에 따라 사용된다.
+
+용도 상 shared_preferences 는 데이터를 저장할 목적에서 사용되는 리포지토리 클래스 선언에 사용된다.
+
+    import 'package:shared_preferences/shared_preferences.dart';
+
+    class VideoPlaybackConfigRepository {
+      static const String _autoplay = 'autoplay';
+      static const String _muted = 'muted';
+
+      final SharedPreferences _preferences;
+
+      VideoPlaybackConfigRepository(this._preferences);
+
+      Future<void> setMuted(bool value) async {
+        await _preferences.setBool(_muted, value);
+      }
+
+      Future<void> setAutoplay(bool value) async {
+        await _preferences.setBool(_autoplay, value);
+      }
+
+      bool isMuted() => _preferences.getBool(_muted) ?? false;
+
+      bool isAutoplay() => _preferences.getBool(_autoplay) ?? false;
+    }

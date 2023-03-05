@@ -57,16 +57,85 @@ ChangeNotifier 를 참조할 StatefulWidget initState()에 리스너를 추가�
   ...
 
     IconButton(
-      icon: _autoMute
-          ? const FaIcon(
-              FontAwesomeIcons.volumeXmark,
-              color: Colors.white,
-            )
-          : const FaIcon(
-              FontAwesomeIcons.volumeHigh,
-              color: Colors.white,
-            ),
+      icon: FaIcon(
+        _autoMute
+          ? FontAwesomeIcons.volumeXmark
+          : FontAwesomeIcons.volumeHigh,
+        color: Colors.white,
+      ),
       onPressed: videoConfig.toggleAutoMute,
     ),
 
 아무래도 처음 방식인 AnimatedBuilder 를 쓰는 게 훨씬 나아 보인다.
+
+--------------------------------------------------------------------------------
+
+만약, ChangeNotifier 를 더 간단하게 싶다면 provider 패키지를 설치 후
+ChangeNotifierProvider 클래스를 사용하면 된다.
+
+    https://pub.dev/packages/provider
+
+provider + ChangeNotifier 조합은 아주 편리해서 지금도 널리 쓰고 있는 방식이다.
+
+    1) ChangeNotifier 선언
+
+    예를 들어, provider 패키지 설치 직후
+    ChangeNotifier 상속 클래스를 아래와 같이 설정했을 때는
+    final VideoConfig videoConfig; 코드로 클래스 자체를 공개할 필요 없이,
+    아래와 같이 초기화와 세터 코드만 있으면 충분하다.
+
+    // video_config_change_notifier.dart
+    class VideoConfig extends ChangeNotifier {
+      bool isMuted = false;
+      bool isAutoplay = false;
+
+      void toggleMute() {
+        isMuted = !isMuted; // build() 안에서 작동하는 게 아니므로, setState 불필요
+        notifyListeners(); // 대신, 데이터가 변경됐음을 알리는 리스너를 꼭 붙여야 한다.
+      }
+
+      void toggleAutoPlay() {
+        isAutoplay = !isAutoplay;
+        notifyListeners();
+      }
+    }
+
+    2) ChangeNotifierProvider 주입
+
+    그리고 실제 모든 위젯에서 이 코드에 접근이 가능하려면
+    main.dart > build() 메소드 최상단에 MultiProvider 를 랩핑해
+    ChangeNotifier 상속 클래스를 프로바이더 속성으로 주입한다.
+        -> 이때 ChangeNotifier 상속 클래스이므로, ChangeNotifierProvider 사용
+
+    // main.dart
+    @override
+      Widget build(BuildContext context) {
+        // 다수의 프로버이더를 한 번에 주입할 경우, MultiProvider 사용
+        // (단일 프로바이더만 주입한다면 Provider 사용해도 무관)
+        return MultiProvider(
+          providers: [
+            ChangeNotifierProvider(
+              create: (BuildContext context) => VideoConfig(), // 주입
+            ),
+            ChangeNotifierProvider(
+              create: (BuildContext context) => DarkModeConfig(),
+            ),
+          ],
+          child: const MyApp(),
+        );
+      }
+
+    3) ChangeNotifier 접근 -> context
+
+    모든 설정이 완벽하다면 이후, 자식 위젯에서 ChangeNotifier 접근은 context 를 통해서 가능하다.
+
+    필드 참조는 context.watch(), 세터 메서드는 context.read()를 사용한다.
+    (video_config_change_notifier.dart -> final VideoConfig videoConfig 선언 불필요한 이유)
+
+    // setting_screen.dart
+    SwitchListTile.adaptive(
+      value: context.watch<VideoConfig>().isMuted, // 참조
+      onChanged: (value) => context.read<VideoConfig>().toggleMute(), // 세터 호출
+      title: const Text('Auto Mute'),
+      subtitle: const Text('Video will be muted by default.'),
+    ),

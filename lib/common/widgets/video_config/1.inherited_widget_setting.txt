@@ -34,13 +34,10 @@ InheritedWidget 으로 전역형상을 관리하려면 main.dart build() 최상�
 
     // 자식 위젯에서 컨텍스트로 InheritedWidget 접근해 데이터 가져오기
     IconButton(
-      icon: VideoConfigData.of(context).autoMute
-        ? const FaIcon(
-          FontAwesomeIcons.volumeXmark,
-          color: Colors.white,
-        )
-        : const FaIcon(
-          FontAwesomeIcons.volumeHigh,
+      icon: FaIcon(
+          VideoConfigData.of(context).autoMute
+            ? FontAwesomeIcons.volumeXmark
+            : FontAwesomeIcons.volumeHigh,
           color: Colors.white,
         ),
       onPressed: () => VideoConfigData.of(context).toggleMuted(),
@@ -53,3 +50,11 @@ InheritedWidget 으로 전역형상을 관리하려면 main.dart build() 최상�
 구조외 원리를 이해하는 데 도움이 될 것이다.
 
 위 전역 플러터 위젯 또한 InheritedWidget 이기 때문이다.
+
+-------------------------------------------------------------용-------------------
+
+만약, InheritedWidget 의 이러한 단점들을 최소화해 그대로 쓰고 싶다면 provider 패키지를 설치 후
+Provider 클래스를 사용하면 된다.
+에
+    https://pub.dev/packages/provider
+

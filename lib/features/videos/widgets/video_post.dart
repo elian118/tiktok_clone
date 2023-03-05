@@ -1,11 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:tiktok_clone/common/constants/enums/breakpoints.dart';
 import 'package:tiktok_clone/common/constants/gaps.dart';
 import 'package:tiktok_clone/common/constants/rawData/foreground_image.dart';
 import 'package:tiktok_clone/common/constants/rawData/video_data.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
+import 'package:tiktok_clone/common/widgets/video_config/video_config_change_notifier.dart';
 import 'package:tiktok_clone/features/videos/widgets/video_bgm_info.dart';
 import 'package:tiktok_clone/features/videos/widgets/video_button.dart';
 import 'package:tiktok_clone/features/videos/widgets/video_comments.dart';
@@ -14,8 +16,6 @@ import 'package:tiktok_clone/generated/l10n.dart';
 import 'package:tiktok_clone/utils/common_utils.dart';
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
-
-import '../../../common/widgets/video_config/video_config_value_notifier.dart';
 
 class VideoPost extends StatefulWidget {
   final int index;
@@ -48,7 +48,6 @@ class _VideoPostState extends State<VideoPost>
   late final AnimationController _animationController;
 
   bool _isPause = false;
-  bool _autoMute = videoConfig.value;
   final String _descText = descText;
   final List<String> _tags = tags;
   final String _bgmInfo = bgmInfo;
@@ -64,7 +63,7 @@ class _VideoPostState extends State<VideoPost>
 
     // 웹 브라우저에서 애플리케이션이 실행된 경우
     if (kIsWeb) {
-      videoConfig.value = false;
+      // videoConfig.value = false;
       // 음소거 부수 효과: 웹에서 영상 자동재생을 차단하려는 기본 설정으로 인해 발생하는 예외를 회피할 수 있다.
       await _videoPlayerController.setVolume(0); // 음소거 처리
     }
@@ -150,11 +149,6 @@ class _VideoPostState extends State<VideoPost>
       duration: _animationDuration,
     );
 
-    // ChangeNotifier 리스너 추가
-    videoConfig.addListener(() {
-      _autoMute = videoConfig.value;
-      setState(() {});
-    });
     /*
     아래 코드는 AnimatedBuilder 위젯으로 대체할 수 있다.
 
@@ -273,16 +267,13 @@ class _VideoPostState extends State<VideoPost>
             top: 40,
             left: 20,
             child: IconButton(
-              icon: _autoMute
-                  ? const FaIcon(
-                      FontAwesomeIcons.volumeXmark,
-                      color: Colors.white,
-                    )
-                  : const FaIcon(
-                      FontAwesomeIcons.volumeHigh,
-                      color: Colors.white,
-                    ),
-              onPressed: () => videoConfig.value = !videoConfig.value,
+              icon: FaIcon(
+                context.watch<VideoConfig>().isMuted
+                    ? FontAwesomeIcons.volumeXmark
+                    : FontAwesomeIcons.volumeHigh,
+                color: Colors.white,
+              ),
+              onPressed: () => context.read<VideoConfig>().toggleMute(),
             ),
           ),
           Positioned(

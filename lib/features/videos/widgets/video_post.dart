@@ -47,17 +47,10 @@ class _VideoPostState extends State<VideoPost>
   late final AnimationController _animationController;
 
   bool _isPause = false;
-  bool _isMute = false;
   final String _descText = descText;
   final List<String> _tags = tags;
   final String _bgmInfo = bgmInfo;
   final Duration _animationDuration = const Duration(milliseconds: 200);
-
-  void _toggleMute() async {
-    await _videoPlayerController.setVolume(_isMute ? 1 : 0);
-    _isMute = !_isMute;
-    setState(() {});
-  }
 
   // 비디오플레이어 초기설정 - 컨트롤러 초기화 포함
   void _initVideoPlayer() async {
@@ -69,10 +62,10 @@ class _VideoPostState extends State<VideoPost>
 
     // 웹 브라우저에서 애플리케이션이 실행된 경우
     if (kIsWeb) {
+      if (!mounted) return;
+      VideoConfigData.of(context).toggleMuted(isMute: true);
       // 음소거 부수 효과: 웹에서 영상 자동재생을 차단하려는 기본 설정으로 인해 발생하는 예외를 회피할 수 있다.
       await _videoPlayerController.setVolume(0); // 음소거 처리
-      _isMute = true;
-      setState(() {});
     }
 
     // 아래 코드들은 초기 설정에 불과하므로, 비디오 컨트롤러 초기화 여부와 무관하게 동기 처리 가능
@@ -274,7 +267,7 @@ class _VideoPostState extends State<VideoPost>
             top: 40,
             left: 20,
             child: IconButton(
-              icon: VideoConfig.of(context).autoMute
+              icon: VideoConfigData.of(context).autoMute
                   ? const FaIcon(
                       FontAwesomeIcons.volumeXmark,
                       color: Colors.white,
@@ -283,7 +276,7 @@ class _VideoPostState extends State<VideoPost>
                       FontAwesomeIcons.volumeHigh,
                       color: Colors.white,
                     ),
-              onPressed: _toggleMute,
+              onPressed: () => VideoConfigData.of(context).toggleMuted(),
             ),
           ),
           Positioned(

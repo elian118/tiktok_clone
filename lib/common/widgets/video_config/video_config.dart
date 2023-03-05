@@ -1,13 +1,21 @@
 import 'package:flutter/cupertino.dart';
 
-class VideoConfig extends InheritedWidget {
-  const VideoConfig({super.key, required super.child});
+// InheritedWidget -> 모든 위젯에서 참조만 가능할 뿐, 필드 정보 업데이트 불가(단순 데이터 전달자에 불과)
+//  -> 업데이트하려면, setState 사용 가능한 StatefulWidget 과 연동해서 써야 함
+class VideoConfigData extends InheritedWidget {
+  final bool autoMute;
+  final void Function({bool? isMute}) toggleMuted;
 
-  final bool autoMute = false;
+  const VideoConfigData({
+    super.key,
+    required this.autoMute,
+    required this.toggleMuted,
+    required super.child,
+  });
 
   // 상속된 위젯(InheritedWidget) 정보를 외부로 전달
-  static VideoConfig of(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<VideoConfig>()!;
+  static VideoConfigData of(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<VideoConfigData>()!;
   }
 
   // 상속된 위젯 업데이트에 따른 리빌드 여부
@@ -15,5 +23,32 @@ class VideoConfig extends InheritedWidget {
   @override
   bool updateShouldNotify(covariant InheritedWidget oldWidget) {
     return true;
+  }
+}
+
+// InheritedWidget 데이터 변경을 위한 StatefulWidget
+class VideoConfig extends StatefulWidget {
+  final Widget child;
+  const VideoConfig({Key? key, required this.child}) : super(key: key);
+
+  @override
+  State<VideoConfig> createState() => _VideoConfigState();
+}
+
+class _VideoConfigState extends State<VideoConfig> {
+  bool autoMute = true;
+
+  void toggleMuted({bool? isMute}) {
+    autoMute = isMute ?? !autoMute;
+    setState(() {});
+  }
+
+  // VideoConfigData.of(context).toggleMuted() -> setState() -> 리빌드
+  //  -> autoMute 업데이트 된 VideoConfigData 위젯으로 교체
+  //  -> 변경된 VideoConfigData.of(context).autoMute 값이 침조됨
+  @override
+  Widget build(BuildContext context) {
+    return VideoConfigData(
+        toggleMuted: toggleMuted, autoMute: autoMute, child: widget.child);
   }
 }

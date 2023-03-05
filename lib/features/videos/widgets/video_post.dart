@@ -6,8 +6,6 @@ import 'package:tiktok_clone/common/constants/gaps.dart';
 import 'package:tiktok_clone/common/constants/rawData/foreground_image.dart';
 import 'package:tiktok_clone/common/constants/rawData/video_data.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
-import 'package:tiktok_clone/common/widgets/video_config/video_config_change_notifier.dart';
-import 'package:tiktok_clone/common/widgets/video_config/video_config_inherit.dart';
 import 'package:tiktok_clone/features/videos/widgets/video_bgm_info.dart';
 import 'package:tiktok_clone/features/videos/widgets/video_button.dart';
 import 'package:tiktok_clone/features/videos/widgets/video_comments.dart';
@@ -16,6 +14,8 @@ import 'package:tiktok_clone/generated/l10n.dart';
 import 'package:tiktok_clone/utils/common_utils.dart';
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
+
+import '../../../common/widgets/video_config/video_config_value_notifier.dart';
 
 class VideoPost extends StatefulWidget {
   final int index;
@@ -48,7 +48,7 @@ class _VideoPostState extends State<VideoPost>
   late final AnimationController _animationController;
 
   bool _isPause = false;
-  bool _autoMute = videoConfig.autoMute;
+  bool _autoMute = videoConfig.value;
   final String _descText = descText;
   final List<String> _tags = tags;
   final String _bgmInfo = bgmInfo;
@@ -64,8 +64,7 @@ class _VideoPostState extends State<VideoPost>
 
     // 웹 브라우저에서 애플리케이션이 실행된 경우
     if (kIsWeb) {
-      if (!mounted) return;
-      VideoConfigData.of(context).toggleMuted(isMute: true);
+      videoConfig.value = false;
       // 음소거 부수 효과: 웹에서 영상 자동재생을 차단하려는 기본 설정으로 인해 발생하는 예외를 회피할 수 있다.
       await _videoPlayerController.setVolume(0); // 음소거 처리
     }
@@ -153,7 +152,7 @@ class _VideoPostState extends State<VideoPost>
 
     // ChangeNotifier 리스너 추가
     videoConfig.addListener(() {
-      _autoMute = videoConfig.autoMute;
+      _autoMute = videoConfig.value;
       setState(() {});
     });
     /*
@@ -283,7 +282,7 @@ class _VideoPostState extends State<VideoPost>
                       FontAwesomeIcons.volumeHigh,
                       color: Colors.white,
                     ),
-              onPressed: videoConfig.toggleAutoMute,
+              onPressed: () => videoConfig.value = !videoConfig.value,
             ),
           ),
           Positioned(

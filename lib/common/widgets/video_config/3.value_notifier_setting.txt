@@ -1,0 +1,37 @@
+3. ValueNotifier
+
+전역형상을 관리하는 방법 중 하나로, 오직 단 한줄의 코드만으로 선언이 가능하다.
+ChangeNotifier 의 초간단 버전이라 보면 되며,
+오직 하나의 값만 추적 대상으로 하는 특징이 있다.
+
+    final videoConfig = ValueNotifier(false);
+
+주목할 부분은 ChangeNotifier 구현 코드와 다르게, ValueNotifier 값을 변경하는 세터가 따로 없는 점이다.
+실제로 그런 메서드가 필요가 없기 때문이다.
+
+실제로, ValueNotifier 상속 클래스를 참고하는 위젯에서는 세터를 따로 호출하지 않고
+값을 직접 변경한다.
+
+    // setting_screen.dart
+    AnimatedBuilder(
+        animation: videoConfig,
+        builder: (BuildContext context, Widget? child) =>
+            SwitchListTile.adaptive(
+                value: videoConfig.value,
+                onChanged: (value) => videoConfig.value = !videoConfig.value, // 세터 호출 없이 직접 변경
+                title: const Text('Auto Mute'),
+                subtitle: const Text('Video will be muted by default,'),
+            ),
+    ),
+
+    // 또는 아래와 같이 작성해도 같은 결과
+    ValueListenableBuilder(
+        valueListenable: videoConfig,
+        builder: (BuildContext context, bool value, Widget? child) =>
+            SwitchListTile.adaptive(
+                value: value,
+                onChanged: (value) => videoConfig.value = !videoConfig.value, // 세터 호출 없이 직접 변경
+                title: const Text('Auto Mute'),
+                subtitle: const Text('Video will be muted by default,'),
+            ),
+    ),

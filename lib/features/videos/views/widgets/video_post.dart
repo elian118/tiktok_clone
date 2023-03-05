@@ -48,6 +48,7 @@ class _VideoPostState extends State<VideoPost>
   late final AnimationController _animationController;
 
   bool _isPause = false;
+  bool _isMute = false;
   final String _descText = descText;
   final List<String> _tags = tags;
   final String _bgmInfo = bgmInfo;
@@ -79,6 +80,7 @@ class _VideoPostState extends State<VideoPost>
     // -> 화면이 완전히 넘어간 이후 재생하려면 VisibilityDetector() => onVisibilityChanged(info) {...}
     // 동영상 컨트롤러 상황을 주시하는 콜백 실행 설정
     _videoPlayerController.addListener(_onVideoChange);
+    _onPlaybackConfigChanged();
     setState(() {}); // state 저장
   }
 
@@ -143,11 +145,12 @@ class _VideoPostState extends State<VideoPost>
     _onTogglePause(); // 모달 닫기와 동시에 영상 재생
   }
 
-  void _onPlaybackConfigChanged() {
+  void _onPlaybackConfigChanged({bool toggle = false}) {
     // 지난 동영상의 context.read<PlaybackConfigViewModel>().addListener(_onPlaybackConfigChanged) 코드 실행 방지
     if (!mounted) return;
-    final muted = context.read<PlaybackConfigViewModel>().muted;
-    _videoPlayerController.setVolume(muted ? 0 : 1);
+    _isMute = toggle ? !_isMute : context.read<PlaybackConfigViewModel>().muted;
+    _videoPlayerController.setVolume(_isMute ? 0 : 1);
+    setState(() {});
   }
 
   @override
@@ -258,15 +261,12 @@ class _VideoPostState extends State<VideoPost>
             left: 20,
             child: IconButton(
               icon: FaIcon(
-                context.watch<PlaybackConfigViewModel>().muted
+                _isMute
                     ? FontAwesomeIcons.volumeXmark
                     : FontAwesomeIcons.volumeHigh,
                 color: Colors.white,
               ),
-              onPressed: () {
-                final currMuted = context.read<PlaybackConfigViewModel>().muted;
-                context.read<PlaybackConfigViewModel>().setMuted(!currMuted);
-              },
+              onPressed: () => _onPlaybackConfigChanged(toggle: true),
             ),
           ),
           Positioned(

@@ -51,7 +51,7 @@ class _SettingScreenState extends State<SettingScreen> {
                             darkModeConfig.value = !darkModeConfig.value,
                         title: const Text('Dark Mode'),
                         subtitle:
-                            const Text('Dark mode is applied by default.')),
+                            const Text('Light mode is applied by default.')),
               ),
             ),
             WebContainer(

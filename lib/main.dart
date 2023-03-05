@@ -112,8 +112,6 @@ class TickTokApp extends StatelessWidget {
             iconColor: Colors.white,
           ),
         ),
-        // home: const SignUpScreen(),
-        // home: const LayoutBuilderCodeLab(), // 메인레이아웃 위젯 역할 확인
       ),
     );
   }

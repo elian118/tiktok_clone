@@ -53,7 +53,7 @@ class _SettingScreenState extends State<SettingScreen> {
               maxWidth: Breakpoint.sm,
               child: SwitchListTile.adaptive(
                   value: context.watch<PlaybackConfigViewModel>().muted,
-                  onChanged: (value) =>
+                  onChanged: (value) => // onChange -> 바뀐 값을 value 로 전달
                       context.read<PlaybackConfigViewModel>().setMuted(value),
                   title: const Text('Auto Mute'),
                   subtitle: const Text('Video will be muted by default.')),

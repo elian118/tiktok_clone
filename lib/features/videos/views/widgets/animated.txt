@@ -1,0 +1,24 @@
+아래 코드는 AnimatedBuilder 위젯으로 대체할 수 있다.
+
+    _animationController.addListener(() {
+      print(_animationController.value); // 값 변경 확인
+      //_animationController.value 변경될 때마다 state 변경 -> setState() 강제 리빌드 유도 -> 애니메이션 연출
+      setState(() {});
+    });
+
+    효과: AnimatedBuilder 에 animation 컨트롤러만 지정하면
+      래핑된 부분만 연속 리빌드를 유발해 애니메이션 효과 간편 적용 가능
+
+      AnimatedBuilder(
+        animation: _animationController, // .addListener(() {...})를 적용할 애니메이션 컨트롤러 주입
+        builder: (BuildContext context, Widget? child) {
+          return Transform.scale(
+            scale: _animationController.value,
+            child: child, // AnimatedOpacity(...)
+          );
+        },
+      )
+
+    참고: 접미사 Builder 붙는 모든 빌더 위젯은 대부분
+      리빌드(리랜더링)를 유도하는 initState(), dispose()가 기본로직이 설정된 스테이트풀 위젯이다.
+      빌더 위젯들은 일반적으로 builder 속성에 각 위젯 목적에 맞는 리빌드 콜백을 지정하도록 돼 있다.

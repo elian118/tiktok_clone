@@ -1,11 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:tiktok_clone/common/constants/enums/breakpoints.dart';
 import 'package:tiktok_clone/common/constants/gaps.dart';
 import 'package:tiktok_clone/common/constants/rawData/foreground_image.dart';
 import 'package:tiktok_clone/common/constants/rawData/video_data.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
+import 'package:tiktok_clone/features/videos/view_models/playback_config_vm.dart';
 import 'package:tiktok_clone/features/videos/views/widgets/video_bgm_info.dart';
 import 'package:tiktok_clone/features/videos/views/widgets/video_button.dart';
 import 'package:tiktok_clone/features/videos/views/widgets/video_comments.dart';
@@ -61,8 +63,10 @@ class _VideoPostState extends State<VideoPost>
 
     // 웹 브라우저에서 애플리케이션이 실행된 경우
     if (kIsWeb) {
-      // videoConfig.value = false;
       // 음소거 부수 효과: 웹에서 영상 자동재생을 차단하려는 기본 설정으로 인해 발생하는 예외를 회피할 수 있다.
+      // _toggleMute(true);
+      if (!mounted) return;
+      context.read<PlaybackConfigViewModel>().setMuted(true);
       await _videoPlayerController.setVolume(0); // 음소거 처리
     }
     // 아래 코드들은 초기 설정에 불과하므로, 비디오 컨트롤러 초기화 여부와 무관하게 동기 처리 가능
@@ -93,10 +97,14 @@ class _VideoPostState extends State<VideoPost>
     if (!mounted) return; // 없으면 실행 중단
     // VisibilityInfo.visibleFraction * 100 -> 위젯이 기기 화면에 얼마만큼 보이는 가를 백분율로 반환
     // print('Video: ${widget.index} is ${info.visibleFraction * 100}% visible.');
+
+    // 조건식 -> 위젯이 기기 화면에 모두 보여야 재생 시작
     if (info.visibleFraction == 1 &&
         !_isPause &&
         !_videoPlayerController.value.isPlaying) {
-      _videoPlayerController.play(); // 조건식 -> 위젯이 기기 화면에 모두 보여야 재생 시작
+      // 조건식 -> 자동재생 허용이면 재생 시작
+      final autoplay = context.read<PlaybackConfigViewModel>().autoplay;
+      if (autoplay) _videoPlayerController.play();
     }
     // 영상 재생 도중 다른 네비게이션 페이지로 이동한 경우(info.visibleFraction == 0) 일시 정지
     if (_videoPlayerController.value.isPlaying && info.visibleFraction == 0) {
@@ -135,6 +143,13 @@ class _VideoPostState extends State<VideoPost>
     _onTogglePause(); // 모달 닫기와 동시에 영상 재생
   }
 
+  void _onPlaybackConfigChanged() {
+    // 지난 동영상의 context.read<PlaybackConfigViewModel>().addListener(_onPlaybackConfigChanged) 코드 실행 방지
+    if (!mounted) return;
+    final muted = context.read<PlaybackConfigViewModel>().muted;
+    _videoPlayerController.setVolume(muted ? 0 : 1);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -147,32 +162,9 @@ class _VideoPostState extends State<VideoPost>
       duration: _animationDuration,
     );
 
-    /*
-    아래 코드는 AnimatedBuilder 위젯으로 대체할 수 있다.
-
-    _animationController.addListener(() {
-      print(_animationController.value); // 값 변경 확인
-      //_animationController.value 변경될 때마다 state 변경 -> 강제 리빌드 유도 -> 애니메이션 연출
-      setState(() {});
-    });
-
-    효과: AnimatedBuilder 에 animation 컨트롤러만 지정하면
-      래핑된 부분만 연속 리빌드를 유발해 애니메이션 효과 간편 적용 가능
-
-      AnimatedBuilder(
-        animation: _animationController, // .addListener(() {...})를 적용할 애니메이션 컨트롤러 주입
-        builder: (BuildContext context, Widget? child) {
-          return Transform.scale(
-            scale: _animationController.value,
-            child: child, // AnimatedOpacity(...)
-          );
-        },
-      )
-
-    참고: 접미사 Builder 붙는 모든 빌더 위젯은 대부분
-      리빌드(리랜더링)를 유도하는 initState(), dispose()가 기본로직이 설정된 스테이트풀 위젯이다.
-      빌더 위젯들은 일반적으로 builder 속성에 각 위젯 목적에 맞는 리빌드 콜백을 지정하도록 돼 있다.
-    */
+    context
+        .read<PlaybackConfigViewModel>()
+        .addListener(_onPlaybackConfigChanged);
   }
 
   // 모든 stateful widget 내 컨트롤러는 작업 후 반드시 위젯에서 제거 -> 누락 시, 시뮬레이터에서 에러 발생
@@ -261,19 +253,22 @@ class _VideoPostState extends State<VideoPost>
               ),
             ),
           ),
-          // Positioned(
-          //   top: 40,
-          //   left: 20,
-          //   child: IconButton(
-          //     icon: FaIcon(
-          //       context.watch<VideoConfig>().isMuted
-          //           ? FontAwesomeIcons.volumeXmark
-          //           : FontAwesomeIcons.volumeHigh,
-          //       color: Colors.white,
-          //     ),
-          //     onPressed: () => context.read<VideoConfig>().toggleMute(),
-          //   ),
-          // ),
+          Positioned(
+            top: 40,
+            left: 20,
+            child: IconButton(
+              icon: FaIcon(
+                context.watch<PlaybackConfigViewModel>().muted
+                    ? FontAwesomeIcons.volumeXmark
+                    : FontAwesomeIcons.volumeHigh,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                final currMuted = context.read<PlaybackConfigViewModel>().muted;
+                context.read<PlaybackConfigViewModel>().setMuted(!currMuted);
+              },
+            ),
+          ),
           Positioned(
             bottom: 20,
             right: 10,

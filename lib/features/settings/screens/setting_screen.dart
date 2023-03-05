@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tiktok_clone/common/constants/enums/breakpoints.dart';
+import 'package:tiktok_clone/common/widgets/dark_mode_config/dark_mode_config.dart';
 import 'package:tiktok_clone/common/widgets/web_container.dart';
 import 'package:tiktok_clone/features/settings/widgets/about_list_tile_ex.dart';
 import 'package:tiktok_clone/features/settings/widgets/android_dialog_ex.dart';
@@ -42,6 +43,20 @@ class _SettingScreenState extends State<SettingScreen> {
             WebContainer(
               maxWidth: Breakpoint.sm,
               child: AnimatedBuilder(
+                animation: darkModeConfig,
+                builder: (BuildContext context, Widget? child) =>
+                    SwitchListTile.adaptive(
+                        value: darkModeConfig.value,
+                        onChanged: (value) =>
+                            darkModeConfig.value = !darkModeConfig.value,
+                        title: const Text('Dark Mode'),
+                        subtitle:
+                            const Text('Dark mode is applied by default.')),
+              ),
+            ),
+            WebContainer(
+              maxWidth: Breakpoint.sm,
+              child: AnimatedBuilder(
                 animation: videoConfig,
                 builder: (BuildContext context, Widget? child) =>
                     SwitchListTile.adaptive(
@@ -50,7 +65,7 @@ class _SettingScreenState extends State<SettingScreen> {
                             videoConfig.value = !videoConfig.value,
                         title: const Text('Auto Mute'),
                         subtitle:
-                            const Text('Video will be muted by default,')),
+                            const Text('Video will be muted by default.')),
               ),
             ),
             // Switch.adaptive() = CupertinoSwitch(...)

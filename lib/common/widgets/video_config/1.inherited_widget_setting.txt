@@ -1,0 +1,55 @@
+1. InheritedWidget(상속된 위젯)
+
+전역형상을 관리하는 방법 중 하나.
+최상위 위젯으로 랩핑시켜 그 아래 위치한 모든 위젯들에게 데이터를 상속하는 방식이다.
+
+단, InheritedWidget 자식 위젯에서 참조만 가능할 뿐, 필드 정보 업데이트 불가(단순 데이터 전달자에 불과)하다.
+그래서 InheritedWidget 필드 데이터 업데이트는
+setState() 사용이 가능한 StatefulWidget 과 연동해서 써야만 한다.
+
+    * video_config_inherit.dart 참고
+
+이런식으로 InheritedWidget 데이터 변경은 가능하지만,
+이 방식을 많이 쓸수록 성능 저하에 유의해야 한다.
+최상위 랩핑 위젯을 갈아끼우는 게 되므로, 로직 상 무조건 모든 화면을 다시 리빌드하기 때문이다.
+저사양 기기라면, 상당히 부담스러운 로직임에 틀림없다.
+
+InheritedWidget 종류가 많아질수록 코드가 기하급수적으로 늘어나는 것 또한 비효율적이다.
+
+InheritedWidget 으로 전역형상을 관리하려면 main.dart build() 최상위에 아래와 같이 랩핑해줘야 하는데,
+
+    // main.dart
+    class TickTokApp extends StatelessWidget {
+      const TickTokApp({super.key});
+
+      @override
+      Widget build(BuildContext context) {
+        return VideoConfig( // InheritedWidget 랩핑 -> InheritedWidget 이 늘수록 중첩되는 랩핑 코드 증가
+          child: MaterialApp.router(
+
+만약, 이런저런 이유로 여러 설정 파일들이 InheritedWidget 형태로 계속 늘어나게 되면,
+그때마다 해당 파일들을 일일이 중첩 랩핑해야 한다.
+
+당연히, 아래와 같이 이걸 가져다 쓰는 자식 위젯들의 컨텍스트 코드 또한 늘어나게 된다.
+
+    // 자식 위젯에서 컨텍스트로 InheritedWidget 접근해 데이터 가져오기
+    IconButton(
+      icon: VideoConfigData.of(context).autoMute
+        ? const FaIcon(
+          FontAwesomeIcons.volumeXmark,
+          color: Colors.white,
+        )
+        : const FaIcon(
+          FontAwesomeIcons.volumeHigh,
+          color: Colors.white,
+        ),
+      onPressed: () => VideoConfigData.of(context).toggleMuted(),
+    ),
+
+따라서, 이 방식은 앱 규모가 커질 수록 유지 보수 차원에서 상당히 비효율적인 체계라고 볼 수 있어,
+일반적으로 전역 형상관리에 InheritedWidget 은 거의 사용되지 않는다.
+
+하지만, 이 방식은 플러터에서 자주 사용하는 Theme.of(context), MediaQuery.of(context) 구문의
+구조외 원리를 이해하는 데 도움이 될 것이다.
+
+위 전역 플러터 위젯 또한 InheritedWidget 이기 때문이다.

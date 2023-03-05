@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tiktok_clone/common/constants/enums/breakpoints.dart';
-import 'package:tiktok_clone/common/widgets/video_config/video_config.dart';
+import 'package:tiktok_clone/common/widgets/video_config/video_config_change_notifier.dart';
 import 'package:tiktok_clone/common/widgets/web_container.dart';
 import 'package:tiktok_clone/features/settings/widgets/about_list_tile_ex.dart';
 import 'package:tiktok_clone/features/settings/widgets/android_dialog_ex.dart';
@@ -40,11 +40,15 @@ class _SettingScreenState extends State<SettingScreen> {
           children: [
             WebContainer(
               maxWidth: Breakpoint.sm,
-              child: SwitchListTile.adaptive(
-                value: VideoConfigData.of(context).autoMute,
-                onChanged: (value) => VideoConfigData.of(context).toggleMuted(),
-                title: const Text('Auto Mute'),
-                subtitle: const Text('Video will be muted by default,'),
+              child: AnimatedBuilder(
+                animation: videoConfig,
+                builder: (BuildContext context, Widget? child) =>
+                    SwitchListTile.adaptive(
+                        value: videoConfig.autoMute,
+                        onChanged: (value) => videoConfig.toggleAutoMute(),
+                        title: const Text('Auto Mute'),
+                        subtitle:
+                            const Text('Video will be muted by default,')),
               ),
             ),
             // Switch.adaptive() = CupertinoSwitch(...)

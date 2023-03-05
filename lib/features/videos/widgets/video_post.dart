@@ -6,7 +6,8 @@ import 'package:tiktok_clone/common/constants/gaps.dart';
 import 'package:tiktok_clone/common/constants/rawData/foreground_image.dart';
 import 'package:tiktok_clone/common/constants/rawData/video_data.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
-import 'package:tiktok_clone/common/widgets/video_config/video_config.dart';
+import 'package:tiktok_clone/common/widgets/video_config/video_config_change_notifier.dart';
+import 'package:tiktok_clone/common/widgets/video_config/video_config_inherit.dart';
 import 'package:tiktok_clone/features/videos/widgets/video_bgm_info.dart';
 import 'package:tiktok_clone/features/videos/widgets/video_button.dart';
 import 'package:tiktok_clone/features/videos/widgets/video_comments.dart';
@@ -47,6 +48,7 @@ class _VideoPostState extends State<VideoPost>
   late final AnimationController _animationController;
 
   bool _isPause = false;
+  bool _autoMute = videoConfig.autoMute;
   final String _descText = descText;
   final List<String> _tags = tags;
   final String _bgmInfo = bgmInfo;
@@ -67,7 +69,6 @@ class _VideoPostState extends State<VideoPost>
       // 음소거 부수 효과: 웹에서 영상 자동재생을 차단하려는 기본 설정으로 인해 발생하는 예외를 회피할 수 있다.
       await _videoPlayerController.setVolume(0); // 음소거 처리
     }
-
     // 아래 코드들은 초기 설정에 불과하므로, 비디오 컨트롤러 초기화 여부와 무관하게 동기 처리 가능
 
     // 초기화(화면 띄움)과 동시에 동영상 자동 재생
@@ -149,6 +150,12 @@ class _VideoPostState extends State<VideoPost>
       value: 1.5, // 기본값(초기값)
       duration: _animationDuration,
     );
+
+    // ChangeNotifier 리스너 추가
+    videoConfig.addListener(() {
+      _autoMute = videoConfig.autoMute;
+      setState(() {});
+    });
     /*
     아래 코드는 AnimatedBuilder 위젯으로 대체할 수 있다.
 
@@ -267,7 +274,7 @@ class _VideoPostState extends State<VideoPost>
             top: 40,
             left: 20,
             child: IconButton(
-              icon: VideoConfigData.of(context).autoMute
+              icon: _autoMute
                   ? const FaIcon(
                       FontAwesomeIcons.volumeXmark,
                       color: Colors.white,
@@ -276,7 +283,7 @@ class _VideoPostState extends State<VideoPost>
                       FontAwesomeIcons.volumeHigh,
                       color: Colors.white,
                     ),
-              onPressed: () => VideoConfigData.of(context).toggleMuted(),
+              onPressed: videoConfig.toggleAutoMute,
             ),
           ),
           Positioned(

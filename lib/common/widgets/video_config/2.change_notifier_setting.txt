@@ -1,0 +1,71 @@
+2. ChangeNotifier
+
+전역형상을 관리하는 방법 중 하나로, 리스너블(Listenable) 추상클래스를 활용한다.
+
+리스너블 추상클래스는 애니메이션 관련 위젯에서 컨트롤러를 재정의할때 주로 사용되는데,
+상속된 클래스가 보유한 필드의 정보 변경 현황을 모든 위젯에 시시각각 알려주는 고유 이벤트 리스너를 제공한다.
+
+그리고 ChangeNotifier 는 notifyListeners()를 사용해서 전역형상 관리 방법으로 응용한 것이다.
+
+InheritedWidget 과 다르게, ChangeNotifier 는 데이터가 바뀐 위젯만 리빌드하므로 성능 부담이 적고
+구현에 필요한 코드량도 아주 적다.
+
+    * video_config_inherit.dart 참고
+
+이렇게만 구현해두면 아래처럼 다른 위젯에서 가져다 쓰기도 간단해서
+관리하는 전역 필드들이 늘수록 관리 효율이 높아지는 장점이 있다.
+
+    AnimatedBuilder(
+        animation: videoConfig, // ChangeNotifier 는 리스너 타입으로 인식 가능 -> 애니메이션 컨트롤러나 마찬가지
+        builder: (BuildContext context, Widget? child) =>
+            SwitchListTile.adaptive(
+                value: videoConfig.autoMute,
+                onChanged: (value) => videoConfig.toggleAutoMute(),
+                title: const Text('Auto Mute'),
+                subtitle: const Text('Video will be muted by default,'),
+            ),
+    ),
+
+* 여기서 AnimatedBuilder 를 랩핑하지 않으면 onChanged 콜백이 실행되도 변화가 없으므로 꼭 넣어야 한다.
+
+뜬금 없이, 왜 AnimatedBuilder 가 여기서 나오냐 의문이겠지만,
+플러터 공식문서에 가면 실제로 같이 쓰라고 안내돼 있다.
+특히, ChangeNotifier 와 AnimatedBuilder 둘을 같이 써야 성능 향상에 도움이 된단다.
+
+    https://api.flutter.dev/flutter/foundation/ChangeNotifier-class.html
+        -> Improve rebuilds performance using AnimatedBuilder 단락 참고
+
+굳이, AnimatedBuilder 를 안 쓰겠다면,
+ChangeNotifier 를 참조할 StatefulWidget initState()에 리스너를 추가하고
+해당 StatefulWidget state와 리스너를 서로 연동하면 된다.
+
+  // video_post.dart
+  ...
+  bool _autoMute = videoConfig.autoMute;
+  ...
+
+  @override
+    void initState() {
+        ...
+        // ChangeNotifier 리스너 추가
+        videoConfig.addListener(() {
+          _autoMute = videoConfig.autoMute;
+          setState(() {});
+        });
+    }
+  ...
+
+    IconButton(
+      icon: _autoMute
+          ? const FaIcon(
+              FontAwesomeIcons.volumeXmark,
+              color: Colors.white,
+            )
+          : const FaIcon(
+              FontAwesomeIcons.volumeHigh,
+              color: Colors.white,
+            ),
+      onPressed: videoConfig.toggleAutoMute,
+    ),
+
+아무래도 처음 방식인 AnimatedBuilder 를 쓰는 게 훨씬 나아 보인다.

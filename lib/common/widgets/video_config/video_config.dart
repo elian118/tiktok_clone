@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 // InheritedWidget -> 모든 위젯에서 참조만 가능할 뿐, 필드 정보 업데이트 불가(단순 데이터 전달자에 불과)
-//  -> 업데이트하려면, setState 사용 가능한 StatefulWidget 과 연동해서 써야 함
+//  -> 업데이트는 setState 사용 가능한 StatefulWidget 과 연동해서 써야 함(즉, 이 방식을 많이 쓸수록 성능 느려짐)
 class VideoConfigData extends InheritedWidget {
   final bool autoMute;
   final void Function({bool? isMute}) toggleMuted;

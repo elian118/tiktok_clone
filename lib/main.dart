@@ -17,6 +17,8 @@ class TickTokApp extends StatelessWidget {
   Widget build(BuildContext context) {
     // 강제로 언어설정 바꾸기
     // S.load(const Locale('en'));
+
+    // build 메서드 안에 있으므로, StatefulWidget 과 연동 된 InheritedWidget 또한 setState() 영향 받음
     return VideoConfig(
       child: MaterialApp.router(
         routerConfig: router,

@@ -1,4 +1,4 @@
-const List<String> videos = [
+const List<String> rawVideos = [
   'assets/videos/funny_80086.mp4',
   'assets/videos/car_149451.mp4',
   'assets/videos/flowers_149958.mp4',

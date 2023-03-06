@@ -52,15 +52,15 @@ class PlaybackConfigViewModel extends Notifier<PlaybackConfigModel> {
 // 외부로 export -> main.dart 에서 사용
 final playbackConfigProvider =
     NotifierProvider<PlaybackConfigViewModel, PlaybackConfigModel>(
-  () => throw UnimplementedError(), // 예외 처리 후 main.dart 에서 오버라이드 위임
+  () => throw UnimplementedError(), // 초기화 콜백: 예외 처리 후 main.dart 에서 오버라이드 위임
 );
 
 /*
-  원래대로라면 이렇게 키 랩퍼를 매개변수 없이 넣어야 한다.
+  원래대로라면 초기화 함수로 아래와 같이 키 랩퍼를 매개변수 없이 넣어야 한다.
 
   final playbackConfigProvider =
       NotifierProvider<PlaybackConfigViewModel, PlaybackConfigModel>(
-    () => PlaybackConfigViewModel(),
+    () => PlaybackConfigViewModel(), // 초기화: 생성자 호출(매개변수 생성자 X)
   );
 
    하지만, 이 키 랩퍼는 매개변수로 main.dart 에서만 호출 가능한 SharedPreferences 인스턴스 필요

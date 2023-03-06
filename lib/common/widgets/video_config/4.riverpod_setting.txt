@@ -12,7 +12,7 @@ Provider 보다 훨씬 간단하며, 플러터 외부에서 전역 형상을 관
     void main() async {
       // runApp() 실행 전에 위젯 바인딩을 먼저
       WidgetsFlutterBinding.ensureInitialized();
-
+      ...
       runApp(const ProviderScope(child: TickTokApp()));
     }
     ...
@@ -81,3 +81,42 @@ Provider 보다 훨씬 간단하며, 플러터 외부에서 전역 형상을 관
             .setDarkMode(value),
         ...
       )
+
+
+4) API 호출을 위한 비동기 데이터 형상 관리 -> AsyncNotifier
+
+    비동기 데이터를 반영해야 하는 모델은 AsyncNotifier 를 상속받는다.
+
+    // timeline_view_model.dart
+    class TimelineViewModel extends AsyncNotifier<List<VideoModel>> {
+      List<VideoModel> _list = [
+        // 임시 데이터 -> api 연동 후 없앨 예정
+        for (var rawVideo in rawVideos) VideoModel(title: rawVideo),
+      ];
+
+      void uploadVideo() async {
+        state = const AsyncValue.loading(); // 데이터를 가져오기 전까지 초기값을 로딩상태로 만든다.
+        await Future.delayed(const Duration(seconds: 2)); // 2초 후에 데이터가 온다고 가정(테스트)
+        final newVideo = VideoModel(title: '${DateTime.now()}');
+
+        _list = [..._list, newVideo];
+
+        // AsyncNotifier 상속 클래스 -> AsyncValue.data(newValue) 사용해 변경. state = _list 불가.
+        state = AsyncValue.data(_list);
+      }
+
+      @override
+      FutureOr<List<VideoModel>> build() async {
+        await Future.delayed(const Duration(seconds: 5)); // 5초 후에 데이터가 온다고 가정(테스트)
+        return _list;
+      }
+    }
+
+    // export
+    final timelineProvider =
+        AsyncNotifierProvider<TimelineViewModel, List<VideoModel>>(
+      () => TimelineViewModel(), // 뷰 모델 초기화
+    );
+
+    이후, 위 비동기 뷰 모델을 import 하는 widget 들은
+    2) -> 3)과 과정 동일하게 참조 또는 메서드를 호출하면 된다.

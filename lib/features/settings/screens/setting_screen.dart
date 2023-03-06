@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tiktok_clone/common/constants/enums/breakpoints.dart';
-import 'package:tiktok_clone/common/widgets/video_config/dark_mode_config.dart';
 import 'package:tiktok_clone/common/widgets/web_container.dart';
 import 'package:tiktok_clone/features/settings/widgets/about_list_tile_ex.dart';
 import 'package:tiktok_clone/features/settings/widgets/android_dialog_ex.dart';
@@ -10,25 +9,12 @@ import 'package:tiktok_clone/features/settings/widgets/cupertino_modal_ex.dart';
 import 'package:tiktok_clone/features/settings/widgets/date_time_picker_ex.dart';
 import 'package:tiktok_clone/features/videos/view_models/playback_config_vm.dart';
 
-class SettingScreen extends StatefulWidget {
+class SettingScreen extends ConsumerWidget {
   const SettingScreen({Key? key}) : super(key: key);
 
+  // bool _notification = false;
   @override
-  State<SettingScreen> createState() => _SettingScreenState();
-}
-
-class _SettingScreenState extends State<SettingScreen> {
-  bool _notification = false;
-
-  void _onNotificationsChanged(bool? newValue) {
-    if (newValue == null) return;
-    setState(() {
-      _notification = newValue;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     // 번역 강제 오버라이드(현재 위젯만 해당)
     return Localizations.override(
       context: context,
@@ -43,18 +29,20 @@ class _SettingScreenState extends State<SettingScreen> {
             WebContainer(
               maxWidth: Breakpoint.sm,
               child: SwitchListTile.adaptive(
-                  value: context.watch<DarkModeConfig>().isDark,
-                  onChanged: (value) => {},
-                  // context.read<DarkModeConfig>().toggleDark(),
+                  value: ref.watch(playbackConfigProvider).darkMode,
+                  onChanged: (value) => ref
+                      .read(playbackConfigProvider.notifier)
+                      .setDarkMode(value),
                   title: const Text('Dark Mode'),
                   subtitle: const Text('Light mode is applied by default.')),
             ),
             WebContainer(
               maxWidth: Breakpoint.sm,
               child: SwitchListTile.adaptive(
-                  value: false,
-                  // context.watch<PlaybackConfigViewModel>().muted,
-                  onChanged: (value) => {}, // onChange -> 뷰에서 바뀐 값을 value 로 전달
+                  value: ref.watch(playbackConfigProvider).muted,
+                  onChanged: (value) => ref
+                      .read(playbackConfigProvider.notifier)
+                      .setMuted(value), // onChange -> 뷰에서 바뀐 값을 value 로 전달
                   // context.read<PlaybackConfigViewModel>().setMuted(value),
                   title: const Text('Auto Mute'),
                   subtitle: const Text('Video will be muted by default.')),
@@ -62,10 +50,9 @@ class _SettingScreenState extends State<SettingScreen> {
             WebContainer(
               maxWidth: Breakpoint.sm,
               child: SwitchListTile.adaptive(
-                  value: false,
-                  // value: context.watch<PlaybackConfigViewModel>().autoplay,
-                  onChanged: (value) => context
-                      .read<PlaybackConfigViewModel>()
+                  value: ref.watch(playbackConfigProvider).autoplay,
+                  onChanged: (value) => ref
+                      .read(playbackConfigProvider.notifier)
                       .setAutoplay(value),
                   title: const Text('Auto Play'),
                   subtitle:
@@ -74,8 +61,8 @@ class _SettingScreenState extends State<SettingScreen> {
             WebContainer(
               maxWidth: Breakpoint.sm,
               child: SwitchListTile.adaptive(
-                value: _notification,
-                onChanged: _onNotificationsChanged,
+                value: false,
+                onChanged: (value) {},
                 title: const Text('Enable notifications'),
                 subtitle: const Text('Enable notifications'),
               ),
@@ -85,8 +72,8 @@ class _SettingScreenState extends State<SettingScreen> {
               child: CheckboxListTile(
                 activeColor: Theme.of(context).primaryColor,
                 // checkColor: Theme.of(context).primaryColor,
-                value: _notification,
-                onChanged: _onNotificationsChanged,
+                value: false,
+                onChanged: (value) {},
                 title: const Text('Marketing emails'),
                 subtitle: const Text("We won't spam you."),
               ),

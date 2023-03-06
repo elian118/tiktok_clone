@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
 import 'package:tiktok_clone/common/routes/router.dart';
-import 'package:tiktok_clone/common/widgets/video_config/dark_mode_config.dart';
 import 'package:tiktok_clone/features/videos/repos/playback_config_repo.dart';
 import 'package:tiktok_clone/features/videos/view_models/playback_config_vm.dart';
 import 'package:tiktok_clone/generated/l10n.dart';
@@ -26,11 +24,11 @@ void main() async {
   ], child: const TickTokApp()));
 }
 
-class TickTokApp extends StatelessWidget {
+class TickTokApp extends ConsumerWidget {
   const TickTokApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     // 강제로 언어설정 바꾸기
     // S.load(const Locale('en'));
     return MaterialApp.router(
@@ -50,7 +48,7 @@ class TickTokApp extends StatelessWidget {
         Locale('es'), // 스페인어
       ],
       // themeMode: ThemeMode.system, // 다크/라이트 모드 - ThemeMode.system -> 시스템 설정에 따름
-      themeMode: context.watch<DarkModeConfig>().isDark
+      themeMode: ref.watch(playbackConfigProvider).darkMode
           ? ThemeMode.dark
           : ThemeMode.light,
       // 전역 테마 설정

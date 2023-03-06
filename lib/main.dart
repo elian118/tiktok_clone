@@ -37,7 +37,7 @@ class TickTokApp extends ConsumerWidget {
     // 강제로 언어설정 바꾸기
     // S.load(const Locale('en'));
     return MaterialApp.router(
-      routerConfig: router,
+      routerConfig: ref.watch(routerProvider),
       debugShowCheckedModeBanner: false,
       title: 'TikTok Clone',
       // 번역 설정

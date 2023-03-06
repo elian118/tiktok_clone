@@ -1,11 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/common/constants/enums/breakpoints.dart';
 import 'package:tiktok_clone/common/constants/gaps.dart';
 import 'package:tiktok_clone/common/constants/rawData/foreground_image.dart';
 import 'package:tiktok_clone/common/constants/rawData/video_data.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
+import 'package:tiktok_clone/features/videos/view_models/playback_config_vm.dart';
 import 'package:tiktok_clone/features/videos/views/widgets/video_bgm_info.dart';
 import 'package:tiktok_clone/features/videos/views/widgets/video_button.dart';
 import 'package:tiktok_clone/features/videos/views/widgets/video_comments.dart';
@@ -15,7 +17,7 @@ import 'package:tiktok_clone/utils/common_utils.dart';
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
-class VideoPost extends StatefulWidget {
+class VideoPost extends ConsumerStatefulWidget {
   final int index;
   final String video;
   final VoidCallback onVideoFinished;
@@ -28,10 +30,10 @@ class VideoPost extends StatefulWidget {
       : super(key: key);
 
   @override
-  State<VideoPost> createState() => _VideoPostState();
+  VideoPostState createState() => VideoPostState();
 }
 
-class _VideoPostState extends State<VideoPost>
+class VideoPostState extends ConsumerState<VideoPost>
     with SingleTickerProviderStateMixin {
   late final VideoPlayerController _videoPlayerController;
   late final AnimationController _animationController;
@@ -55,7 +57,7 @@ class _VideoPostState extends State<VideoPost>
       // 음소거 부수 효과: 웹에서 영상 자동재생을 차단하려는 기본 설정으로 인해 발생하는 예외를 회피할 수 있다.
       // _toggleMute(true);
       if (!mounted) return;
-      // context.read<PlaybackConfigViewModel>().setMuted(true);
+      ref.read(playbackConfigProvider.notifier).setMuted(true);
       await _videoPlayerController.setVolume(0); // 음소거 처리
     }
     // 아래 코드들은 초기 설정에 불과하므로, 비디오 컨트롤러 초기화 여부와 무관하게 동기 처리 가능
@@ -93,6 +95,8 @@ class _VideoPostState extends State<VideoPost>
         !_isPause &&
         !_videoPlayerController.value.isPlaying) {
       // 조건식 -> 자동재생 허용이면 재생 시작
+      final autoplay = ref.read(playbackConfigProvider).autoplay;
+      if (autoplay) _videoPlayerController.play();
       // final autoplay = context.read<PlaybackConfigViewModel>().autoplay;
       // if (autoplay) _videoPlayerController.play();
     }
@@ -134,9 +138,9 @@ class _VideoPostState extends State<VideoPost>
   }
 
   void _onPlaybackConfigChanged({bool toggle = false}) {
-    // 지난 동영상의 context.read<PlaybackConfigViewModel>().addListener(_onPlaybackConfigChanged) 코드 실행 방지
+    // 지난 동영상의 addListener(_onPlaybackConfigChanged) 코드 실행 방지
     if (!mounted) return;
-    // _isMute = toggle ? !_isMute : context.read<PlaybackConfigViewModel>().muted;
+    _isMute = toggle ? !_isMute : ref.read(playbackConfigProvider).muted;
     _videoPlayerController.setVolume(_isMute ? 0 : 1);
     setState(() {});
   }
@@ -153,6 +157,7 @@ class _VideoPostState extends State<VideoPost>
       duration: _animationDuration,
     );
 
+    // riverpod 적용 보류
     // context
     //     .read<PlaybackConfigViewModel>()
     //     .addListener(_onPlaybackConfigChanged);

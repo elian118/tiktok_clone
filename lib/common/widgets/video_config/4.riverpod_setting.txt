@@ -17,26 +17,67 @@ Provider 보다 훨씬 간단하며, 플러터 외부에서 전역 형상을 관
     }
     ...
 
-2) ConsumerWidget 또는 ConsumerStatefulWidget 상속 후
+2) ConsumerWidget 또는 ConsumerStatefulWidget 상속
 
-    class TickTokApp extends ConsumerWidget {
-      const TickTokApp({super.key});
+    1. ConsumerWidget: StatelessWidget 컨텍스트 소비자
 
-3) build 메서드 두번째 인자로 WidgetRef ref 추가
+        class TickTokApp extends ConsumerWidget {
+            ...
 
-      @override
-      Widget build(BuildContext context, WidgetRef ref) {
-        return MaterialApp.router(
+            // -> build 메서드 두번째 인자로 WidgetRef ref 추가 후 접근
+            //    build 메서드 안에서만 ref 사용 가능
+            @override
+            Widget build(BuildContext context, WidgetRef ref) {
+                SwitchListTile.adaptive(
+                    value: ref.watch(playbackConfigProvider).darkMode,
+                    onChanged: (value) => ref
+                        .read(playbackConfigProvider.notifier)
+                        .setDarkMode(value),
+                    ...
+                  ),
+                  ...
+                }
+        }
+
+    2. ConsumerStatefulWidget: StatefulWidget 컨텍스트 소비자
+
+        class VideoPost extends ConsumerStatefulWidget {
           ...
 
-4) ref 로 접근
-    1. ref.watch(프로바이더).변수 -> 변수에 캐싱된 값 가져오기
-    2. ref.read(프로바이더.notifier).메소드 -> 프로바이더 메소드(세터) 호출
+          @override
+          VideoPostState createState() => VideoPostState();
+        }
 
-          SwitchListTile.adaptive(
-            value: ref.watch(playbackConfigProvider).darkMode,
-            onChanged: (value) => ref
-                .read(playbackConfigProvider.notifier)
-                .setDarkMode(value),
+        class VideoPostState extends ConsumerState<VideoPost> {
+          ...
+          // -> build 메서드 변형 불필요, 클래스 내 모든 곳에서 ref 사용 가능
+          void _onPlaybackConfigChanged({bool toggle = false}) {
+            if (!mounted) return;
+            _isMute = toggle ? !_isMute : ref.read(playbackConfigProvider).muted;
+            _videoPlayerController.setVolume(_isMute ? 0 : 1);
+            setState(() {});
+          }
+
+          @override
+          Widget build(BuildContext context) {
             ...
-          )
+          }
+        }
+
+
+
+3) ref 로 접근
+
+    ref.watch(프로바이더).변수 -> 변수에 캐싱된 값 가져오기
+    ref.read(프로바이더.notifier).메소드 -> 프로바이더 메소드(세터) 호출
+
+    1. ConsumerWidget 상속인 경우,
+       build 메서드 두번째 인자로 WidgetRef ref 추가
+
+      SwitchListTile.adaptive(
+        value: ref.watch(playbackConfigProvider).darkMode,
+        onChanged: (value) => ref
+            .read(playbackConfigProvider.notifier)
+            .setDarkMode(value),
+        ...
+      )

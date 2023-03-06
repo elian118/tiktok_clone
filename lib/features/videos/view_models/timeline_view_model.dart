@@ -11,7 +11,7 @@ class TimelineViewModel extends AsyncNotifier<List<VideoModel>> {
   ];
 
   void uploadVideo() async {
-    state = const AsyncValue.loading(); // 데이터를 가져오기 전까지 초기값을 로딩상태로 만든다.
+    state = const AsyncValue.loading(); // 데이터를 가져오기 전까지 뷰모델을 강제 로딩상태로 만든다.
     await Future.delayed(const Duration(seconds: 2)); // 2초 후에 데이터가 온다고 가정(테스트)
     final newVideo = VideoModel(title: '${DateTime.now()}');
     _list = [..._list, newVideo];

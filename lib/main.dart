@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,9 +10,13 @@ import 'package:tiktok_clone/features/videos/view_models/playback_config_vm.dart
 import 'package:tiktok_clone/generated/l10n.dart';
 import 'package:tiktok_clone/styles/text_theme.dart';
 
+import 'firebase_options.dart';
+
 void main() async {
   // runApp() 실행 전에 위젯 바인딩을 먼저
   WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   final preferences =
       await SharedPreferences.getInstance(); // 기기 저장소 사용을 위한 공유 기본설정 불러오기(싱글톤)

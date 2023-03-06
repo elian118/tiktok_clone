@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
@@ -19,19 +20,10 @@ void main() async {
   final repository =
       PlaybackConfigRepository(preferences); // 기기 저장소와 리포지토리 클래스 연결
 
-  // WidgetsFlutterBinding.ensureInitialized() -> main() 안에서 MultiProvider 설정 허용
-  runApp(MultiProvider(
-    providers: [
-      ChangeNotifierProvider(
-        create: (context) =>
-            PlaybackConfigViewModel(repository), // 연결된 repository -> VM 초기화
-      ),
-      ChangeNotifierProvider(
-        create: (BuildContext context) => DarkModeConfig(),
-      ),
-    ],
-    child: const TickTokApp(),
-  ));
+  runApp(ProviderScope(overrides: [
+    playbackConfigProvider.overrideWith(
+        () => PlaybackConfigViewModel(repository)) // 기기 저장소 연동 설정 오버라이드
+  ], child: const TickTokApp()));
 }
 
 class TickTokApp extends StatelessWidget {

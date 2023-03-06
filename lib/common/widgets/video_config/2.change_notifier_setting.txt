@@ -103,7 +103,8 @@ provider + ChangeNotifier 조합은 아주 편리해서 지금도 널리 쓰고 
     2) ChangeNotifierProvider 주입
 
     그리고 실제 모든 위젯에서 이 코드에 접근이 가능하려면
-    main.dart > build() 메소드 최상단에 MultiProvider 를 랩핑해
+    main.dart > build() 메소드 최상단에 MultiProvider 를 랩핑해야 한다.
+
     ChangeNotifier 상속 클래스를 프로바이더 속성으로 주입한다.
         -> 이때 ChangeNotifier 상속 클래스이므로, ChangeNotifierProvider 사용
 
@@ -124,6 +125,30 @@ provider + ChangeNotifier 조합은 아주 편리해서 지금도 널리 쓰고 
         child: const MyApp(),
       );
     }
+
+    * 경우에 따라서는 프로바이더 주입을 위해 build() 메서드보다 한 뎁스 위로 올라가
+
+        main 메소드에서 MultiProvider 랩핑을 시도할 수도 있다.
+        그럴 땐 runApp() 실행 전에 위젯 바인딩을 먼저 실행해야 한다.
+
+            // main.dart
+            void main() async {
+              // runApp() 실행 전에 위젯 바인딩
+              WidgetsFlutterBinding.ensureInitialized();
+              ...
+              runApp(MultiProvider(
+                providers: [
+                  ChangeNotifierProvider(
+                    create: (context) =>
+                        PlaybackConfigViewModel(repository), // 연결된 repository -> VM 초기화
+                  ),
+                  ChangeNotifierProvider(
+                    create: (BuildContext context) => DarkModeConfig(),
+                  ),
+                ],
+                child: const TickTokApp(),
+              ));
+            }
 
     3) ChangeNotifier 접근 -> context
 

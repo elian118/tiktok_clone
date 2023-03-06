@@ -44,24 +44,26 @@ class _SettingScreenState extends State<SettingScreen> {
               maxWidth: Breakpoint.sm,
               child: SwitchListTile.adaptive(
                   value: context.watch<DarkModeConfig>().isDark,
-                  onChanged: (value) =>
-                      context.read<DarkModeConfig>().toggleDark(),
+                  onChanged: (value) => {},
+                  // context.read<DarkModeConfig>().toggleDark(),
                   title: const Text('Dark Mode'),
                   subtitle: const Text('Light mode is applied by default.')),
             ),
             WebContainer(
               maxWidth: Breakpoint.sm,
               child: SwitchListTile.adaptive(
-                  value: context.watch<PlaybackConfigViewModel>().muted,
-                  onChanged: (value) => // onChange -> 바뀐 값을 value 로 전달
-                      context.read<PlaybackConfigViewModel>().setMuted(value),
+                  value: false,
+                  // context.watch<PlaybackConfigViewModel>().muted,
+                  onChanged: (value) => {}, // onChange -> 뷰에서 바뀐 값을 value 로 전달
+                  // context.read<PlaybackConfigViewModel>().setMuted(value),
                   title: const Text('Auto Mute'),
                   subtitle: const Text('Video will be muted by default.')),
             ),
             WebContainer(
               maxWidth: Breakpoint.sm,
               child: SwitchListTile.adaptive(
-                  value: context.watch<PlaybackConfigViewModel>().autoplay,
+                  value: false,
+                  // value: context.watch<PlaybackConfigViewModel>().autoplay,
                   onChanged: (value) => context
                       .read<PlaybackConfigViewModel>()
                       .setAutoplay(value),

@@ -1,13 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:provider/provider.dart';
 import 'package:tiktok_clone/common/constants/enums/breakpoints.dart';
 import 'package:tiktok_clone/common/constants/gaps.dart';
 import 'package:tiktok_clone/common/constants/rawData/foreground_image.dart';
 import 'package:tiktok_clone/common/constants/rawData/video_data.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
-import 'package:tiktok_clone/features/videos/view_models/playback_config_vm.dart';
 import 'package:tiktok_clone/features/videos/views/widgets/video_bgm_info.dart';
 import 'package:tiktok_clone/features/videos/views/widgets/video_button.dart';
 import 'package:tiktok_clone/features/videos/views/widgets/video_comments.dart';
@@ -57,7 +55,7 @@ class _VideoPostState extends State<VideoPost>
       // 음소거 부수 효과: 웹에서 영상 자동재생을 차단하려는 기본 설정으로 인해 발생하는 예외를 회피할 수 있다.
       // _toggleMute(true);
       if (!mounted) return;
-      context.read<PlaybackConfigViewModel>().setMuted(true);
+      // context.read<PlaybackConfigViewModel>().setMuted(true);
       await _videoPlayerController.setVolume(0); // 음소거 처리
     }
     // 아래 코드들은 초기 설정에 불과하므로, 비디오 컨트롤러 초기화 여부와 무관하게 동기 처리 가능
@@ -95,8 +93,8 @@ class _VideoPostState extends State<VideoPost>
         !_isPause &&
         !_videoPlayerController.value.isPlaying) {
       // 조건식 -> 자동재생 허용이면 재생 시작
-      final autoplay = context.read<PlaybackConfigViewModel>().autoplay;
-      if (autoplay) _videoPlayerController.play();
+      // final autoplay = context.read<PlaybackConfigViewModel>().autoplay;
+      // if (autoplay) _videoPlayerController.play();
     }
     // 영상 재생 도중 다른 네비게이션 페이지로 이동한 경우(info.visibleFraction == 0) 일시 정지
     if (_videoPlayerController.value.isPlaying && info.visibleFraction == 0) {
@@ -138,7 +136,7 @@ class _VideoPostState extends State<VideoPost>
   void _onPlaybackConfigChanged({bool toggle = false}) {
     // 지난 동영상의 context.read<PlaybackConfigViewModel>().addListener(_onPlaybackConfigChanged) 코드 실행 방지
     if (!mounted) return;
-    _isMute = toggle ? !_isMute : context.read<PlaybackConfigViewModel>().muted;
+    // _isMute = toggle ? !_isMute : context.read<PlaybackConfigViewModel>().muted;
     _videoPlayerController.setVolume(_isMute ? 0 : 1);
     setState(() {});
   }
@@ -155,9 +153,9 @@ class _VideoPostState extends State<VideoPost>
       duration: _animationDuration,
     );
 
-    context
-        .read<PlaybackConfigViewModel>()
-        .addListener(_onPlaybackConfigChanged);
+    // context
+    //     .read<PlaybackConfigViewModel>()
+    //     .addListener(_onPlaybackConfigChanged);
   }
 
   // 모든 stateful widget 내 컨트롤러는 작업 후 반드시 위젯에서 제거 -> 누락 시, 시뮬레이터에서 에러 발생

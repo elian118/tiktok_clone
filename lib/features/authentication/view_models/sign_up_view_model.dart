@@ -18,8 +18,8 @@ class SignUpViewModel extends AsyncNotifier<void> {
     // AsyncValue.guard -> try-catch ->
     //  성공하면 AsyncValue.data(await future())
     //  실패하면 AsyncValue.error(err, stack) 반환
-    state = await AsyncValue.guard(
-        () async => await _authRepo.signUp(form['email'], form['password']));
+    state = await AsyncValue.guard(() async =>
+        await _authRepo.emailSignUp(form['email'], form['password']));
   }
 }
 

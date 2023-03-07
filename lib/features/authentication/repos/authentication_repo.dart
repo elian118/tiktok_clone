@@ -8,11 +8,24 @@ class AuthenticationRepository {
   bool get isLoggedIn => user != null;
   User? get user => _firebaseAuth.currentUser;
 
-  Future<void> signUp(String email, String password) {
+  // 유저 로그인 상태 변경
+  Stream<User?> authStateChanges() => _firebaseAuth.authStateChanges();
+
+  Future<void> emailSignUp(String email, String password) {
     // 파이어베이스로 이메일 회원가입 요청(이메일, 비밀번호 필수)
     return _firebaseAuth.createUserWithEmailAndPassword(
         email: email, password: password);
   }
+
+  // 로그아웃
+  Future<void> signOut() async {
+    await _firebaseAuth.signOut();
+  }
 }
 
 final authRepo = Provider((ref) => AuthenticationRepository());
+
+final authState = StreamProvider((ref) {
+  final repo = ref.read(authRepo);
+  return repo.authStateChanges();
+});

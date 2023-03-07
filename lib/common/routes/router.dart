@@ -13,8 +13,11 @@ import 'package:tiktok_clone/features/videos/views/screens/video_recording_scree
 
 // riverPod 전용
 final routerProvider = Provider(
-  // ref 인자를 모든 라우터에 전달 => 여기는 물론, 모든 라우터에서 ref 로 전역 state 접근 가능
-  (ref) => GoRouter(
+    // ref 인자를 모든 라우터에 전달 => 여기는 물론, 모든 라우터에서 ref 로 전역 state 접근 가능
+    (ref) {
+  // ref.watch(authState); // watch -> 로그인 상태가 변경되면 모든 라우터들이 자동 리빌드
+  //  -> initialLocation: '/home' 또는 '/' 재결정 -> 로그인-아웃 상태 결정
+  return GoRouter(
     initialLocation: '/home',
     redirect: (context, state) {
       final isLoggedIn = ref.read(authRepo).isLoggedIn;
@@ -89,5 +92,5 @@ final routerProvider = Provider(
                 },
               )),
     ],
-  ),
-);
+  );
+});

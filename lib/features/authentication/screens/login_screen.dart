@@ -1,23 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/common/constants/enums/breakpoints.dart';
 import 'package:tiktok_clone/common/constants/gaps.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
 import 'package:tiktok_clone/common/widgets/web_container.dart';
 import 'package:tiktok_clone/features/authentication/screens/login_form_screen.dart';
+import 'package:tiktok_clone/features/authentication/view_models/social_auth_view_model.dart';
 import 'package:tiktok_clone/features/authentication/widgets/auth_button.dart';
 import 'package:tiktok_clone/generated/l10n.dart';
 import 'package:tiktok_clone/utils/common_utils.dart';
 import 'package:tiktok_clone/utils/route_utils.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends ConsumerWidget {
   static const String routeName = "login";
   static const String routeURL = "/login";
 
   const LoginScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return OrientationBuilder(
       builder: (BuildContext context, Orientation orientation) {
         return Scaffold(
@@ -54,10 +56,14 @@ class LoginScreen extends StatelessWidget {
                     ),
                   ),
                   Gaps.v16,
-                  const AuthButton(
-                    icon:
-                        FaIcon(FontAwesomeIcons.facebook, color: Colors.indigo),
-                    text: 'Continue with Facebook',
+                  GestureDetector(
+                    onTap: () => ref
+                        .read(socialAuthProvider.notifier)
+                        .githubSignIn(context, true),
+                    child: const AuthButton(
+                      icon: FaIcon(FontAwesomeIcons.github),
+                      text: 'Continue with Github',
+                    ),
                   ),
                   Gaps.v16,
                   const AuthButton(

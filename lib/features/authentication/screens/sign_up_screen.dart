@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tiktok_clone/common/constants/gaps.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
 import 'package:tiktok_clone/common/widgets/web_container.dart';
 import 'package:tiktok_clone/features/authentication/screens/username_screen.dart';
+import 'package:tiktok_clone/features/authentication/view_models/social_auth_view_model.dart';
 import 'package:tiktok_clone/features/authentication/widgets/auth_button.dart';
 import 'package:tiktok_clone/generated/l10n.dart';
 import 'package:tiktok_clone/utils/common_utils.dart';
@@ -12,14 +14,14 @@ import 'package:tiktok_clone/utils/route_utils.dart';
 
 import 'login_screen.dart';
 
-class SignUpScreen extends StatelessWidget {
+class SignUpScreen extends ConsumerWidget {
   static const String routeName = "signUp";
   static const String routeURL = "/";
 
   const SignUpScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     // if (kDebugMode) {
     //   print(Localizations.localeOf(context));
     // }
@@ -70,11 +72,15 @@ class SignUpScreen extends StatelessWidget {
                           navPush(context, const UsernameScreen()),
                     ),
                     Gaps.v16,
-                    AuthButton(
-                      icon: const FaIcon(FontAwesomeIcons.facebook,
-                          color: Colors.indigo),
-                      text: S.of(context).accountLoginButton(
-                          isKorean(context) ? '페이스북' : 'Facebook'),
+                    GestureDetector(
+                      onTap: () => ref
+                          .read(socialAuthProvider.notifier)
+                          .githubSignIn(context, true),
+                      child: AuthButton(
+                        icon: const FaIcon(FontAwesomeIcons.github),
+                        text: S.of(context).accountLoginButton(
+                            isKorean(context) ? '깃허브' : 'Github'),
+                      ),
                     ),
                     Gaps.v16,
                     AuthButton(

@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:tiktok_clone/common/constants/enums/breakpoints.dart';
 import 'package:tiktok_clone/common/constants/gaps.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
 import 'package:tiktok_clone/common/widgets/web_container.dart';
+import 'package:tiktok_clone/features/authentication/view_models/sign_up_view_model.dart';
 import 'package:tiktok_clone/features/authentication/widgets/birthday_date_picker.dart';
 import 'package:tiktok_clone/features/authentication/widgets/birthday_header.dart';
 import 'package:tiktok_clone/features/authentication/widgets/form_button.dart';
-import 'package:tiktok_clone/features/onboarding/screens/interests_screen.dart';
 
-class BirthdayScreen extends StatefulWidget {
+class BirthdayScreen extends ConsumerStatefulWidget {
   const BirthdayScreen({Key? key}) : super(key: key);
 
   @override
-  State<BirthdayScreen> createState() => _BirthdayScreenState();
+  ConsumerState<BirthdayScreen> createState() => _BirthdayScreenState();
 }
 
-class _BirthdayScreenState extends State<BirthdayScreen> {
+class _BirthdayScreenState extends ConsumerState<BirthdayScreen> {
   final TextEditingController _birthdayController = TextEditingController();
 
   DateTime initDate = DateTime.now();
@@ -26,6 +26,21 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
     initDate.month,
     initDate.day,
   );
+
+  void _onNextTap() {
+    // 파이어베이스로 회원가입 요청(단, 여기서는 생일 정보 전달 생략)
+    // 매개변수 없이, 지금까지 signUpForm.state 에 담긴 값 사용
+    ref.read(signUpProvider.notifier).signUp();
+    // context.goNamed(InterestsScreen.routeName);
+  }
+
+  void _setTextFieldDate(DateTime date) {
+    // final textDate = date.toString().split(" ").first;
+    // _birthdayController.value = TextEditingValue(text: textDate);
+    // 날짜 포매팅
+    _birthdayController.value =
+        TextEditingValue(text: DateFormat('yyyy년 MM월 dd일').format(date));
+  }
 
   @override
   void initState() {
@@ -38,14 +53,6 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
     // 다른 인스턴스가 빌드될 때 _birthdayController 제거(메모리 관리)
     _birthdayController.dispose();
     super.dispose(); // 첫 행으로 가도 상관 없지만, 로직 파악 편의 상 메모리 정리 후 맨 아래 행 위치 권장
-  }
-
-  void _setTextFieldDate(DateTime date) {
-    // final textDate = date.toString().split(" ").first;
-    // _birthdayController.value = TextEditingValue(text: textDate);
-    // 날짜 포매팅
-    _birthdayController.value =
-        TextEditingValue(text: DateFormat('yyyy년 MM월 dd일').format(date));
   }
 
   @override
@@ -91,8 +98,8 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
               // onTap: () => navPushAndRemoveUntil(
               //     context, const InterestsScreen(), (route) => false),
               // 2) navigate2(goRouter) 방식 -> 이동될 화면의 뒤로가기 방지
-              onTap: () => context.goNamed(InterestsScreen.routeName),
-              child: const FormButton(disabled: false),
+              onTap: _onNextTap,
+              child: FormButton(disabled: ref.watch(signUpProvider).isLoading),
             ), // 위젯 추출 v.2
             Gaps.v96,
             if (isWebScreen)

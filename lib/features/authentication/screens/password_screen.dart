@@ -1,44 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/common/constants/enums/breakpoints.dart';
 import 'package:tiktok_clone/common/constants/gaps.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
 import 'package:tiktok_clone/common/widgets/web_container.dart';
 import 'package:tiktok_clone/features/authentication/screens/birthday_screen.dart';
+import 'package:tiktok_clone/features/authentication/view_models/sign_up_view_model.dart';
 import 'package:tiktok_clone/features/authentication/widgets/form_button.dart';
 import 'package:tiktok_clone/utils/common_utils.dart';
 import 'package:tiktok_clone/utils/route_utils.dart';
 
-class PasswordScreen extends StatefulWidget {
+class PasswordScreen extends ConsumerStatefulWidget {
   const PasswordScreen({Key? key}) : super(key: key);
 
   @override
-  State<PasswordScreen> createState() => _PasswordScreenState();
+  ConsumerState<PasswordScreen> createState() => _PasswordScreenState();
 }
 
-class _PasswordScreenState extends State<PasswordScreen> {
+class _PasswordScreenState extends ConsumerState<PasswordScreen> {
   final TextEditingController _passwordController = TextEditingController();
 
   String _password = ''; // state 변수는 final 선언하지 않는다.
   bool _obscureText = true;
-
-  @override
-  void initState() {
-    super.initState(); // 첫 행이 아니어도 상관 없지만, 로직 파악 편의 상 메모리 정리 후 맨 윗행 위치 권장
-    // 리빌드 때마다 리스너 실행 -> 추적하는 모든 TextField 정보(_passwordController)를 가져온다.
-    _passwordController.addListener(() {
-      setState(() {
-        _password = _passwordController.text; // 그 중에서 입력된 텍스트만 가져와 대입
-      });
-    });
-  }
-
-  @override
-  void dispose() {
-    // 다른 인스턴스가 빌드될 때 _passwordController 제거(메모리 관리)
-    _passwordController.dispose();
-    super.dispose(); // 첫 행으로 가도 상관 없지만, 로직 파악 편의 상 메모리 정리 후 맨 아래 행 위치 권장
-  }
 
   // 비밀번호 유효성 검사
   bool _isTherePassword() {
@@ -61,6 +45,31 @@ class _PasswordScreenState extends State<PasswordScreen> {
   // 비밀번호 초기화
   void _onClearTap() {
     _passwordController.clear();
+  }
+
+  void _onSubmit() {
+    if (!_isPasswordValid()) return;
+    final state = ref.read(signUpForm.notifier).state;
+    ref.read(signUpForm.notifier).state = {...state, 'password': _password};
+    navPush(context, const BirthdayScreen());
+  }
+
+  @override
+  void initState() {
+    super.initState(); // 첫 행이 아니어도 상관 없지만, 로직 파악 편의 상 메모리 정리 후 맨 윗행 위치 권장
+    // 리빌드 때마다 리스너 실행 -> 추적하는 모든 TextField 정보(_passwordController)를 가져온다.
+    _passwordController.addListener(() {
+      setState(() {
+        _password = _passwordController.text; // 그 중에서 입력된 텍스트만 가져와 대입
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    // 다른 인스턴스가 빌드될 때 _passwordController 제거(메모리 관리)
+    _passwordController.dispose();
+    super.dispose(); // 첫 행으로 가도 상관 없지만, 로직 파악 편의 상 메모리 정리 후 맨 아래 행 위치 권장
   }
 
   @override
@@ -178,7 +187,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
               // FormButton(password: _password) // 위젯 추출 v.1
               // 위젯 추출 v.2
               GestureDetector(
-                onTap: () => navPush(context, const BirthdayScreen()),
+                onTap: _onSubmit,
                 child: FormButton(disabled: !_isPasswordValid()),
               ),
             ],

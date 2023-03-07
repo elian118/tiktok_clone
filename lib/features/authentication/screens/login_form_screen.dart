@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tiktok_clone/common/constants/enums/breakpoints.dart';
 import 'package:tiktok_clone/common/constants/gaps.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
 import 'package:tiktok_clone/common/widgets/web_container.dart';
+import 'package:tiktok_clone/features/authentication/view_models/login_view_model.dart';
 import 'package:tiktok_clone/features/authentication/widgets/form_button.dart';
-import 'package:tiktok_clone/features/onboarding/screens/interests_screen.dart';
 import 'package:tiktok_clone/utils/common_utils.dart';
 
-class LoginFormScreen extends StatefulWidget {
+class LoginFormScreen extends ConsumerStatefulWidget {
   const LoginFormScreen({Key? key}) : super(key: key);
 
   @override
-  State<LoginFormScreen> createState() => _LoginFormScreenState();
+  ConsumerState<LoginFormScreen> createState() => _LoginFormScreenState();
 }
 
 // 다수의 입력 필드들을 하나의 폼에서 제어하려면, 폼 접근자를 활용해야 효율적이다.
-class _LoginFormScreenState extends State<LoginFormScreen> {
+class _LoginFormScreenState extends ConsumerState<LoginFormScreen> {
   // 폼 접근자 선언 -> 리액트 useRef 접근자 역할 동일
   // stateful widget instance
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -42,7 +42,13 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
         //   (route) => false,
         // );
         // 2) navigator2
-        context.goNamed(InterestsScreen.routeName);
+        // context.goNamed(InterestsScreen.routeName);
+        ref.read(loginProvider.notifier).login(
+              formData['email']!,
+              formData['password']!,
+              context,
+              mounted,
+            );
       }
     }
   }
@@ -114,8 +120,10 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
                 Gaps.v28,
                 GestureDetector(
                   onTap: _onSubmitTap,
-                  child: const FormButton(
-                    disabled: false,
+                  child: FormButton(
+                    disabled: ref
+                        .watch(loginProvider) // 화면에 비활성 상태 반영되려면 watch 사용
+                        .isLoading,
                     text: 'Log in',
                   ),
                 ),

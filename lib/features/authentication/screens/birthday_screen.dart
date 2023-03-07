@@ -30,7 +30,7 @@ class _BirthdayScreenState extends ConsumerState<BirthdayScreen> {
   void _onNextTap() {
     // 파이어베이스로 회원가입 요청(단, 여기서는 생일 정보 전달 생략)
     // 매개변수 없이, 지금까지 signUpForm.state 에 담긴 값 사용
-    ref.read(signUpProvider.notifier).signUp();
+    ref.read(signUpProvider.notifier).signUp(context, mounted);
     // context.goNamed(InterestsScreen.routeName);
   }
 
@@ -99,7 +99,9 @@ class _BirthdayScreenState extends ConsumerState<BirthdayScreen> {
               //     context, const InterestsScreen(), (route) => false),
               // 2) navigate2(goRouter) 방식 -> 이동될 화면의 뒤로가기 방지
               onTap: _onNextTap,
-              child: FormButton(disabled: ref.watch(signUpProvider).isLoading),
+              child: FormButton(
+                  disabled: ref.watch(signUpProvider).isLoading ||
+                      ref.watch(signUpForm).isEmpty),
             ), // 위젯 추출 v.2
             Gaps.v96,
             if (isWebScreen)

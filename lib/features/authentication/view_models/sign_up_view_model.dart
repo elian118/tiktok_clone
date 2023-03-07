@@ -1,7 +1,11 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tiktok_clone/features/authentication/repos/authentication_repo.dart';
+import 'package:tiktok_clone/features/onboarding/screens/interests_screen.dart';
+import 'package:tiktok_clone/utils/dialog_utils.dart';
 
 class SignUpViewModel extends AsyncNotifier<void> {
   late final AuthenticationRepository _authRepo;
@@ -11,7 +15,7 @@ class SignUpViewModel extends AsyncNotifier<void> {
     _authRepo = ref.read(authRepo);
   }
 
-  Future<void> signUp() async {
+  Future<void> signUp(BuildContext context, bool mounted) async {
     state = const AsyncValue.loading();
     final form = ref.read(signUpForm); // 이메일, 비밀번호 정보 담긴 state
 
@@ -20,6 +24,12 @@ class SignUpViewModel extends AsyncNotifier<void> {
     //  실패하면 AsyncValue.error(err, stack) 반환
     state = await AsyncValue.guard(() async =>
         await _authRepo.emailSignUp(form['email'], form['password']));
+    if (!mounted) return;
+    if (state.hasError) {
+      showFirebaseErrorSnack(context, state.error);
+    } else {
+      context.goNamed(InterestsScreen.routeName);
+    }
   }
 }
 

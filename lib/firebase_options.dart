@@ -69,6 +69,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '293109699602',
     projectId: 'tiktok-clone-elian',
     storageBucket: 'tiktok-clone-elian.appspot.com',
+    androidClientId: '293109699602-2eqvnp256rektpcs3fnmfh3crfmuagev.apps.googleusercontent.com',
     iosClientId: '293109699602-s0n48j7a03903kejippb20dqe6mgp0u0.apps.googleusercontent.com',
     iosBundleId: 'com.example.tiktokClone',
   );

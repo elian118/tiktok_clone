@@ -42,7 +42,7 @@ class UserProfileHeader extends StatelessWidget {
         ),
         Gaps.v24,
         SizedBox(
-          height: Sizes.size52, // VerticalDivider 표시를 위한 설정
+          height: Sizes.size52 + 1, // VerticalDivider 표시를 위한 설정
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

@@ -30,4 +30,15 @@ class UserProfileModel {
       "link": link,
     };
   }
+
+  // JsonToDart 플러그인 설치 > ctrl + n > fromMap/fromJson factory -> 자동생성
+  factory UserProfileModel.fromJson(Map<String, dynamic> json) {
+    return UserProfileModel(
+      uid: json["uid"],
+      email: json["email"],
+      name: json["name"],
+      bio: json["bio"],
+      link: json["link"],
+    );
+  }
 }

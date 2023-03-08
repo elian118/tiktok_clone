@@ -2,16 +2,27 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tiktok_clone/features/authentication/repos/authentication_repo.dart';
 import 'package:tiktok_clone/features/users/models/user_profile_model.dart';
 import 'package:tiktok_clone/features/users/repos/user_repo.dart';
 
 class UsersViewModel extends AsyncNotifier<UserProfileModel> {
-  late final UserRepository _repository;
+  late final UserRepository _usersRepository;
+  late final AuthenticationRepository _authenticationRepository;
 
   @override
   FutureOr<UserProfileModel> build() async {
-    _repository = ref.read(userRepo);
-    return UserProfileModel.empty(); // 기본 비움
+    _usersRepository = ref.read(userRepo);
+    _authenticationRepository = ref.read(authRepo);
+    // 로그인 상태라면
+    if (_authenticationRepository.isLoggedIn) {
+      final profile = await _usersRepository.findProfile(
+          _authenticationRepository.user!.uid); // 로그인한 사용자는 이미 uid 보유하고 있기 때문
+      // 조회된 프로필 존재 시 로그인된 사용자 정보로 프로필 초기화 후 종료
+      if (profile != null) return UserProfileModel.fromJson(profile);
+    }
+
+    return UserProfileModel.empty(); // 프로필 초기화(비움)
   }
 
   // 파이어스토어 -> 계정 생성 -> 회원 가입 시 연쇄 진행
@@ -26,7 +37,8 @@ class UsersViewModel extends AsyncNotifier<UserProfileModel> {
       uid: userCredential.user!.uid,
       name: userCredential.user!.displayName ?? 'Anon',
     );
-    await _repository.createProfile(profile);
+
+    await _usersRepository.createProfile(profile);
     state = AsyncValue.data(profile); // 사용자 정보 주입
   }
 }

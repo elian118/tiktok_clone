@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tiktok_clone/features/users/models/user_profile_model.dart';
 
 class UserRepository {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
+  final FirebaseStorage _storage = FirebaseStorage.instance;
 
   // 유저 프로필 생성
   Future<void> createProfile(UserProfileModel profile) async {
@@ -17,7 +21,12 @@ class UserRepository {
   }
 
   // 프로필 수정 -> 분리
-  // 아바타 수정
+  // 아바타 등록
+  Future<void> uploadAvatar(File file, String fileName) async {
+    // 파이어스토리지 파일 저장 위치 및 파일 지정
+    final fileRef = _storage.ref().child('avatars/$fileName');
+    fileRef.putFile(file);
+  }
   // 바이오 수정
   // 링크 수정
 }

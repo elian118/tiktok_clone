@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/features/settings/screens/setting_screen.dart';
+import 'package:tiktok_clone/features/users/view_models/users_view_model.dart';
 import 'package:tiktok_clone/features/users/widgets/page_one.dart';
 import 'package:tiktok_clone/features/users/widgets/persistent_tab_bar.dart';
 import 'package:tiktok_clone/features/users/widgets/user_info.dart';
 import 'package:tiktok_clone/utils/route_utils.dart';
 
-class UserProfileScreen extends StatefulWidget {
+class UserProfileScreen extends ConsumerStatefulWidget {
   final String username;
   final String tab;
   const UserProfileScreen({
@@ -16,48 +18,56 @@ class UserProfileScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<UserProfileScreen> createState() => _UserProfileScreenState();
+  ConsumerState<UserProfileScreen> createState() => _UserProfileScreenState();
 }
 
-class _UserProfileScreenState extends State<UserProfileScreen> {
+class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
   List<String> views = [];
   int viewItemCounts = 20;
 
   @override
   Widget build(BuildContext context) {
-    // 부모 스카폴드로부터 상속된 설정을 사용하지 않고, 분리된 본인의 단독 스카폴드에서 직접 설정
-    return Scaffold(
-      backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-      body: SafeArea(
-        child: DefaultTabController(
-          initialIndex: widget.tab == 'likes' ? 1 : 0,
-          length: 2,
-          // NestedScrollView -> CustomScrollView 보다 간편하게 유형별로 규격화된 스크롤뷰 중 하나로,
-          //  바디에 또 다른 스크롤 뷰 위젯을 여럿 배치할 수 있는 포맷이다.
-          child: NestedScrollView(
-            headerSliverBuilder: (context, innerBoxIsScrolled) => [
-              SliverAppBar(
-                title: Text(widget.username),
-                // backgroundColor: isDark ? Colors.black : null,
-                actions: [
-                  IconButton(
-                    onPressed: () => navPush(context, const SettingScreen()),
-                    icon: const FaIcon(FontAwesomeIcons.gear),
-                  ),
-                ],
+    return ref.watch(usersProvider).when(
+          data: (data) => Scaffold(
+            backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+            body: SafeArea(
+              child: DefaultTabController(
+                initialIndex: widget.tab == 'likes' ? 1 : 0,
+                length: 2,
+                // NestedScrollView -> CustomScrollView 보다 간편하게 유형별로 규격화된 스크롤뷰 중 하나로,
+                //  바디에 또 다른 스크롤 뷰 위젯을 여럿 배치할 수 있는 포맷이다.
+                child: NestedScrollView(
+                  headerSliverBuilder: (context, innerBoxIsScrolled) => [
+                    SliverAppBar(
+                      title: Text(data.name),
+                      // backgroundColor: isDark ? Colors.black : null,
+                      actions: [
+                        IconButton(
+                          onPressed: () =>
+                              navPush(context, const SettingScreen()),
+                          icon: const FaIcon(FontAwesomeIcons.gear),
+                        ),
+                      ],
+                    ),
+                    SliverToBoxAdapter(
+                      child: UserInfo(username: data.name),
+                    ),
+                    SliverPersistentHeader(
+                      pinned: true,
+                      delegate: PersistentTabBar(),
+                    ),
+                  ],
+                  body: PageOne(viewItemCounts: viewItemCounts, views: views),
+                ),
               ),
-              SliverToBoxAdapter(
-                child: UserInfo(username: widget.username),
-              ),
-              SliverPersistentHeader(
-                pinned: true,
-                delegate: PersistentTabBar(),
-              ),
-            ],
-            body: PageOne(viewItemCounts: viewItemCounts, views: views),
+            ),
           ),
-        ),
-      ),
-    );
+          error: (error, stackTrace) => Center(
+            child: Text(error.toString()),
+          ),
+          loading: () => const Center(
+            child: CircularProgressIndicator.adaptive(), // 현재 기기에 맞는 로딩 아아콘 표시
+          ),
+        );
   }
 }

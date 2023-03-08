@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/common/constants/gaps.dart';
-import 'package:tiktok_clone/common/constants/rawData/foreground_image.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
+import 'package:tiktok_clone/features/users/widgets/avatar.dart';
 
 class UserProfileHeader extends StatelessWidget {
   final String username;
@@ -15,12 +15,7 @@ class UserProfileHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        CircleAvatar(
-          radius: 50,
-          foregroundColor: Colors.teal,
-          foregroundImage: const NetworkImage(foregroundImage),
-          child: Text(username),
-        ),
+        Avatar(username),
         Gaps.v20,
         Row(
           mainAxisAlignment: MainAxisAlignment.center,

@@ -47,7 +47,8 @@ class UsersViewModel extends AsyncNotifier<UserProfileModel> {
 
   Future<void> onAvatarUpload() async {
     if (state.value == null) return;
-    // hasAvatar 값만 바꾼 기존 UserProfileModel 복사본 가져오기 -> 수정할 새로운 정보
+    // hasAvatar 값만 바꾼 기존 UserProfileModel 복사본 가져오기 -> 수정할 새로운 정보(hasAvatar: true) 추가
+    //  -> state 주입 -> 화면에 변경사항 반영
     state = AsyncValue.data(state.value!.copyWith(hasAvatar: true));
     // 프로필 수정
     await _usersRepository.updateUser(state.value!.uid, {"hasAvatar": true});

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tiktok_clone/common/constants/enums/breakpoints.dart';
 import 'package:tiktok_clone/common/constants/gaps.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
+import 'package:tiktok_clone/common/widgets/cst_text_field.dart';
 import 'package:tiktok_clone/common/widgets/web_container.dart';
 import 'package:tiktok_clone/features/authentication/screens/email_screen.dart';
 import 'package:tiktok_clone/features/authentication/view_models/sign_up_view_model.dart';
@@ -78,24 +79,9 @@ class _UsernameScreenState extends ConsumerState<UsernameScreen> {
                 ),
               ),
               Gaps.v28,
-              TextField(
-                // 컨트롤러
+              CstTextField(
                 controller: _usernameController,
-                // 포커스 상태 밑줄 색상을 바꾸려면 enabledBorder, focusedBorder 두 속성을 모두 설정해야 한다.
-                decoration: InputDecoration(
-                  hintText: 'Username',
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Theme.of(context).disabledColor, // 활성 상태 밑줄 색상 지정
-                    ),
-                  ),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Theme.of(context).focusColor, // 포커스 상태
-                    ),
-                  ),
-                ),
-                cursorColor: Theme.of(context).primaryColor,
+                hintText: 'Username',
               ),
               Gaps.v28,
               GestureDetector(

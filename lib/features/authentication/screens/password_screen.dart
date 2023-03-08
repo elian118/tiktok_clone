@@ -4,10 +4,12 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/common/constants/enums/breakpoints.dart';
 import 'package:tiktok_clone/common/constants/gaps.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
+import 'package:tiktok_clone/common/widgets/cst_text_field.dart';
 import 'package:tiktok_clone/common/widgets/web_container.dart';
 import 'package:tiktok_clone/features/authentication/screens/birthday_screen.dart';
 import 'package:tiktok_clone/features/authentication/view_models/sign_up_view_model.dart';
 import 'package:tiktok_clone/features/authentication/widgets/form_button.dart';
+import 'package:tiktok_clone/features/authentication/widgets/suffix_icons.dart';
 import 'package:tiktok_clone/utils/common_utils.dart';
 import 'package:tiktok_clone/utils/route_utils.dart';
 
@@ -97,58 +99,17 @@ class _PasswordScreenState extends ConsumerState<PasswordScreen> {
                 ),
               ),
               Gaps.v28,
-              TextField(
-                // 컨트롤러
+              CstTextField(
                 controller: _passwordController,
-                // 시뮬레이터 메뉴 > I/O > Keyboard > Toggle Software Keyboard 선택해야 확인 가능
                 keyboardType: TextInputType.emailAddress, // 이메일 형식 키보드 선택
                 obscureText: _obscureText, // 입력 텍스트 감춤(비밀번호)
                 autocorrect: false, // 키보드 상단 자동완성 기능 제거
-                // 완료(done) 키 클릭 시, 실행할 콜백 설정
-                onEditingComplete: () =>
-                    navPush(context, const BirthdayScreen()),
-                // 포커스 상태 밑줄 색상을 바꾸려면 enabledBorder, focusedBorder 두 속성을 모두 설정해야 한다.
-                decoration: InputDecoration(
-                  // suffixIcon => 플러터 기본 아이콘만 허용, 기본 스타일 이미 존재
-                  // suffix => 위젯을 활용한 커스덤 용이
-                  suffix: Row(
-                    mainAxisSize: MainAxisSize.min, // 자식들을 맨 뒤로 보내기 위한 최소값 설정
-                    children: [
-                      GestureDetector(
-                        onTap: _onClearTap,
-                        child: FaIcon(
-                          FontAwesomeIcons.solidCircleXmark,
-                          color: Colors.grey.shade500,
-                          size: Sizes.size20,
-                        ),
-                      ),
-                      Gaps.h16,
-                      GestureDetector(
-                        onTap: _toggleObscureText,
-                        child: FaIcon(
-                          _obscureText
-                              ? FontAwesomeIcons.eye
-                              : FontAwesomeIcons.eyeSlash,
-                          color: Colors.grey.shade500,
-                          size: Sizes.size20,
-                        ),
-                      ),
-                    ],
-                  ),
-                  hintText: 'Make it strong!',
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Theme.of(context).disabledColor, // 활성 상태 밑줄 색상 지정
-                    ),
-                  ),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Theme.of(context)
-                          .focusColor, // 포커스 상태 => 활성 상태와 동일 색상 유지
-                    ),
-                  ),
+                suffix: SuffixIcons(
+                  obscureText: _obscureText,
+                  onClearTap: _onClearTap,
+                  toggleObscureText: _toggleObscureText,
                 ),
-                cursorColor: Theme.of(context).primaryColor,
+                hintText: 'Make it strong!',
               ),
               Gaps.v10,
               const Text(

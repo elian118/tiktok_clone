@@ -39,6 +39,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                 child: NestedScrollView(
                   headerSliverBuilder: (context, innerBoxIsScrolled) => [
                     SliverAppBar(
+                      centerTitle: true,
                       title: Text(data.name),
                       // backgroundColor: isDark ? Colors.black : null,
                       actions: [
@@ -51,9 +52,12 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                     ),
                     SliverToBoxAdapter(
                       child: UserInfo(
-                          username: data.name,
-                          hasAvatar: data.hasAvatar,
-                          uid: data.uid),
+                        username: data.name,
+                        hasAvatar: data.hasAvatar,
+                        uid: data.uid,
+                        bio: data.bio,
+                        link: data.link,
+                      ),
                     ),
                     SliverPersistentHeader(
                       pinned: true,

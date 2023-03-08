@@ -34,7 +34,8 @@ class UsersViewModel extends AsyncNotifier<UserProfileModel> {
     // 회원가입 성공 시 파이어오스로부터 반환된 userCredential 정보 일부를 state 에 주입
     final profile = UserProfileModel(
       hasAvatar: false,
-      bio: form['bio'],
+      birthday: form['birthday'] ?? 'undefined',
+      bio: 'undefined',
       link: 'undefined',
       email: userCredential.user!.email ?? 'anon@anon.com',
       uid: userCredential.user!.uid,
@@ -52,6 +53,20 @@ class UsersViewModel extends AsyncNotifier<UserProfileModel> {
     state = AsyncValue.data(state.value!.copyWith(hasAvatar: true));
     // 프로필 수정
     await _usersRepository.updateUser(state.value!.uid, {"hasAvatar": true});
+  }
+
+  Future<void> updateUserBio(String bio) async {
+    if (state.value == null) return;
+    state = AsyncValue.data(state.value!.copyWith(bio: bio));
+    // 프로필 수정
+    await _usersRepository.updateUser(state.value!.uid, {"bio": bio});
+  }
+
+  Future<void> updateUserLink(String link) async {
+    if (state.value == null) return;
+    state = AsyncValue.data(state.value!.copyWith(link: link));
+    // 프로필 수정
+    await _usersRepository.updateUser(state.value!.uid, {"link": link});
   }
 }
 

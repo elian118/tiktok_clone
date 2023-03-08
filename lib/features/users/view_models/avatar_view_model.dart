@@ -18,7 +18,7 @@ class AvatarViewModel extends AsyncNotifier<void> {
 
   Future<void> uploadAvatar(
     BuildContext context,
-    // bool mounted,
+    bool mounted,
     File file,
   ) async {
     state = const AsyncValue.loading();
@@ -28,7 +28,7 @@ class AvatarViewModel extends AsyncNotifier<void> {
       await _repository.uploadAvatar(file, fileName);
       await ref.read(usersProvider.notifier).onAvatarUpload(); // 아바타 업로드 상태 변경
     });
-    // if (!mounted) return;
+    if (!mounted) return;
     if (state.hasError) showFirebaseErrorSnack(context, state.error);
   }
 }

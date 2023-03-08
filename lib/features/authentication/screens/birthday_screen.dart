@@ -32,7 +32,7 @@ class _BirthdayScreenState extends ConsumerState<BirthdayScreen> {
     final state = ref.read(signUpForm.notifier).state;
     ref.read(signUpForm.notifier).state = {
       ...state,
-      "bio": _birthdayController.value.text,
+      "birthday": _birthdayController.value.text,
     };
     // 매개변수 없이, 지금까지 signUpForm.state 에 담긴 값 사용
     ref.read(signUpProvider.notifier).signUp(context, mounted);

@@ -1,12 +1,54 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/common/constants/gaps.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
+import 'package:tiktok_clone/common/widgets/cst_text_field.dart';
+import 'package:tiktok_clone/features/users/view_models/users_view_model.dart';
 
-class UserProfileBody extends StatelessWidget {
+class UserProfileBody extends ConsumerStatefulWidget {
+  final String bio;
+  final String link;
+
   const UserProfileBody({
     super.key,
+    required this.bio,
+    required this.link,
   });
+
+  @override
+  ConsumerState<UserProfileBody> createState() => _UserProfileBodyState();
+}
+
+class _UserProfileBodyState extends ConsumerState<UserProfileBody> {
+  final TextEditingController _bioController = TextEditingController();
+  final TextEditingController _linkController = TextEditingController();
+
+  bool _isBioEdit = false;
+  bool _isLinkEdit = false;
+
+  String _bio = '';
+  String _link = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _bioController.text = widget.bio;
+    _linkController.text = widget.link;
+
+    _bioController.addListener(() {
+      setState(() {
+        _bio = _bioController.text;
+        print(_bio);
+      });
+    });
+    _linkController.addListener(() {
+      setState(() {
+        _link = _linkController.text;
+        print(_link);
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,31 +127,116 @@ class UserProfileBody extends StatelessWidget {
           ),
         ),
         Gaps.v14,
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: Sizes.size32),
-          child: Text(
-            'All highlights and where to watch live matches on FIFA+',
-            textAlign: TextAlign.center,
-          ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: Sizes.size32),
+          child: _isBioEdit
+              ? CstTextField(
+                  controller: _bioController,
+                  hintText: 'Please write your intro',
+                  suffix: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      FaIcon(
+                        FontAwesomeIcons.solidCircleXmark,
+                        color: Colors.grey.shade500,
+                        size: Sizes.size20,
+                      ),
+                      Gaps.h5,
+                      GestureDetector(
+                        onTap: _toggleBioEdit,
+                        child: FaIcon(
+                          FontAwesomeIcons.solidCircleCheck,
+                          color: Colors.grey.shade500,
+                          size: Sizes.size20,
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              : Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      // 'All highlights and where to watch live matches on FIFA+',
+                      widget.bio,
+                      textAlign: TextAlign.center,
+                    ),
+                    Gaps.h8,
+                    GestureDetector(
+                      onTap: _toggleBioEdit,
+                      child: const FaIcon(
+                        FontAwesomeIcons.pen,
+                        size: Sizes.size14,
+                      ),
+                    ),
+                  ],
+                ),
         ),
         Gaps.v14,
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            FaIcon(
-              FontAwesomeIcons.link,
-              size: Sizes.size12,
-            ),
-            Text(
-              '@ https://www.fifa.com/fifaplus/en/home',
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
+        _isLinkEdit
+            ? Padding(
+                padding: const EdgeInsets.symmetric(horizontal: Sizes.size32),
+                child: CstTextField(
+                  controller: _linkController,
+                  hintText: 'Please write your link',
+                  suffix: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      FaIcon(
+                        FontAwesomeIcons.solidCircleXmark,
+                        color: Colors.grey.shade500,
+                        size: Sizes.size20,
+                      ),
+                      Gaps.h5,
+                      GestureDetector(
+                        onTap: _toggleLinkEdit,
+                        child: FaIcon(
+                          FontAwesomeIcons.solidCircleCheck,
+                          color: Colors.grey.shade500,
+                          size: Sizes.size20,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            : Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const FaIcon(
+                    FontAwesomeIcons.link,
+                    size: Sizes.size12,
+                  ),
+                  Text(
+                    // ' https://www.fifa.com/fifaplus/en/home',
+                    ' ${widget.link}',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  Gaps.h8,
+                  GestureDetector(
+                      onTap: _toggleLinkEdit,
+                      child: const FaIcon(
+                        FontAwesomeIcons.pen,
+                        size: Sizes.size14,
+                      ))
+                ],
               ),
-            ),
-            Gaps.h4,
-          ],
-        ),
       ],
     );
+  }
+
+  void _toggleBioEdit() {
+    _isBioEdit = !_isBioEdit;
+    if (!_isBioEdit) ref.read(usersProvider.notifier).updateUserBio(_bio);
+
+    setState(() {});
+  }
+
+  void _toggleLinkEdit() {
+    _isLinkEdit = !_isLinkEdit;
+    if (!_isLinkEdit) ref.read(usersProvider.notifier).updateUserLink(_link);
+    setState(() {});
   }
 }

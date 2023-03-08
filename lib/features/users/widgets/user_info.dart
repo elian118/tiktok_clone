@@ -11,12 +11,16 @@ class UserInfo extends StatelessWidget {
   final String username;
   final bool hasAvatar;
   final String uid;
+  final String bio;
+  final String link;
 
   const UserInfo({
     super.key,
     required this.username,
     required this.hasAvatar,
     required this.uid,
+    required this.bio,
+    required this.link,
   });
 
   @override
@@ -30,7 +34,7 @@ class UserInfo extends StatelessWidget {
               children: [
                 UserProfileHeader(
                     username: username, hasAvatar: hasAvatar, uid: uid),
-                const UserProfileBody(),
+                UserProfileBody(bio: bio, link: link),
               ],
             ),
           )
@@ -42,7 +46,10 @@ class UserInfo extends StatelessWidget {
               Gaps.v14,
               // 부모 위젯 크기에 따른 상대적 사이즈를 지정할 수 있는 Box 위젯
               // 부모 대비 높이(heightFactor), 너비(widthFactor)
-              const UserProfileBody(),
+              UserProfileBody(
+                bio: bio,
+                link: link,
+              ),
               Gaps.v20,
             ],
           );

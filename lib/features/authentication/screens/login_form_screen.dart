@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tiktok_clone/common/constants/enums/breakpoints.dart';
 import 'package:tiktok_clone/common/constants/gaps.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
+import 'package:tiktok_clone/common/widgets/cst_text_form_field.dart';
 import 'package:tiktok_clone/common/widgets/web_container.dart';
 import 'package:tiktok_clone/features/authentication/view_models/login_view_model.dart';
 import 'package:tiktok_clone/features/authentication/widgets/form_button.dart';
@@ -31,18 +32,6 @@ class _LoginFormScreenState extends ConsumerState<LoginFormScreen> {
       if (_formKey.currentState!.validate()) {
         // 입력값 모두 유효하면, 폼 안에 위치한 모든 TextFormField -> onSaved 실행
         _formKey.currentState?.save();
-        // 폼 데이터 확인
-        // print(formData);
-        // print(formData.keys);
-        // print(formData.values);
-        // 1) navigator1
-        // navPushAndRemoveUntil(
-        //   context,
-        //   const InterestsScreen(),
-        //   (route) => false,
-        // );
-        // 2) navigator2
-        // context.goNamed(InterestsScreen.routeName);
         ref.read(loginProvider.notifier).login(
               formData['email']!,
               formData['password']!,
@@ -72,20 +61,8 @@ class _LoginFormScreenState extends ConsumerState<LoginFormScreen> {
             key: _formKey,
             child: Column(
               children: [
-                TextFormField(
-                  decoration: InputDecoration(
-                    hintText: 'Email',
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Theme.of(context).disabledColor,
-                      ),
-                    ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Theme.of(context).focusColor,
-                      ),
-                    ),
-                  ),
+                CstTextFormField(
+                  hintText: 'Email',
                   validator: (value) {
                     if (value != null && value.isEmpty) {
                       return "Please write your email";
@@ -95,20 +72,8 @@ class _LoginFormScreenState extends ConsumerState<LoginFormScreen> {
                   onSaved: (newValue) => _onSavedFn('email', newValue),
                 ),
                 Gaps.v16,
-                TextFormField(
-                  decoration: InputDecoration(
-                    hintText: 'Password',
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Theme.of(context).disabledColor,
-                      ),
-                    ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Theme.of(context).focusColor,
-                      ),
-                    ),
-                  ),
+                CstTextFormField(
+                  hintText: 'Password',
                   validator: (value) {
                     if (value != null && value.isEmpty) {
                       return 'Please write password';

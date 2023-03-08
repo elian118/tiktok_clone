@@ -50,7 +50,10 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                       ],
                     ),
                     SliverToBoxAdapter(
-                      child: UserInfo(username: data.name),
+                      child: UserInfo(
+                          username: data.name,
+                          hasAvatar: data.hasAvatar,
+                          uid: data.uid),
                     ),
                     SliverPersistentHeader(
                       pinned: true,

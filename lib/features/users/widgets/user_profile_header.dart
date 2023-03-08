@@ -6,16 +6,21 @@ import 'package:tiktok_clone/features/users/widgets/avatar.dart';
 
 class UserProfileHeader extends StatelessWidget {
   final String username;
+  final bool hasAvatar;
+  final String uid;
+
   const UserProfileHeader({
     super.key,
     required this.username,
+    required this.hasAvatar,
+    required this.uid,
   });
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Avatar(username),
+        Avatar(name: username, hasAvatar: hasAvatar, uid: uid),
         Gaps.v20,
         Row(
           mainAxisAlignment: MainAxisAlignment.center,

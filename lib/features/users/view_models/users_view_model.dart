@@ -13,8 +13,6 @@ class UsersViewModel extends AsyncNotifier<UserProfileModel> {
 
   @override
   FutureOr<UserProfileModel> build() async {
-    await Future.delayed(const Duration(seconds: 10));
-
     _usersRepository = ref.read(userRepo);
     _authenticationRepository = ref.read(authRepo);
     // 로그인 상태라면
@@ -35,6 +33,7 @@ class UsersViewModel extends AsyncNotifier<UserProfileModel> {
     state = const AsyncValue.loading();
     // 회원가입 성공 시 파이어오스로부터 반환된 userCredential 정보 일부를 state 에 주입
     final profile = UserProfileModel(
+      hasAvatar: false,
       bio: form['bio'],
       link: 'undefined',
       email: userCredential.user!.email ?? 'anon@anon.com',
@@ -44,6 +43,14 @@ class UsersViewModel extends AsyncNotifier<UserProfileModel> {
 
     await _usersRepository.createProfile(profile);
     state = AsyncValue.data(profile); // 사용자 정보 주입
+  }
+
+  Future<void> onAvatarUpload() async {
+    if (state.value == null) return;
+    // hasAvatar 값만 바꾼 기존 UserProfileModel 복사본 가져오기 -> 수정할 새로운 정보
+    state = AsyncValue.data(state.value!.copyWith(hasAvatar: true));
+    // 프로필 수정
+    await _usersRepository.updateUser(state.value!.uid, {"hasAvatar": true});
   }
 }
 

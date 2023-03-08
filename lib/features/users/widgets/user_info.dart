@@ -9,9 +9,14 @@ import 'package:tiktok_clone/utils/common_utils.dart';
 
 class UserInfo extends StatelessWidget {
   final String username;
+  final bool hasAvatar;
+  final String uid;
+
   const UserInfo({
     super.key,
     required this.username,
+    required this.hasAvatar,
+    required this.uid,
   });
 
   @override
@@ -23,7 +28,8 @@ class UserInfo extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                UserProfileHeader(username: username),
+                UserProfileHeader(
+                    username: username, hasAvatar: hasAvatar, uid: uid),
                 const UserProfileBody(),
               ],
             ),
@@ -31,7 +37,8 @@ class UserInfo extends StatelessWidget {
         : Column(
             children: [
               Gaps.v20,
-              UserProfileHeader(username: username),
+              UserProfileHeader(
+                  username: username, hasAvatar: hasAvatar, uid: uid),
               Gaps.v14,
               // 부모 위젯 크기에 따른 상대적 사이즈를 지정할 수 있는 Box 위젯
               // 부모 대비 높이(heightFactor), 너비(widthFactor)

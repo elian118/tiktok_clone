@@ -20,13 +20,18 @@ class UserRepository {
     return doc.data();
   }
 
-  // 프로필 수정 -> 분리
   // 아바타 등록
   Future<void> uploadAvatar(File file, String fileName) async {
     // 파이어스토리지 파일 저장 위치 및 파일 지정
     final fileRef = _storage.ref().child('avatars/$fileName');
     fileRef.putFile(file);
   }
+
+  // 프로필 수정
+  Future<void> updateUser(String uid, Map<String, dynamic> data) async {
+    await _db.collection("users").doc(uid).update(data);
+  }
+
   // 바이오 수정
   // 링크 수정
 }

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tiktok_clone/features/authentication/repos/authentication_repo.dart';
+import 'package:tiktok_clone/features/authentication/view_models/sign_up_view_model.dart';
 import 'package:tiktok_clone/features/users/models/user_profile_model.dart';
 import 'package:tiktok_clone/features/users/repos/user_repo.dart';
 
@@ -28,14 +29,15 @@ class UsersViewModel extends AsyncNotifier<UserProfileModel> {
   // 파이어스토어 -> 계정 생성 -> 회원 가입 시 연쇄 진행
   Future<void> createProfile(UserCredential userCredential) async {
     if (userCredential.user == null) throw Exception('Account not created');
+    final form = ref.read(signUpForm); // 이름, 이메일, 비밀번호, 생일 정보 담긴 state
     state = const AsyncValue.loading();
     // 회원가입 성공 시 파이어오스로부터 반환된 userCredential 정보 일부를 state 에 주입
     final profile = UserProfileModel(
-      bio: 'undefined',
+      bio: form['bio'],
       link: 'undefined',
       email: userCredential.user!.email ?? 'anon@anon.com',
       uid: userCredential.user!.uid,
-      name: userCredential.user!.displayName ?? 'Anon',
+      name: form['username'] ?? userCredential.user!.displayName ?? 'Anon',
     );
 
     await _usersRepository.createProfile(profile);

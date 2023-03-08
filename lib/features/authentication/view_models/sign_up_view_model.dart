@@ -18,7 +18,7 @@ class SignUpViewModel extends AsyncNotifier<void> {
 
   Future<void> signUp(BuildContext context, bool mounted) async {
     state = const AsyncValue.loading();
-    final form = ref.read(signUpForm); // 이메일, 비밀번호 정보 담긴 state
+    final form = ref.read(signUpForm); // 이름, 이메일, 비밀번호, 생일 정보 담긴 state
     final users = ref.read(usersProvider.notifier);
 
     // AsyncValue.guard -> try-catch ->

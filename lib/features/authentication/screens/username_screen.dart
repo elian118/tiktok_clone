@@ -1,24 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tiktok_clone/common/constants/enums/breakpoints.dart';
 import 'package:tiktok_clone/common/constants/gaps.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
 import 'package:tiktok_clone/common/widgets/web_container.dart';
 import 'package:tiktok_clone/features/authentication/screens/email_screen.dart';
+import 'package:tiktok_clone/features/authentication/view_models/sign_up_view_model.dart';
 import 'package:tiktok_clone/features/authentication/widgets/form_button.dart';
 import 'package:tiktok_clone/utils/common_utils.dart';
 import 'package:tiktok_clone/utils/route_utils.dart';
 
-class UsernameScreen extends StatefulWidget {
+class UsernameScreen extends ConsumerStatefulWidget {
   const UsernameScreen({Key? key}) : super(key: key);
 
   @override
-  State<UsernameScreen> createState() => _UsernameScreenState();
+  ConsumerState<UsernameScreen> createState() => _UsernameScreenState();
 }
 
-class _UsernameScreenState extends State<UsernameScreen> {
+class _UsernameScreenState extends ConsumerState<UsernameScreen> {
   final TextEditingController _usernameController = TextEditingController();
 
   String _username = ''; // state 변수는 final 선언하지 않는다.
+
+  void _onSubmit() {
+    if (_username.isEmpty) return;
+    ref.read(signUpForm.notifier).state = {"username": _username};
+    navPush(context, EmailScreen(username: _username));
+  }
 
   @override
   void initState() {
@@ -91,10 +99,7 @@ class _UsernameScreenState extends State<UsernameScreen> {
               ),
               Gaps.v28,
               GestureDetector(
-                onTap: () => navPush(
-                  context,
-                  EmailScreen(username: _username),
-                ),
+                onTap: _onSubmit,
                 child: FormButton(disabled: _username.isEmpty),
               ),
             ],

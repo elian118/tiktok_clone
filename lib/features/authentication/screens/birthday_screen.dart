@@ -28,10 +28,14 @@ class _BirthdayScreenState extends ConsumerState<BirthdayScreen> {
   );
 
   void _onNextTap() {
-    // 파이어베이스로 회원가입 요청(단, 여기서는 생일 정보 전달 생략)
+    // 파이어베이스로 회원가입 요청
+    final state = ref.read(signUpForm.notifier).state;
+    ref.read(signUpForm.notifier).state = {
+      ...state,
+      "bio": _birthdayController.value.text,
+    };
     // 매개변수 없이, 지금까지 signUpForm.state 에 담긴 값 사용
     ref.read(signUpProvider.notifier).signUp(context, mounted);
-    // context.goNamed(InterestsScreen.routeName);
   }
 
   void _setTextFieldDate(DateTime date) {
@@ -39,7 +43,7 @@ class _BirthdayScreenState extends ConsumerState<BirthdayScreen> {
     // _birthdayController.value = TextEditingValue(text: textDate);
     // 날짜 포매팅
     _birthdayController.value =
-        TextEditingValue(text: DateFormat('yyyy년 MM월 dd일').format(date));
+        TextEditingValue(text: DateFormat('yyyy. MM. dd').format(date));
   }
 
   @override

@@ -27,8 +27,9 @@ class SignUpViewModel extends AsyncNotifier<void> {
     state = await AsyncValue.guard(() async {
       final userCredential =
           await _authRepo.emailSignUp(form['email'], form['password']);
-      await users.createAccount(userCredential);
-      print(userCredential.user);
+      // 파이어스토어에 프로필 저장 -> 에러가 있다면 뷰 모델에 에러 전달해 예외 처리
+      await users.createProfile(userCredential);
+      // print(userCredential.user); // 크레덴셜 정보 확인
     });
     if (!mounted) return;
     if (state.hasError) {

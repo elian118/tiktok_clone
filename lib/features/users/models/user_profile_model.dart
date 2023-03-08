@@ -19,4 +19,15 @@ class UserProfileModel {
         name = '',
         bio = '',
         link = '';
+
+  // JsonToDart 플러그인 설치 > ctrl + n > toMap()/toJson() -> 자동생성
+  Map<String, String> toJson() {
+    return {
+      "uid": uid,
+      "email": email,
+      "name": name,
+      "bio": bio,
+      "link": link,
+    };
+  }
 }

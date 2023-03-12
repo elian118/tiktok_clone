@@ -56,6 +56,7 @@ class _LoginFormScreenState extends ConsumerState<LoginFormScreen> {
         ),
         body: WebContainer(
           padding: const EdgeInsets.all(Sizes.size36),
+          alignment: Alignment.center,
           maxWidth: Breakpoint.sm,
           child: Form(
             key: _formKey,

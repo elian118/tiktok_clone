@@ -29,11 +29,14 @@ class UserInfo extends StatelessWidget {
         ? WebContainer(
             padding: const EdgeInsets.symmetric(vertical: Sizes.size96),
             maxWidth: Breakpoint.md,
+            alignment: Alignment.center,
             child: Row(
+              mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 UserProfileHeader(
                     username: username, hasAvatar: hasAvatar, uid: uid),
+                Gaps.h40,
                 UserProfileBody(bio: bio, link: link),
               ],
             ),

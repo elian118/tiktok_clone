@@ -4,7 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/common/constants/gaps.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
 import 'package:tiktok_clone/common/widgets/cst_text_field.dart';
-import 'package:tiktok_clone/features/users/view_models/user_profile_states.dart';
+import 'package:tiktok_clone/features/users/view_models/profile_state_notifier.dart';
 import 'package:tiktok_clone/features/users/view_models/users_view_model.dart';
 
 class UserProfileBody extends ConsumerStatefulWidget {
@@ -186,7 +186,7 @@ class _UserProfileBodyState extends ConsumerState<UserProfileBody> {
                       ),
                     ),
                     Gaps.h8,
-                    if (ref.read(isEditMode))
+                    if (ref.read(editProvider.notifier).state["isEditMode"])
                       GestureDetector(
                         onTap: _toggleBioEdit,
                         child: const FaIcon(
@@ -248,7 +248,7 @@ class _UserProfileBodyState extends ConsumerState<UserProfileBody> {
                     maxLines: 3,
                   ),
                   Gaps.h8,
-                  if (ref.read(isEditMode))
+                  if (ref.read(editProvider.notifier).state["isEditMode"])
                     GestureDetector(
                         onTap: _toggleLinkEdit,
                         child: const FaIcon(

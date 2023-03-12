@@ -135,8 +135,8 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                     ),
                     Gaps.v8,
                     // 레이아웃이 너무 작으면 세부 텍스트 생략
-                    if (constraints.maxWidth < 200 ||
-                        constraints.maxWidth > 250)
+                    if (constraints.maxWidth < 150 ||
+                        constraints.maxWidth > 200)
                       DefaultTextStyle(
                         style: TextStyle(
                           fontSize: Sizes.size14,

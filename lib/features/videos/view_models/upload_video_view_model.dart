@@ -18,7 +18,12 @@ class UploadVideoViewModel extends AsyncNotifier<void> {
   }
 
   Future<void> uploadVideo(
-      File video, BuildContext context, bool mounted) async {
+    File video,
+    String title,
+    String description,
+    BuildContext context,
+    bool mounted,
+  ) async {
     final user = ref.read(authRepo).user;
     final userProfile = ref.read(usersProvider).value;
 
@@ -30,8 +35,8 @@ class UploadVideoViewModel extends AsyncNotifier<void> {
         if (task.metadata != null) {
           await _repository.saveVideo(
             VideoModel(
-              title: 'From Flutter',
-              description: 'Hell yeah!',
+              title: title,
+              description: description,
               fileUrl: await task.ref.getDownloadURL(),
               thumbnailUrl: '', // 파이어베이스 펑션에서 리턴할 예정이므로 초기값 비움
               creatorUid: user.uid,

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gallery_saver/gallery_saver.dart';
+import 'package:tiktok_clone/common/widgets/cst_text_field.dart';
 import 'package:tiktok_clone/features/videos/view_models/upload_video_view_model.dart';
 import 'package:video_player/video_player.dart';
 
@@ -24,6 +25,9 @@ class VideoPreviewScreen extends ConsumerStatefulWidget {
 
 class VideoPreviewScreenState extends ConsumerState<VideoPreviewScreen> {
   late final VideoPlayerController _videoPlayerController;
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _descController = TextEditingController();
+
   bool _isVideoSaved = false;
 
   Future<void> _initVideo() async {
@@ -46,9 +50,8 @@ class VideoPreviewScreenState extends ConsumerState<VideoPreviewScreen> {
 
   void _onUploadPressed() {
     // XFile -> File
-    ref
-        .read(uploadVideoProvider.notifier)
-        .uploadVideo(File(widget.video.path), context, mounted);
+    ref.read(uploadVideoProvider.notifier).uploadVideo(File(widget.video.path),
+        _titleController.text, _descController.text, context, mounted);
   }
 
   @override
@@ -60,6 +63,8 @@ class VideoPreviewScreenState extends ConsumerState<VideoPreviewScreen> {
   @override
   void dispose() {
     _videoPlayerController.dispose();
+    _titleController.dispose();
+    _descController.dispose();
     super.dispose();
   }
 
@@ -88,7 +93,33 @@ class VideoPreviewScreenState extends ConsumerState<VideoPreviewScreen> {
         ],
       ),
       body: _videoPlayerController.value.isInitialized
-          ? VideoPlayer(_videoPlayerController)
+          ? Stack(children: [
+              VideoPlayer(_videoPlayerController),
+              Positioned(
+                left: 25,
+                bottom: 80,
+                child: Container(
+                  padding:
+                      const EdgeInsets.only(left: 10, right: 10, bottom: 5),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.25),
+                  ),
+                  width: MediaQuery.of(context).size.width - 50,
+                  child: Column(
+                    children: [
+                      CstTextField(
+                        controller: _titleController,
+                        hintText: 'Title',
+                      ),
+                      CstTextField(
+                        controller: _descController,
+                        hintText: 'Description',
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            ])
           : null,
     );
   }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/features/settings/screens/setting_screen.dart';
-import 'package:tiktok_clone/features/users/view_models/profile_state_notifier.dart';
+import 'package:tiktok_clone/features/users/view_models/profile_state_model.dart';
 import 'package:tiktok_clone/features/users/view_models/users_view_model.dart';
 import 'package:tiktok_clone/features/users/widgets/page_one.dart';
 import 'package:tiktok_clone/features/users/widgets/persistent_tab_bar.dart';

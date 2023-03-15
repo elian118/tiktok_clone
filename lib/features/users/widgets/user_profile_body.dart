@@ -5,7 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/common/constants/gaps.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
 import 'package:tiktok_clone/common/widgets/cst_text_field.dart';
-import 'package:tiktok_clone/features/users/view_models/profile_state_notifier.dart';
+import 'package:tiktok_clone/features/users/view_models/profile_state_model.dart';
 import 'package:tiktok_clone/features/users/view_models/users_view_model.dart';
 
 class UserProfileBody extends ConsumerStatefulWidget {

@@ -47,7 +47,9 @@ class UploadVideoViewModel extends AsyncNotifier<void> {
             ),
           );
           if (!mounted) return;
-          context.pushReplacement('/home'); // 동영상 업로드 성공 시 홈으로 이동
+          // 성공하면 뒤로가기 두 번
+          context.pop();
+          context.pop();
         }
       });
     }

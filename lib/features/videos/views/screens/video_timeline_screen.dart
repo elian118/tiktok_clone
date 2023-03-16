@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:tiktok_clone/common/constants/rawData/video_data.dart';
 import 'package:tiktok_clone/features/videos/view_models/timeline_view_model.dart';
 import 'package:tiktok_clone/features/videos/views/widgets/video_post.dart';
 
@@ -16,7 +15,7 @@ class VideoTimelineScreenState extends ConsumerState<VideoTimelineScreen> {
 
   final _scrollDuration = const Duration(milliseconds: 250);
   final _scrollCurve = Curves.linear;
-  List<String> _rawVideos = [...rawVideos];
+  int _itemCount = 0;
 
   void _onPageChange(int page) {
     _pageController.animateToPage(
@@ -24,9 +23,8 @@ class VideoTimelineScreenState extends ConsumerState<VideoTimelineScreen> {
       duration: _scrollDuration,
       curve: _scrollCurve,
     );
-    if (page == _rawVideos.length - 1) {
-      _rawVideos = [..._rawVideos, ...rawVideos];
-      setState(() {});
+    if (page == _itemCount - 1) {
+      ref.watch(timelineProvider.notifier).fetchNextPage();
     }
   }
 
@@ -54,7 +52,18 @@ class VideoTimelineScreenState extends ConsumerState<VideoTimelineScreen> {
   Widget build(BuildContext context) =>
       // when() -> AsyncNotifier 를 상속받은 비동기 뷰 모델을 가져다 쓸 때 사용 -> data, error, child 속성 보유
       ref.watch(timelineProvider).when(
-            data: (videos) => RefreshIndicator(
+          loading: () => const Center(
+                child: CircularProgressIndicator(),
+              ),
+          error: (error, stackTrace) => Center(
+                child: Text(
+                  'Could not load videos. $error',
+                  style: const TextStyle(color: Colors.white),
+                ),
+              ),
+          data: (videos) {
+            _itemCount = videos.length;
+            return RefreshIndicator(
               edgeOffset: 20, // 최초 등장 위치(0: 맨 위)
               // 최초 등장 위치로부터 거리 -> 드래그로 넓힌 거리가 상하 50 이상이면 흰 바탕 없어짐
               displacement: 50,
@@ -80,15 +89,6 @@ class VideoTimelineScreenState extends ConsumerState<VideoTimelineScreen> {
                   );
                 },
               ),
-            ),
-            error: (error, stackTrace) => Center(
-              child: Text(
-                'Could not load videos. $error',
-                style: const TextStyle(color: Colors.white),
-              ),
-            ),
-            loading: () => const Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
+            );
+          });
 }

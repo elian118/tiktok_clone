@@ -20,14 +20,18 @@ class VideosRepository {
     await _db.collection('videos').add(data.toJson());
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> fetchVideos() async {
-    return await _db
+  Future<QuerySnapshot<Map<String, dynamic>>> fetchVideos(
+      {int? lastItemCreatedAt}) async {
+    final query = _db
         .collection("videos")
-        .orderBy(
-          "createdAt",
-          descending: true, // 내림차순
-        )
-        .get();
+        .orderBy("createdAt", descending: true) // 생성일자 내림차순 정렬
+        .limit(2); // 조회된 데이터 중 두 개만 가져온다. -> 1, 2
+
+    return lastItemCreatedAt == null
+        ? await query.get()
+        : await query.startAfter([
+            lastItemCreatedAt
+          ]).get(); // lastItemCreatedAt 다음부터 조회된 데이터 두 개 반환  -> 3, 4
   }
 }
 

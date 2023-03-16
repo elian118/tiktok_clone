@@ -35,5 +35,14 @@ class VideoModel {
     };
   }
 
-// Map<String, dynamic> toJson() {}
+  VideoModel.fromJson(Map<String, dynamic> json)
+      : title = json["title"],
+        description = json["description"],
+        fileUrl = json["fileUrl"],
+        thumbnailUrl = json["thumbnailUrl"],
+        creatorUid = json["creatorUid"],
+        creator = json["creator"],
+        likes = json["likes"],
+        comments = json["comments"],
+        createdAt = json["createdAt"];
 }

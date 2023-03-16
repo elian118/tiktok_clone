@@ -15,12 +15,20 @@ class VideosRepository {
     return fileRef.putFile(video);
   }
 
-  // 비디오 파일 업로드
-  saveVideo(VideoModel data) async {
+  // 비디오 파일 업로드 및 비디오 문서 생성
+  Future<void> saveVideo(VideoModel data) async {
     await _db.collection('videos').add(data.toJson());
   }
 
-  // 비디오 문서 생성
+  Future<QuerySnapshot<Map<String, dynamic>>> fetchVideos() async {
+    return await _db
+        .collection("videos")
+        .orderBy(
+          "createdAt",
+          descending: true, // 내림차순
+        )
+        .get();
+  }
 }
 
 final videosRepo = Provider((ref) => VideosRepository());

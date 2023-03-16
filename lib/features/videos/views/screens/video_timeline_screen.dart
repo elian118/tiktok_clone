@@ -71,11 +71,14 @@ class VideoTimelineScreenState extends ConsumerState<VideoTimelineScreen> {
                 onPageChanged: _onPageChange,
                 itemCount: videos.length,
                 // pageSnapping: false, // 페이지 자동 끌어당김 효과 해제
-                itemBuilder: (context, index) => VideoPost(
-                  onVideoFinished: _onVideoFinished,
-                  video: videos[index].title,
-                  index: index,
-                ),
+                itemBuilder: (context, index) {
+                  final videoData = videos[index];
+                  return VideoPost(
+                    onVideoFinished: _onVideoFinished,
+                    index: index,
+                    videoData: videoData,
+                  );
+                },
               ),
             ),
             error: (error, stackTrace) => Center(

@@ -4,9 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/common/constants/enums/breakpoints.dart';
 import 'package:tiktok_clone/common/constants/gaps.dart';
-import 'package:tiktok_clone/common/constants/rawData/foreground_image.dart';
 import 'package:tiktok_clone/common/constants/rawData/video_data.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
+import 'package:tiktok_clone/features/videos/models/video_model.dart';
 import 'package:tiktok_clone/features/videos/view_models/playback_config_vm.dart';
 import 'package:tiktok_clone/features/videos/views/widgets/video_bgm_info.dart';
 import 'package:tiktok_clone/features/videos/views/widgets/video_button.dart';
@@ -18,16 +18,16 @@ import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 class VideoPost extends ConsumerStatefulWidget {
+  final Function onVideoFinished;
+  final VideoModel videoData;
   final int index;
-  final String video;
-  final VoidCallback onVideoFinished;
 
-  const VideoPost(
-      {Key? key,
-      required this.onVideoFinished,
-      required this.index,
-      required this.video})
-      : super(key: key);
+  const VideoPost({
+    Key? key,
+    required this.videoData,
+    required this.onVideoFinished,
+    required this.index,
+  }) : super(key: key);
 
   @override
   VideoPostState createState() => VideoPostState();
@@ -40,14 +40,14 @@ class VideoPostState extends ConsumerState<VideoPost>
 
   bool _isPause = false;
   bool _isMute = false;
-  final String _descText = descText;
   final List<String> _tags = tags;
   final String _bgmInfo = bgmInfo;
   final Duration _animationDuration = const Duration(milliseconds: 200);
 
   // 비디오플레이어 초기설정 - 컨트롤러 초기화 포함
   void _initVideoPlayer() async {
-    _videoPlayerController = VideoPlayerController.asset(widget.video);
+    _videoPlayerController =
+        VideoPlayerController.network(widget.videoData.fileUrl);
     await _videoPlayerController.initialize(); // Future<void> -> await
     // 반복 재생 설정 -> 영상 전환 없이 현재 영상에서 테스트할 게 있는 경우 활성화(영상 고정)
     // await _videoPlayerController.setLooping(true);
@@ -183,9 +183,14 @@ class VideoPostState extends ConsumerState<VideoPost>
           Positioned.fill(
             child: _videoPlayerController.value.isInitialized
                 ? VideoPlayer(_videoPlayerController)
-                : Container(
-                    color: Colors.teal,
-                  ),
+                : widget.videoData.thumbnailUrl.isEmpty
+                    ? Container(
+                        color: Colors.teal,
+                      )
+                    : Image.network(
+                        widget.videoData.thumbnailUrl,
+                        fit: BoxFit.cover,
+                      ),
           ),
           Positioned.fill(
             child: GestureDetector(
@@ -225,9 +230,9 @@ class VideoPostState extends ConsumerState<VideoPost>
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    '@광회',
-                    style: TextStyle(
+                  Text(
+                    '@${widget.videoData.creator}',
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: Sizes.size20,
                       fontWeight: FontWeight.bold,
@@ -235,7 +240,7 @@ class VideoPostState extends ConsumerState<VideoPost>
                   ),
                   Gaps.v10,
                   VideoIntroText2(
-                    descText: _descText,
+                    descText: widget.videoData.description,
                     mainTextBold: FontWeight.normal,
                   ),
                   Gaps.v10,
@@ -268,24 +273,26 @@ class VideoPostState extends ConsumerState<VideoPost>
             child: Column(
               children: [
                 Gaps.v24,
-                const CircleAvatar(
+                CircleAvatar(
                   radius: 25,
                   backgroundColor: Colors.black,
                   foregroundColor: Colors.white,
-                  foregroundImage: NetworkImage(foregroundImage),
-                  child: Text('광회'),
+                  foregroundImage: NetworkImage(
+                    "https://firebasestorage.googleapis.com/v0/b/tiktok-clone-elian.appspot.com/o/avatars%2F${widget.videoData.creatorUid}?alt=media",
+                  ),
+                  child: Text(widget.videoData.creator),
                 ),
                 Gaps.v24,
                 VideoButton(
                   icon: FontAwesomeIcons.solidHeart,
-                  text: S.of(context).likeCount(2923330000),
+                  text: S.of(context).likeCount(widget.videoData.likes),
                 ),
                 Gaps.v24,
                 GestureDetector(
                   onTap: () => _onCommentsTap(context),
                   child: VideoButton(
                     icon: FontAwesomeIcons.solidComment,
-                    text: S.of(context).commentCount(33000),
+                    text: S.of(context).commentCount(widget.videoData.comments),
                   ),
                 ),
                 Gaps.v24,

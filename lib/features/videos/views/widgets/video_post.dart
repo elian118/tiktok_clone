@@ -6,6 +6,7 @@ import 'package:tiktok_clone/common/constants/enums/breakpoints.dart';
 import 'package:tiktok_clone/common/constants/gaps.dart';
 import 'package:tiktok_clone/common/constants/rawData/video_data.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
+import 'package:tiktok_clone/features/authentication/repos/authentication_repo.dart';
 import 'package:tiktok_clone/features/videos/models/video_model.dart';
 import 'package:tiktok_clone/features/videos/view_models/playback_config_vm.dart';
 import 'package:tiktok_clone/features/videos/view_models/video_post_view_model.dart';
@@ -147,7 +148,11 @@ class VideoPostState extends ConsumerState<VideoPost>
   }
 
   void _onLikeTap() {
-    ref.read(videoPostProvider(widget.videoData.id).notifier).likeVideo();
+    ref
+        .read(videoPostProvider(
+                '${widget.videoData.id}000${ref.read(authRepo).user!.uid}')
+            .notifier)
+        .likeVideo();
   }
 
   @override
@@ -171,149 +176,162 @@ class VideoPostState extends ConsumerState<VideoPost>
     super.dispose();
   }
 
-  // build 메서드는 state 변경(setState(() {})마다 재실행되며 화면을 다시 그린다.
-  // 즉, setState(() {})가 부드럽게 변화하는 값을 반영해 연속 실행될 경우, 애니메이션 효과 발생
   @override
-  Widget build(BuildContext context) {
-    return VisibilityDetector(
-      key: Key('${widget.index}'),
-      onVisibilityChanged: _onVisibilityChanged,
-      child: Stack(
-        children: [
-          Positioned.fill(
-            child: _videoPlayerController.value.isInitialized
-                ? VideoPlayer(_videoPlayerController)
-                : Image.network(
-                    widget.videoData.thumbnailUrl,
-                    fit: BoxFit.cover,
-                  ),
-          ),
-          Positioned.fill(
-            child: GestureDetector(
-              onTap: _onTogglePause,
-            ),
-          ),
-          Positioned.fill(
-            // 아이콘이 자체 내장한 클릭 이벤트 무시 -> 형제 위젯의 GestureDetector 만 인식
-            child: IgnorePointer(
-              child: Center(
-                child: AnimatedBuilder(
-                  animation: _animationController,
-                  builder: (BuildContext context, Widget? child) {
-                    return Transform.scale(
-                      scale: _animationController.value,
-                      child: child, // AnimatedOpacity(...)
-                    );
-                  },
-                  child: AnimatedOpacity(
-                    opacity: _isPause ? 1 : 0,
-                    duration: _animationDuration,
-                    child: const FaIcon(
-                      FontAwesomeIcons.play,
-                      color: Colors.white,
-                      size: Sizes.size52,
+  Widget build(BuildContext context) => ref
+      .watch(videoPostProvider(
+          '${widget.videoData.id}000${ref.read(authRepo).user!.uid}'))
+      .when(
+        data: (isLiked) => VisibilityDetector(
+          key: Key('${widget.index}'),
+          onVisibilityChanged: _onVisibilityChanged,
+          child: Stack(
+            children: [
+              Positioned.fill(
+                child: _videoPlayerController.value.isInitialized
+                    ? VideoPlayer(_videoPlayerController)
+                    : Image.network(
+                        widget.videoData.thumbnailUrl,
+                        fit: BoxFit.cover,
+                      ),
+              ),
+              Positioned.fill(
+                child: GestureDetector(
+                  onTap: _onTogglePause,
+                ),
+              ),
+              Positioned.fill(
+                // 아이콘이 자체 내장한 클릭 이벤트 무시 -> 형제 위젯의 GestureDetector 만 인식
+                child: IgnorePointer(
+                  child: Center(
+                    child: AnimatedBuilder(
+                      animation: _animationController,
+                      builder: (BuildContext context, Widget? child) {
+                        return Transform.scale(
+                          scale: _animationController.value,
+                          child: child, // AnimatedOpacity(...)
+                        );
+                      },
+                      child: AnimatedOpacity(
+                        opacity: _isPause ? 1 : 0,
+                        duration: _animationDuration,
+                        child: const FaIcon(
+                          FontAwesomeIcons.play,
+                          color: Colors.white,
+                          size: Sizes.size52,
+                        ),
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ),
-          Positioned(
-            bottom: 20,
-            left: 10,
-            child: SizedBox(
-              width: getWinWidth(context) - 100,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '@${widget.videoData.creator}',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: Sizes.size20,
-                      fontWeight: FontWeight.bold,
+              Positioned(
+                bottom: 20,
+                left: 10,
+                child: SizedBox(
+                  width: getWinWidth(context) - 100,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '@${widget.videoData.creator}',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: Sizes.size20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Gaps.v10,
+                      VideoIntroText2(
+                        descText: widget.videoData.description,
+                        mainTextBold: FontWeight.normal,
+                      ),
+                      Gaps.v10,
+                      VideoIntroText2(
+                        descText: _tags.join(', '),
+                        mainTextBold: FontWeight.w600,
+                      ),
+                      Gaps.v10,
+                      VideoBgmInfo(bgmInfo: _bgmInfo),
+                    ],
+                  ),
+                ),
+              ),
+              Positioned(
+                top: 40,
+                left: 20,
+                child: IconButton(
+                  icon: FaIcon(
+                    _isMute
+                        ? FontAwesomeIcons.volumeXmark
+                        : FontAwesomeIcons.volumeHigh,
+                    color: Colors.white,
+                  ),
+                  onPressed: () => _onPlaybackConfigChanged(toggle: true),
+                ),
+              ),
+              Positioned(
+                bottom: 20,
+                right: 10,
+                child: Column(
+                  children: [
+                    Gaps.v24,
+                    CircleAvatar(
+                      radius: 25,
+                      backgroundColor: Colors.black,
+                      foregroundColor: Colors.white,
+                      foregroundImage: NetworkImage(
+                        "https://firebasestorage.googleapis.com/v0/b/tiktok-clone-elian.appspot.com/o/avatars%2F${widget.videoData.creatorUid}?alt=media",
+                      ),
+                      child: Text(widget.videoData.creator),
                     ),
-                  ),
-                  Gaps.v10,
-                  VideoIntroText2(
-                    descText: widget.videoData.description,
-                    mainTextBold: FontWeight.normal,
-                  ),
-                  Gaps.v10,
-                  VideoIntroText2(
-                    descText: _tags.join(', '),
-                    mainTextBold: FontWeight.w600,
-                  ),
-                  Gaps.v10,
-                  VideoBgmInfo(bgmInfo: _bgmInfo),
-                ],
-              ),
-            ),
+                    Gaps.v24,
+                    GestureDetector(
+                      onTap: _onLikeTap,
+                      child: VideoButton(
+                        color: isLiked ? Colors.red : Colors.white,
+                        icon: FontAwesomeIcons.solidHeart,
+                        text: S.of(context).likeCount(widget.videoData.likes),
+                      ),
+                    ),
+                    Gaps.v24,
+                    GestureDetector(
+                      onTap: () => _onCommentsTap(context),
+                      child: VideoButton(
+                        icon: FontAwesomeIcons.solidComment,
+                        text: S
+                            .of(context)
+                            .commentCount(widget.videoData.comments),
+                      ),
+                    ),
+                    Gaps.v24,
+                    const VideoButton(
+                      icon: FontAwesomeIcons.share,
+                      text: 'Share',
+                    ),
+                    Gaps.v38,
+                    const CircleAvatar(
+                      radius: 25,
+                      backgroundColor: Colors.black,
+                      foregroundColor: Colors.white,
+                      foregroundImage: NetworkImage(
+                        "https://avatars.githubusercontent.com/u/73107356?v=4",
+                      ),
+                      child: Text('광회'),
+                    ),
+                  ],
+                ),
+              )
+            ],
           ),
-          Positioned(
-            top: 40,
-            left: 20,
-            child: IconButton(
-              icon: FaIcon(
-                _isMute
-                    ? FontAwesomeIcons.volumeXmark
-                    : FontAwesomeIcons.volumeHigh,
-                color: Colors.white,
-              ),
-              onPressed: () => _onPlaybackConfigChanged(toggle: true),
-            ),
+        ),
+        error: (error, stackTrace) => Center(
+          child: Text(
+            'Could not load videos. $error',
+            style: const TextStyle(color: Colors.white),
           ),
-          Positioned(
-            bottom: 20,
-            right: 10,
-            child: Column(
-              children: [
-                Gaps.v24,
-                CircleAvatar(
-                  radius: 25,
-                  backgroundColor: Colors.black,
-                  foregroundColor: Colors.white,
-                  foregroundImage: NetworkImage(
-                    "https://firebasestorage.googleapis.com/v0/b/tiktok-clone-elian.appspot.com/o/avatars%2F${widget.videoData.creatorUid}?alt=media",
-                  ),
-                  child: Text(widget.videoData.creator),
-                ),
-                Gaps.v24,
-                GestureDetector(
-                  onTap: _onLikeTap,
-                  child: VideoButton(
-                    icon: FontAwesomeIcons.solidHeart,
-                    text: S.of(context).likeCount(widget.videoData.likes),
-                  ),
-                ),
-                Gaps.v24,
-                GestureDetector(
-                  onTap: () => _onCommentsTap(context),
-                  child: VideoButton(
-                    icon: FontAwesomeIcons.solidComment,
-                    text: S.of(context).commentCount(widget.videoData.comments),
-                  ),
-                ),
-                Gaps.v24,
-                const VideoButton(
-                  icon: FontAwesomeIcons.share,
-                  text: 'Share',
-                ),
-                Gaps.v38,
-                const CircleAvatar(
-                  radius: 25,
-                  backgroundColor: Colors.black,
-                  foregroundColor: Colors.white,
-                  foregroundImage: NetworkImage(
-                    "https://avatars.githubusercontent.com/u/73107356?v=4",
-                  ),
-                  child: Text('광회'),
-                ),
-              ],
-            ),
-          )
-        ],
-      ),
-    );
-  }
+        ),
+        loading: () => const Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
 }

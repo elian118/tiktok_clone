@@ -34,6 +34,12 @@ class VideosRepository {
           ]).get(); // lastItemCreatedAt 다음부터 조회된 데이터 두 개 반환  -> 3, 4
   }
 
+  Future<bool> isLiked(String videoId, String userId) async {
+    final query = _db.collection("likes").doc("${videoId}000$userId");
+    final like = await query.get();
+    return like.exists;
+  }
+
   Future<void> likeVideo(String videoId, String userId) async {
     // 파이어베이스에 SQL 사용 -> 값비싼 비용 치러야 하므로, 아래와 같은 편법을 동원한다.
     // 새로운 컬랙션 생성 -> videoId + 000 + userId

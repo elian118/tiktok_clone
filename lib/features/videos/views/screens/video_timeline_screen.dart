@@ -50,15 +50,8 @@ class VideoTimelineScreenState extends ConsumerState<VideoTimelineScreen> {
   Widget build(BuildContext context) =>
       // when() -> AsyncNotifier 를 상속받은 비동기 뷰 모델을 가져다 쓸 때 사용 -> data, error, child 속성 보유
       ref.watch(timelineProvider).when(
-          loading: () => const Center(
-                child: CircularProgressIndicator(),
-              ),
-          error: (error, stackTrace) => Center(
-                child: Text(
-                  'Could not load videos. $error',
-                  style: const TextStyle(color: Colors.white),
-                ),
-              ),
+          loading: () => const Center(child: CircularProgressIndicator()),
+          error: (error, stackTrace) => Container(),
           data: (videos) {
             _itemCount = videos.length;
             return RefreshIndicator(

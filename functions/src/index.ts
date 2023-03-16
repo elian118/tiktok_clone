@@ -1,12 +1,29 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 
-admin.initializeApp();
+admin.initializeApp(); // 관리자 권한으로 앱 초기화
 
+// 동영상이 새로 생성될 때마다 아래 함수 실행 -> 이벤트 리스너
 export const onVideoCreated = functions.firestore
     .document("videos/{videoId}")
     .onCreate(async (snapshot, context) => {
-        await snapshot.ref.update({"hello": "from functions"});
+        const spawn = require('child-process-promise').spawn;
+        const video = snapshot.data();
+        await spawn("ffmpeg", [
+            "-i",
+            video.fileUrl, // 동영상 다운로드
+            "-ss",
+            "00:00:01.000", // 동영상 1초로 이동
+            "-vframes",
+            "1", // 첫 번째 프레임 가져오기
+            "-vf", // 영상 필터 설정 -> 화질 낮추기
+            "scale=150:-1", // 너비 150, 높이는 영상 비율에 맞춰 설정
+            `/tmp/${snapshot.id}.jpg`, // 업로드 동안 잠시 구글 클라우드 서버에 생성되는 tmp 임시 폴더에서 가져온 프레임 이미지를 썸네일로 저장
+        ]);
+        const storage = admin.storage(); // 관리자 권한으로 저장소 접근 -> 임시 동영상이 위치한 곳으로(경로 동일해야 함)
+        await storage.bucket().upload(`/tmp/${snapshot.id}.jpg`, {
+            destination: `thumbnails/${snapshot.id}.jpg`, // 파이어베이스에 저장할 경로(버킷) 및 파일명 지정
+        });
     });
 
 /*
@@ -31,10 +48,21 @@ export const onVideoCreated = functions.firestore
         성공적으로 수행됐다면, 프로젝트 안에 functions 폴더가 새로 생성돼 있고,
         그 안에 타입스크립트 프로젝트가 만들어진 것을 확인할 수 있다.
 
-    4) root > functions > src > index.ts 이동해 코드를 편집 후 파이어베이스에 배포한다.
+    4) root > functions > src > index.ts 이동해 코드 편집 후 파이어베이스에 배포한다.
 
         파이어베이스 함수를 변경한 후에는
         터미널에서 아래 명령으로 파이어베이스에 코드를 배포해야 한다.
 
         firebase deploy --only functions
+*/
+/*
+    ffmpeg 는 구글 파이어베이스에 설치돼 있는 시스템 패키지다.
+    파이어베이스 함수로도 이러한 시스템 패키지 코드를 호출해 사용할 수 있는데,
+
+    ffmpeg 의 경우, 클라우드 서버에 저장된 동영상을 다루는 코드를 지원한다.
+    다만, ffmpeg 만으로는 오로지 터미널에서만 명령을 내릴 수 있는데,
+    이걸 파이어베이스 함수에서 사용할 수 있도록ㄷ 지원하는 또 다른 노드패키지
+    child-promise-process 를 설치해 사용할 수 있다.
+
+    이 패키지는 파이어베이스 시스템 패키지가 아니므로, functions 폴더 안에 의존성으로 추가해줘야 한다.
 */

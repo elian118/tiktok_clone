@@ -21,9 +21,26 @@ export const onVideoCreated = functions.firestore
             `/tmp/${snapshot.id}.jpg`, // 업로드 동안 잠시 구글 클라우드 서버에 생성되는 tmp 임시 폴더에서 가져온 프레임 이미지를 썸네일로 저장
         ]);
         const storage = admin.storage(); // 관리자 권한으로 저장소 접근 -> 임시 동영상이 위치한 곳으로(경로 동일해야 함)
-        await storage.bucket().upload(`/tmp/${snapshot.id}.jpg`, {
+        const [file, _] = await storage.bucket().upload(`/tmp/${snapshot.id}.jpg`, {
             destination: `thumbnails/${snapshot.id}.jpg`, // 파이어베이스에 저장할 경로(버킷) 및 파일명 지정
         });
+        // 파일 url 정보를 얻기 위해 공개상태로 변경
+        await file.makePublic();
+        await snapshot.ref.update({"thumbnailUrl": file.publicUrl()});
+
+        // 동뎡상 정보 복사본 저장
+        //  -> NoSql 방식은 서버 부하를 막고자 이러한 복사본을
+        //      데이터베이스 내에 여럿 만들어두고 하나의 아이디로 접근 가능하도록 코드를 짠다.
+        const db = admin.firestore();
+        // 데이터베이스에 복사본 저장을 위한 새로운 컬랜션 생성
+        await db.collection("users")
+            .doc(video.creatorUid)
+            .collection("videos")
+            .doc(snapshot.id)
+            .set({
+                thumbnailUrl: file.publicUrl(),
+                videoId: snapshot.id,
+            });
     });
 
 /*

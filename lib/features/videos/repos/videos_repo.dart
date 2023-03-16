@@ -35,10 +35,18 @@ class VideosRepository {
   }
 
   Future<void> likeVideo(String videoId, String userId) async {
-    await _db.collection("likes").add({
-      "videoId": videoId,
-      "userId": userId,
-    });
+    // 파이어베이스에 SQL 사용 -> 값비싼 비용 치러야 하므로, 아래와 같은 편법을 동원한다.
+    // 새로운 컬랙션 생성 -> videoId + 000 + userId
+    final query = _db.collection("likes").doc("${videoId}000$userId");
+    final like = await query.get();
+
+    // 고유 videoId + 000 + userId 컬랙션이 존재한다면 -> 좋아요를 이미 누른 것이다
+    //  아직 좋아요를 누르지 않은 영상만 좋아요 처리
+    if (!like.exists) {
+      await query.set({
+        "createdAt": DateTime.now().millisecondsSinceEpoch,
+      });
+    }
   }
 }
 

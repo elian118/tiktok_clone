@@ -8,6 +8,7 @@ import 'package:tiktok_clone/common/constants/rawData/video_data.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
 import 'package:tiktok_clone/features/videos/models/video_model.dart';
 import 'package:tiktok_clone/features/videos/view_models/playback_config_vm.dart';
+import 'package:tiktok_clone/features/videos/view_models/video_post_view_model.dart';
 import 'package:tiktok_clone/features/videos/views/widgets/video_bgm_info.dart';
 import 'package:tiktok_clone/features/videos/views/widgets/video_button.dart';
 import 'package:tiktok_clone/features/videos/views/widgets/video_comments.dart';
@@ -145,6 +146,10 @@ class VideoPostState extends ConsumerState<VideoPost>
     setState(() {});
   }
 
+  void _onLikeTap() {
+    ref.read(videoPostProvider(widget.videoData.id).notifier).likeVideo();
+  }
+
   @override
   void initState() {
     super.initState();
@@ -156,11 +161,6 @@ class VideoPostState extends ConsumerState<VideoPost>
       value: 1.5, // 기본값(초기값)
       duration: _animationDuration,
     );
-
-    // riverpod 적용 보류
-    // context
-    //     .read<PlaybackConfigViewModel>()
-    //     .addListener(_onPlaybackConfigChanged);
   }
 
   // 모든 stateful widget 내 컨트롤러는 작업 후 반드시 위젯에서 제거 -> 누락 시, 시뮬레이터에서 에러 발생
@@ -279,9 +279,12 @@ class VideoPostState extends ConsumerState<VideoPost>
                   child: Text(widget.videoData.creator),
                 ),
                 Gaps.v24,
-                VideoButton(
-                  icon: FontAwesomeIcons.solidHeart,
-                  text: S.of(context).likeCount(widget.videoData.likes),
+                GestureDetector(
+                  onTap: _onLikeTap,
+                  child: VideoButton(
+                    icon: FontAwesomeIcons.solidHeart,
+                    text: S.of(context).likeCount(widget.videoData.likes),
+                  ),
                 ),
                 Gaps.v24,
                 GestureDetector(

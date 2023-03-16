@@ -36,9 +36,7 @@ class VideoTimelineScreenState extends ConsumerState<VideoTimelineScreen> {
   }
 
   Future<void> _onRefresh() {
-    return Future.delayed(
-      const Duration(seconds: 5),
-    );
+    return ref.watch(timelineProvider.notifier).refresh();
   }
 
   // 모든 stateful widget 내 컨트롤러는 작업 후 반드시 위젯에서 제거 -> 누락 시, 시뮬레이터에서 에러 발생

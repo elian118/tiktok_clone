@@ -6,7 +6,7 @@ admin.initializeApp(); // 관리자 권한으로 앱 초기화
 // 동영상이 새로 생성될 때마다 아래 함수 실행 -> 이벤트 리스너
 export const onVideoCreated = functions.firestore
     .document("videos/{videoId}")
-    .onCreate(async (snapshot, context) => {
+    .onCreate(async (snapshot) => {
         const spawn = require('child-process-promise').spawn;
         const video = snapshot.data();
         await spawn("ffmpeg", [
@@ -29,8 +29,10 @@ export const onVideoCreated = functions.firestore
         await snapshot.ref.update({"thumbnailUrl": file.publicUrl()});
 
         // 동뎡상 정보 복사본 저장
-        //  -> NoSql 방식은 서버 부하를 막고자 이러한 복사본을
-        //      데이터베이스 내에 여럿 만들어두고 하나의 아이디로 접근 가능하도록 코드를 짠다.
+        //  -> NoSql 방식은 서버 부하를 막고자 SQL 쿼리를 사용해 DB 연산을 동원하지 않고,
+        //  복사본을 DB 내에 여럿 만들어둔 뒤 이걸 하나의 아이디로 전부 접근 가능하도록 프로그래밍힌다.
+        //  이러면 여러 군데에 중복 데이터가 생성되지만, 싱크가 모두 동일(uid)하므로,
+        //  연관 복사본(중복) 데이터들의 일괄 생성/수정/삭제가 가능하다.
         const db = admin.firestore();
         // 데이터베이스에 복사본 저장을 위한 새로운 컬랜션 생성
         await db.collection("users")

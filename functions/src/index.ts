@@ -45,6 +45,32 @@ export const onVideoCreated = functions.firestore
             });
     });
 
+// 좋아요 클릭 -> likes 컬랙션 생성될 때마다 아래 함수 실행
+export const onLikedCreated = functions.firestore
+    .document("likes/{likeId}")
+    .onCreate(async (snapshot) => {
+        const db = admin.firestore();
+        const [videoId, _] = snapshot.id.split("000");
+        await db.collection("videos")
+            .doc(videoId)
+            .update({
+                likes: admin.firestore.FieldValue.increment(1), // 좋아요 1 증가
+            });
+    });
+
+// 싫어요(좋아요 재클릭) -> likes 컬랙션 삭제될 때마다 아래 함수 실행
+export const onLikedRemoved = functions.firestore
+    .document("likes/{likeId}")
+    .onDelete(async (snapshot) => {
+        const db = admin.firestore();
+        const [videoId, _] = snapshot.id.split("000");
+        await db.collection("videos")
+            .doc(videoId)
+            .update({
+                likes: admin.firestore.FieldValue.increment(-1), // 좋아요 1 감소
+            });
+    });
+
 /*
     파이어베이스 함수를 사용하려면
     1) 터미널에서 아래 명령으로 플러터 패키지를 설치한다.

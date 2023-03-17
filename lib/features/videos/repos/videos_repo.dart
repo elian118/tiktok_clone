@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tiktok_clone/features/videos/models/video_like_model.dart';
 import 'package:tiktok_clone/features/videos/models/video_model.dart';
 
 class VideosRepository {
@@ -34,13 +35,21 @@ class VideosRepository {
           ]).get(); // lastItemCreatedAt 다음부터 조회된 데이터 두 개 반환  -> 3, 4
   }
 
-  Future<bool> isLiked(String videoId, String userId) async {
-    final query = _db.collection("likes").doc("${videoId}000$userId");
-    final like = await query.get();
-    return like.exists;
+  Future<VideoLikeModel> isLiked(String videoId, String userId) async {
+    final likeQuery = _db.collection("likes").doc("${videoId}000$userId");
+    final videoQuery = _db.collection("videos").doc(videoId);
+
+    final like = await likeQuery.get();
+    final video = await videoQuery.get();
+    final videoData = video.data();
+
+    final VideoModel vm =
+        VideoModel.fromJson(json: videoData!, videoId: videoId);
+
+    return VideoLikeModel(isLikeVideo: like.exists, likeCount: vm.likes);
   }
 
-  Future<void> likeVideo(String videoId, String userId) async {
+  Future<bool> likeVideo(String videoId, String userId) async {
     // 파이어베이스에 SQL 사용 -> 값비싼 비용 치러야 하므로, 아래와 같은 편법을 동원한다.
     // 새로운 컬랙션 생성 -> videoId + 000 + userId
     final query = _db.collection("likes").doc("${videoId}000$userId");
@@ -52,8 +61,10 @@ class VideosRepository {
       await query.set({
         "createdAt": DateTime.now().millisecondsSinceEpoch,
       });
+      return false;
     } else {
       await query.delete();
+      return true;
     }
   }
 }

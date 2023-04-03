@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/common/constants/gaps.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
 import 'package:tiktok_clone/common/widgets/avatar_form.dart';
+import 'package:tiktok_clone/features/inbox/view_models/messages_vm.dart';
 import 'package:tiktok_clone/features/inbox/widgets/frequently_used_texts.dart';
 import 'package:tiktok_clone/utils/common_utils.dart';
 
-class ChatDetailScreen extends StatefulWidget {
+class ChatDetailScreen extends ConsumerStatefulWidget {
   static const String routeName = 'chatDetail';
   static const String routeURL = ':chatId'; // nested route -> 맨 앞에 '/'가 없어야 한다.
 
@@ -17,34 +19,37 @@ class ChatDetailScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<ChatDetailScreen> createState() => _ChatDetailScreenState();
+  ConsumerState<ChatDetailScreen> createState() => _ChatDetailScreenState();
 }
 
-class _ChatDetailScreenState extends State<ChatDetailScreen> {
-  final TextEditingController _messageController =
+class _ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
+  final TextEditingController _editingController =
       TextEditingController(text: '');
 
-  late bool _isThereMessage = _messageController.text.isNotEmpty;
+  late bool _isThereMessage = _editingController.text.isNotEmpty;
 
-  void _onMessageChanged(String value) {
-    setState(() {
-      _isThereMessage = value.isNotEmpty;
-    });
+  void _onMessageChanged(String text) {
+    _isThereMessage = text.isNotEmpty;
+    setState(() {});
   }
 
-  void _onMsgSubmit(String value) {
+  void _onSendPress(String text) {
     if (!_isThereMessage) return;
-    print('send a message: $value');
+    ref.read(messagesProvider.notifier).sendMessage(text);
+    print('send a message: $text');
+    _editingController.text = '';
+    // setState(() {}); // ConsumerStatefulWidget 은 VM 에서 setState 실행하므로 불필요
   }
 
   @override
   void dispose() {
-    _messageController.dispose();
+    _editingController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final isLoading = ref.watch(messagesProvider).isLoading;
     return Scaffold(
       appBar: AppBar(
         backgroundColor:
@@ -146,12 +151,11 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                     padding: const EdgeInsets.symmetric(
                         vertical: Sizes.size10, horizontal: Sizes.size14),
                     child: Row(
-                      // mainAxisSize: MainAxisSize.min,
                       children: [
                         TextField(
-                          controller: _messageController,
+                          controller: _editingController,
                           onChanged: _onMessageChanged,
-                          onSubmitted: _onMsgSubmit,
+                          onSubmitted: isLoading ? null : _onSendPress,
                           decoration: InputDecoration(
                             hintText: 'Send a message...',
                             contentPadding: const EdgeInsets.symmetric(
@@ -184,10 +188,13 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                             shape: const CircleBorder(),
                             padding: const EdgeInsets.all(Sizes.size10),
                           ),
-                          onPressed: () =>
-                              _onMsgSubmit(_messageController.text),
-                          child: const FaIcon(
-                            FontAwesomeIcons.solidPaperPlane,
+                          onPressed: () => isLoading
+                              ? null
+                              : _onSendPress(_editingController.text),
+                          child: FaIcon(
+                            isLoading
+                                ? FontAwesomeIcons.hourglass
+                                : FontAwesomeIcons.solidPaperPlane,
                             color: Colors.white,
                             size: Sizes.size20,
                           ),

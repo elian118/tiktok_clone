@@ -1,11 +1,14 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/common/constants/gaps.dart';
 import 'package:tiktok_clone/common/constants/sizes.dart';
 import 'package:tiktok_clone/common/widgets/avatar_form.dart';
+import 'package:tiktok_clone/features/authentication/repos/authentication_repo.dart';
 import 'package:tiktok_clone/features/inbox/view_models/messages_vm.dart';
-import 'package:tiktok_clone/features/inbox/widgets/frequently_used_texts.dart';
 import 'package:tiktok_clone/utils/common_utils.dart';
 
 class ChatDetailScreen extends ConsumerStatefulWidget {
@@ -91,117 +94,147 @@ class _ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
               isDarkMode(context) ? Colors.grey.shade700 : Colors.grey.shade100,
           child: Stack(
             children: [
-              ListView.separated(
-                padding: const EdgeInsets.symmetric(
-                  vertical: Sizes.size20,
-                  horizontal: Sizes.size14,
-                ),
-                itemBuilder: (context, index) {
-                  final isMine = index % 2 == 0; // 홀짝 구분
-                  return Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: isMine
-                        ? MainAxisAlignment.end
-                        : MainAxisAlignment.start,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(Sizes.size10),
-                        decoration: BoxDecoration(
-                          color: isMine
-                              ? Colors.blue
-                              : Theme.of(context).primaryColor,
-                          borderRadius: BorderRadius.only(
-                            topLeft: const Radius.circular(Sizes.size20),
-                            topRight: const Radius.circular(Sizes.size20),
-                            bottomLeft: Radius.circular(
-                              isMine ? Sizes.size20 : Sizes.size5,
-                            ),
-                            bottomRight: Radius.circular(
-                              isMine ? Sizes.size5 : Sizes.size20,
-                            ),
-                          ),
-                        ),
-                        child: const Text(
-                          'this is a message',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: Sizes.size16,
-                          ),
-                        ),
+              ref.watch(chatProvider).when(
+                  data: (data) {
+                    return ListView.separated(
+                      reverse: true, // 밑에서부터 시작하는 옵션
+                      padding: EdgeInsets.only(
+                        top: Sizes.size20,
+                        left: Sizes.size14,
+                        right: Sizes.size14,
+                        bottom: MediaQuery.of(context).padding.bottom +
+                            Sizes.size96,
                       ),
-                    ],
-                  );
-                },
-                separatorBuilder: (context, index) => Gaps.h10,
-                itemCount: 10,
-              ),
-              const Positioned(
-                left: Sizes.size12,
-                bottom: 134,
-                child: FrequentlyUsedTexts(),
-              ),
+                      itemBuilder: (context, index) {
+                        final message = data[index];
+                        final isMine =
+                            message.userId == ref.watch(authRepo).user!.uid;
+                        return Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: isMine
+                              ? MainAxisAlignment.end
+                              : MainAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: Sizes.size4),
+                              child: Container(
+                                padding: const EdgeInsets.all(Sizes.size10),
+                                decoration: BoxDecoration(
+                                  color: isMine
+                                      ? Colors.blue
+                                      : Theme.of(context).primaryColor,
+                                  borderRadius: BorderRadius.only(
+                                    topLeft:
+                                        const Radius.circular(Sizes.size20),
+                                    topRight:
+                                        const Radius.circular(Sizes.size20),
+                                    bottomLeft: Radius.circular(
+                                      isMine ? Sizes.size20 : Sizes.size5,
+                                    ),
+                                    bottomRight: Radius.circular(
+                                      isMine ? Sizes.size5 : Sizes.size20,
+                                    ),
+                                  ),
+                                ),
+                                child: Text(
+                                  message.text,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: Sizes.size16,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                      separatorBuilder: (context, index) => Gaps.h10,
+                      itemCount: data.length,
+                    );
+                  },
+                  error: (error, stackTrace) =>
+                      Center(child: Text(error.toString())),
+                  loading: () =>
+                      const Center(child: CircularProgressIndicator())),
+              // const Positioned(
+              //   left: Sizes.size12,
+              //   bottom: 134,
+              //   child: FrequentlyUsedTexts(),
+              // ),
               Positioned(
                 bottom: 0,
                 width: getWinWidth(context),
-                child: BottomAppBar(
-                  height: 120,
-                  elevation: 0,
-                  color: Colors.grey.shade100,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: Sizes.size10, horizontal: Sizes.size14),
-                    child: Row(
-                      children: [
-                        TextField(
-                          controller: _editingController,
-                          onChanged: _onMessageChanged,
-                          onSubmitted: isLoading ? null : _onSendPress,
-                          decoration: InputDecoration(
-                            hintText: 'Send a message...',
-                            contentPadding: const EdgeInsets.symmetric(
-                                horizontal: Sizes.size12),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(Sizes.size20),
-                              borderSide: BorderSide.none,
-                            ),
-                            constraints: BoxConstraints(
-                              maxWidth: MediaQuery.of(context).size.width - 134,
-                            ),
-                            filled: true,
-                            fillColor: Colors.grey.shade200,
-                            suffixIcon: Container(
-                              width: Sizes.size20,
-                              alignment: Alignment.center,
-                              child: const FaIcon(
-                                FontAwesomeIcons.faceSmile,
-                                color: Colors.black,
+                child: KeyboardVisibilityBuilder(
+                  builder: (BuildContext context, bool isKeyboardVisible) {
+                    return BottomAppBar(
+                      notchMargin: 0,
+                      height: Platform.isIOS
+                          ? isKeyboardVisible
+                              ? 85
+                              : 120
+                          : 85,
+                      elevation: 0,
+                      color: Colors.grey.shade100,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: Sizes.size10, horizontal: Sizes.size14),
+                        child: Row(
+                          children: [
+                            TextField(
+                              controller: _editingController,
+                              onChanged: _onMessageChanged,
+                              onSubmitted: isLoading ? null : _onSendPress,
+                              decoration: InputDecoration(
+                                hintText: 'Send a message...',
+                                contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: Sizes.size12),
+                                border: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.circular(Sizes.size20),
+                                  borderSide: BorderSide.none,
+                                ),
+                                constraints: BoxConstraints(
+                                  maxWidth:
+                                      MediaQuery.of(context).size.width - 134,
+                                ),
+                                filled: true,
+                                fillColor: Colors.grey.shade200,
+                                suffixIcon: Container(
+                                  width: Sizes.size20,
+                                  alignment: Alignment.center,
+                                  child: const FaIcon(
+                                    FontAwesomeIcons.faceSmile,
+                                    color: Colors.black,
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
+                            Gaps.h10,
+                            TextButton(
+                              style: TextButton.styleFrom(
+                                backgroundColor: _isThereMessage
+                                    ? Theme.of(context).primaryColor
+                                    : Colors.grey.shade200,
+                                shape: const CircleBorder(),
+                                padding: const EdgeInsets.all(Sizes.size10),
+                              ),
+                              onPressed: () => isLoading
+                                  ? null
+                                  : _onSendPress(_editingController.text),
+                              child: FaIcon(
+                                isLoading
+                                    ? FontAwesomeIcons.hourglass
+                                    : FontAwesomeIcons.solidPaperPlane,
+                                color: Colors.white,
+                                size: Sizes.size20,
+                              ),
+                            ),
+                          ],
                         ),
-                        Gaps.h10,
-                        TextButton(
-                          style: TextButton.styleFrom(
-                            backgroundColor: _isThereMessage
-                                ? Theme.of(context).primaryColor
-                                : Colors.grey.shade200,
-                            shape: const CircleBorder(),
-                            padding: const EdgeInsets.all(Sizes.size10),
-                          ),
-                          onPressed: () => isLoading
-                              ? null
-                              : _onSendPress(_editingController.text),
-                          child: FaIcon(
-                            isLoading
-                                ? FontAwesomeIcons.hourglass
-                                : FontAwesomeIcons.solidPaperPlane,
-                            color: Colors.white,
-                            size: Sizes.size20,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                      ),
+                    );
+                  },
                 ),
               ),
             ],

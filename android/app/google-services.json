@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "293109699602",
+    "project_id": "tiktok-clone-elian",
+    "storage_bucket": "tiktok-clone-elian.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:293109699602:android:c02b834f36ff6e1c9634cb",
+        "android_client_info": {
+          "package_name": "com.example.tiktok_clone"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "293109699602-2eqvnp256rektpcs3fnmfh3crfmuagev.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.tiktok_clone",
+            "certificate_hash": "fa2bbd96452fbe0d67e3b2bf799e08acc628b863"
+          }
+        },
+        {
+          "client_id": "293109699602-es4r515cofo0ri2bo7on8p8l6f73nuuo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4prenPaGYLRTyS561Hk_ETbkGDKzeP9U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "293109699602-es4r515cofo0ri2bo7on8p8l6f73nuuo.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "293109699602-s0n48j7a03903kejippb20dqe6mgp0u0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.tiktokClone"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

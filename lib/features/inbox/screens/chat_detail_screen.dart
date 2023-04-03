@@ -132,44 +132,45 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
               ),
               const Positioned(
                 left: Sizes.size12,
-                bottom: 104,
+                bottom: 134,
                 child: FrequentlyUsedTexts(),
               ),
               Positioned(
                 bottom: 0,
                 width: getWinWidth(context),
                 child: BottomAppBar(
+                  height: 120,
                   elevation: 0,
                   color: Colors.grey.shade100,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                         vertical: Sizes.size10, horizontal: Sizes.size14),
                     child: Row(
-                      mainAxisSize: MainAxisSize.min,
+                      // mainAxisSize: MainAxisSize.min,
                       children: [
-                        Expanded(
-                          child: TextField(
-                            controller: _messageController,
-                            onChanged: _onMessageChanged,
-                            onSubmitted: _onMsgSubmit,
-                            decoration: InputDecoration(
-                              hintText: 'Send a message...',
-                              contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: Sizes.size12),
-                              border: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.circular(Sizes.size20),
-                                borderSide: BorderSide.none,
-                              ),
-                              filled: true,
-                              fillColor: Colors.white,
-                              suffixIcon: Container(
-                                width: Sizes.size20,
-                                alignment: Alignment.center,
-                                child: const FaIcon(
-                                  FontAwesomeIcons.faceSmile,
-                                  color: Colors.black,
-                                ),
+                        TextField(
+                          controller: _messageController,
+                          onChanged: _onMessageChanged,
+                          onSubmitted: _onMsgSubmit,
+                          decoration: InputDecoration(
+                            hintText: 'Send a message...',
+                            contentPadding: const EdgeInsets.symmetric(
+                                horizontal: Sizes.size12),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(Sizes.size20),
+                              borderSide: BorderSide.none,
+                            ),
+                            constraints: BoxConstraints(
+                              maxWidth: MediaQuery.of(context).size.width - 134,
+                            ),
+                            filled: true,
+                            fillColor: Colors.grey.shade200,
+                            suffixIcon: Container(
+                              width: Sizes.size20,
+                              alignment: Alignment.center,
+                              child: const FaIcon(
+                                FontAwesomeIcons.faceSmile,
+                                color: Colors.black,
                               ),
                             ),
                           ),
@@ -179,7 +180,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                           style: TextButton.styleFrom(
                             backgroundColor: _isThereMessage
                                 ? Theme.of(context).primaryColor
-                                : Colors.grey.shade300,
+                                : Colors.grey.shade200,
                             shape: const CircleBorder(),
                             padding: const EdgeInsets.all(Sizes.size10),
                           ),
